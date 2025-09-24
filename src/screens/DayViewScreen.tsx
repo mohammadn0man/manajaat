@@ -28,9 +28,10 @@ const DayViewScreen: React.FC<DayViewScreenProps> = ({ route }) => {
   return (
     <View style={styles.container}>
       <TopBar
+        showBackButton
+        onBackPress={() => navigation.goBack()}
         title={`${dayDisplayName} Duas`}
         subtitle={`${dayDuas.length} duas available`}
-        showBackButton
       />
 
       <View style={styles.content}>

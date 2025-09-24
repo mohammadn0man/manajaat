@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Share, Alert } from 'react-native';
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
 import * as Clipboard from 'expo-clipboard';
 
 import TopBar from '../components/TopBar';
@@ -8,6 +8,7 @@ import IconButton from '../components/IconButton';
 import { Dua } from '../types/dua';
 import { getDuasData } from '../services/dataLoader';
 import { RootStackParamList } from '../navigation/types';
+import { useApp } from '../contexts/AppContext';
 
 type DuaDetailScreenRouteProp = RouteProp<RootStackParamList, 'DuaDetail'>;
 
@@ -16,10 +17,10 @@ interface DuaDetailScreenProps {
 }
 
 const DuaDetailScreen: React.FC<DuaDetailScreenProps> = ({ route }) => {
+  const navigation = useNavigation();
   const { duaId } = route.params;
   const [dua, setDua] = useState<Dua | null>(null);
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [fontSize, setFontSize] = useState(24);
+  const { isFavorite: isDuaFavorite, toggleFavorite, getFontSizeValue, language } = useApp();
 
   useEffect(() => {
     const allDuas = getDuasData();
@@ -27,15 +28,18 @@ const DuaDetailScreen: React.FC<DuaDetailScreenProps> = ({ route }) => {
     setDua(foundDua || null);
   }, [duaId]);
 
-  const handleFavoriteToggle = () => {
-    setIsFavorite(!isFavorite);
-    // TODO: Implement actual favorite storage
+  const handleFavoriteToggle = async () => {
+    await toggleFavorite(duaId);
   };
 
   const handleCopy = async () => {
     if (!dua) return;
     
-    const textToCopy = `${dua.arabic}\n\n${dua.translations.ur || ''}\n\n${dua.reference || ''}`;
+    const translation = language === 'ur' ? dua.translations.ur : 
+                      language === 'ar' ? dua.arabic : 
+                      dua.translations.en || dua.translations.ur || '';
+    
+    const textToCopy = `${dua.arabic}\n\n${translation}\n\n${dua.reference || ''}`;
     
     try {
       await Clipboard.setStringAsync(textToCopy);
@@ -48,7 +52,11 @@ const DuaDetailScreen: React.FC<DuaDetailScreenProps> = ({ route }) => {
   const handleShare = async () => {
     if (!dua) return;
     
-    const shareText = `${dua.arabic}\n\n${dua.translations.ur || ''}\n\n${dua.reference || ''}`;
+    const translation = language === 'ur' ? dua.translations.ur : 
+                      language === 'ar' ? dua.arabic : 
+                      dua.translations.en || dua.translations.ur || '';
+    
+    const shareText = `${dua.arabic}\n\n${translation}\n\n${dua.reference || ''}\n\n#ManajaatNomani`;
     
     try {
       await Share.share({
@@ -58,14 +66,6 @@ const DuaDetailScreen: React.FC<DuaDetailScreenProps> = ({ route }) => {
     } catch {
       Alert.alert('Error', 'Failed to share dua');
     }
-  };
-
-  const handleFontSizeIncrease = () => {
-    setFontSize(prev => Math.min(prev + 2, 32));
-  };
-
-  const handleFontSizeDecrease = () => {
-    setFontSize(prev => Math.max(prev - 2, 16));
   };
 
   if (!dua) {
@@ -87,13 +87,14 @@ const DuaDetailScreen: React.FC<DuaDetailScreenProps> = ({ route }) => {
       <TopBar
         title="Dua Details"
         showBackButton
+        onBackPress={() => navigation.goBack()}
         rightComponent={
           <View style={styles.headerActions}>
             <IconButton
-              iconName={isFavorite ? 'heart' : 'heart-outline'}
+              iconName={isDuaFavorite(duaId) ? 'heart' : 'heart-outline'}
               onPress={handleFavoriteToggle}
-              color={isFavorite ? '#ef4444' : 'white'}
-              accessibilityLabel={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+              color={isDuaFavorite(duaId) ? '#ef4444' : 'white'}
+              accessibilityLabel={isDuaFavorite(duaId) ? 'Remove from favorites' : 'Add to favorites'}
               accessibilityHint="Toggle favorite status for this dua"
             />
           </View>
@@ -102,15 +103,20 @@ const DuaDetailScreen: React.FC<DuaDetailScreenProps> = ({ route }) => {
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.duaContainer}>
-          <Text style={[styles.arabicText, { fontSize }]}>
+          <Text style={[styles.arabicText, { fontSize: getFontSizeValue() }]}>
             {dua.arabic}
           </Text>
           
-          {dua.translations.ur && (
-            <Text style={styles.translationText}>
-              {dua.translations.ur}
-            </Text>
-          )}
+          {(() => {
+            const translation = language === 'ur' ? dua.translations.ur : 
+                              language === 'ar' ? dua.arabic : 
+                              dua.translations.en || dua.translations.ur;
+            return translation ? (
+              <Text style={styles.translationText}>
+                {translation}
+              </Text>
+            ) : null;
+          })()}
           
           {dua.reference && (
             <Text style={styles.referenceText}>
@@ -121,22 +127,6 @@ const DuaDetailScreen: React.FC<DuaDetailScreenProps> = ({ route }) => {
       </ScrollView>
 
       <View style={styles.controlsContainer}>
-        <View style={styles.fontControls}>
-          <IconButton
-            iconName="remove"
-            onPress={handleFontSizeDecrease}
-            accessibilityLabel="Decrease font size"
-            accessibilityHint="Make the Arabic text smaller"
-          />
-          <Text style={styles.fontSizeLabel}>{fontSize}px</Text>
-          <IconButton
-            iconName="add"
-            onPress={handleFontSizeIncrease}
-            accessibilityLabel="Increase font size"
-            accessibilityHint="Make the Arabic text larger"
-          />
-        </View>
-
         <View style={styles.actionButtons}>
           <IconButton
             iconName="copy-outline"
@@ -206,19 +196,8 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#e5e7eb',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
-  },
-  fontControls: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  fontSizeLabel: {
-    fontSize: 14,
-    color: '#6b7280',
-    marginHorizontal: 12,
-    minWidth: 40,
-    textAlign: 'center',
   },
   actionButtons: {
     flexDirection: 'row',

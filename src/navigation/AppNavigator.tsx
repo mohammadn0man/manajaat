@@ -8,6 +8,8 @@ import HomeScreen from '../screens/HomeScreen';
 import DayViewScreen from '../screens/DayViewScreen';
 import DaysListScreen from '../screens/DaysListScreen';
 import DuaDetailScreen from '../screens/DuaDetailScreen';
+import FavoritesScreen from '../screens/FavoritesScreen';
+import SettingsScreen from '../screens/SettingsScreen';
 import { RootStackParamList, MainTabParamList } from './types';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -24,6 +26,10 @@ const MainTabs: React.FC = () => {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Days') {
             iconName = focused ? 'calendar' : 'calendar-outline';
+          } else if (route.name === 'Favorites') {
+            iconName = focused ? 'heart' : 'heart-outline';
+          } else if (route.name === 'Settings') {
+            iconName = focused ? 'settings' : 'settings-outline';
           } else {
             iconName = 'help-outline';
           }
@@ -37,6 +43,8 @@ const MainTabs: React.FC = () => {
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Days" component={DaysListScreen} />
+      <Tab.Screen name="Favorites" component={FavoritesScreen} />
+      <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>
   );
 };
@@ -54,7 +62,6 @@ const AppNavigator: React.FC = () => {
           name="DayView" 
           component={DayViewScreen}
           options={{
-            headerShown: true,
             headerTitle: '',
             headerStyle: {
               backgroundColor: '#4F46E5',

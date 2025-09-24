@@ -35,3 +35,8 @@ export const getDuasData = (): Dua[] => {
   }
   return cachedDuas;
 };
+
+// Get raw data structure for accessing by days
+export const getRawDuasData = (): RawDuaData => {
+  return rawData;
+};
