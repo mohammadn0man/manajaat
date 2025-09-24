@@ -16,7 +16,10 @@ export interface RawDuaData {
   days: {
     [K in DayOfWeek]: {
       arabic: string;
-      translation: string;
+      translations: {
+        en: string;
+        ur: string;
+      };
       reference: string;
     }[];
   };

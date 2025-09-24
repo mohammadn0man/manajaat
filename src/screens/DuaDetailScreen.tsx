@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Share, Alert } from 'react-native';
+import { View, Text, ScrollView, Share, Alert } from 'react-native';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import * as Clipboard from 'expo-clipboard';
 
 import TopBar from '../components/TopBar';
 import IconButton from '../components/IconButton';
+import Typography from '../components/Typography';
 import { Dua } from '../types/dua';
 import { getDuasData } from '../services/dataLoader';
 import { RootStackParamList } from '../navigation/types';
 import { useApp } from '../contexts/AppContext';
+import { useTheme } from '../contexts/ThemeProvider';
 
 type DuaDetailScreenRouteProp = RouteProp<RootStackParamList, 'DuaDetail'>;
 
@@ -20,7 +22,8 @@ const DuaDetailScreen: React.FC<DuaDetailScreenProps> = ({ route }) => {
   const navigation = useNavigation();
   const { duaId } = route.params;
   const [dua, setDua] = useState<Dua | null>(null);
-  const { isFavorite: isDuaFavorite, toggleFavorite, getFontSizeValue, language } = useApp();
+  const { isFavorite: isDuaFavorite, toggleFavorite, language } = useApp();
+  const { styles, colors } = useTheme();
 
   useEffect(() => {
     const allDuas = getDuasData();
@@ -36,7 +39,6 @@ const DuaDetailScreen: React.FC<DuaDetailScreenProps> = ({ route }) => {
     if (!dua) return;
     
     const translation = language === 'ur' ? dua.translations.ur : 
-                      language === 'ar' ? dua.arabic : 
                       dua.translations.en || dua.translations.ur || '';
     
     const textToCopy = `${dua.arabic}\n\n${translation}\n\n${dua.reference || ''}`;
@@ -53,7 +55,6 @@ const DuaDetailScreen: React.FC<DuaDetailScreenProps> = ({ route }) => {
     if (!dua) return;
     
     const translation = language === 'ur' ? dua.translations.ur : 
-                      language === 'ar' ? dua.arabic : 
                       dua.translations.en || dua.translations.ur || '';
     
     const shareText = `${dua.arabic}\n\n${translation}\n\n${dua.reference || ''}\n\n#ManajaatNomani`;
@@ -102,45 +103,45 @@ const DuaDetailScreen: React.FC<DuaDetailScreenProps> = ({ route }) => {
       />
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.duaContainer}>
-          <Text style={[styles.arabicText, { fontSize: getFontSizeValue() }]}>
+        <View style={styles.card}>
+          <Typography variant="arabic" color="primary">
             {dua.arabic}
-          </Text>
+          </Typography>
           
           {(() => {
             const translation = language === 'ur' ? dua.translations.ur : 
-                              language === 'ar' ? dua.arabic : 
+                              language === 'ar' ? dua.translations.ar : 
                               dua.translations.en || dua.translations.ur;
             return translation ? (
-              <Text style={styles.translationText}>
+              <Typography variant="body" color="secondary" style={styles.translationText}>
                 {translation}
-              </Text>
+              </Typography>
             ) : null;
           })()}
           
           {dua.reference && (
-            <Text style={styles.referenceText}>
+            <Typography variant="caption" color="muted" style={styles.referenceText}>
               {dua.reference}
-            </Text>
+            </Typography>
           )}
         </View>
       </ScrollView>
 
-      <View style={styles.controlsContainer}>
-        <View style={styles.actionButtons}>
+      <View style={[styles.rowCenter, styles.border, { borderTopWidth: 1, paddingVertical: styles.globalStyles.spacing.lg }]}>
+        <View style={styles.row}>
           <IconButton
             iconName="copy-outline"
             onPress={handleCopy}
-            backgroundColor="#f3f4f6"
-            color="#4F46E5"
+            backgroundColor={colors.muted}
+            color={colors.primary}
             accessibilityLabel="Copy dua"
             accessibilityHint="Copy this dua to clipboard"
           />
           <IconButton
             iconName="share-outline"
             onPress={handleShare}
-            backgroundColor="#f3f4f6"
-            color="#4F46E5"
+            backgroundColor={colors.muted}
+            color={colors.primary}
             accessibilityLabel="Share dua"
             accessibilityHint="Share this dua with others"
           />
@@ -149,72 +150,5 @@ const DuaDetailScreen: React.FC<DuaDetailScreenProps> = ({ route }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f9fafb',
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: 24,
-  },
-  duaContainer: {
-    backgroundColor: 'white',
-    borderRadius: 12,
-    padding: 24,
-    marginVertical: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  arabicText: {
-    fontWeight: 'bold',
-    color: '#111827',
-    textAlign: 'right',
-    lineHeight: 36,
-    marginBottom: 16,
-  },
-  translationText: {
-    fontSize: 18,
-    color: '#374151',
-    lineHeight: 26,
-    marginBottom: 16,
-  },
-  referenceText: {
-    fontSize: 16,
-    color: '#6b7280',
-    fontStyle: 'italic',
-    textAlign: 'center',
-  },
-  controlsContainer: {
-    backgroundColor: 'white',
-    paddingHorizontal: 24,
-    paddingVertical: 16,
-    borderTopWidth: 1,
-    borderTopColor: '#e5e7eb',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  actionButtons: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  headerActions: {
-    flexDirection: 'row',
-  },
-  errorContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  errorText: {
-    fontSize: 18,
-    color: '#6b7280',
-  },
-});
 
 export default DuaDetailScreen;

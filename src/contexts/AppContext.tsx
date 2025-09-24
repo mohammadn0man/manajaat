@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { I18nManager, Alert } from 'react-native';
+import { I18nManager, useColorScheme, Alert } from 'react-native';
 import { storageService, Language, Theme, FontSize } from '../services/storageService';
 
 export interface AppContextType {
@@ -20,6 +20,8 @@ export interface AppContextType {
   isFavorite: (duaId: string) => boolean;
   getFontSizeValue: () => number;
   isRTL: boolean;
+  isDarkMode: boolean;
+  colorScheme: 'light' | 'dark';
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -29,10 +31,12 @@ interface AppProviderProps {
 }
 
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
+  const systemColorScheme = useColorScheme();
   const [language, setLanguageState] = useState<Language>('en');
   const [theme, setThemeState] = useState<Theme>('system');
   const [fontSize, setFontSizeState] = useState<FontSize>('normal');
   const [favorites, setFavorites] = useState<string[]>([]);
+  const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
 
   // Load initial state from storage
   useEffect(() => {
@@ -47,8 +51,12 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         setThemeState(settings.theme);
         setFontSizeState(settings.fontSize);
         setFavorites(savedFavorites);
+        
+        // Mark initial load as complete
+        setIsInitialLoad(false);
       } catch (error) {
         console.error('Failed to load initial state:', error);
+        setIsInitialLoad(false);
       }
     };
 
@@ -58,11 +66,25 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   // RTL logic
   const isRTL = language === 'ar' || language === 'ur';
 
+  // Dark mode logic
+  const isDarkMode = theme === 'dark' || (theme === 'system' && systemColorScheme === 'dark');
+  const colorScheme = isDarkMode ? 'dark' : 'light';
+
   useEffect(() => {
-    if (I18nManager.isRTL !== isRTL) {
+    // Set RTL state during initial load without popup
+    if (isInitialLoad && I18nManager.isRTL !== isRTL) {
+      console.log('Setting RTL during initial load:', { current: I18nManager.isRTL, new: isRTL });
+      I18nManager.forceRTL(isRTL);
+    }
+  }, [isRTL, isInitialLoad]);
+
+  // Separate effect for manual language changes (after initial load)
+  useEffect(() => {
+    if (!isInitialLoad && I18nManager.isRTL !== isRTL) {
+      console.log('Manual RTL state change:', { current: I18nManager.isRTL, new: isRTL });
       I18nManager.forceRTL(isRTL);
       
-      // Show restart prompt for iOS
+      // Show restart prompt for iOS only when user manually changes language
       if (isRTL) {
         Alert.alert(
           'Restart Required',
@@ -84,7 +106,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         );
       }
     }
-  }, [isRTL]);
+  }, [isRTL, isInitialLoad]);
 
   const setLanguage = async (newLanguage: Language) => {
     setLanguageState(newLanguage);
@@ -142,6 +164,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     isFavorite,
     getFontSizeValue,
     isRTL,
+    isDarkMode,
+    colorScheme,
   };
 
   return (

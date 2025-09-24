@@ -36,7 +36,7 @@ const MainTabs: React.FC = () => {
 
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: '#4F46E5',
+            tabBarActiveTintColor: '#2596be',
         tabBarInactiveTintColor: 'gray',
         headerShown: false,
       })}
@@ -63,9 +63,9 @@ const AppNavigator: React.FC = () => {
           component={DayViewScreen}
           options={{
             headerTitle: '',
-            headerStyle: {
-              backgroundColor: '#4F46E5',
-            },
+                headerStyle: {
+                  backgroundColor: '#2596be',
+                },
             headerTintColor: '#fff',
           }}
         />

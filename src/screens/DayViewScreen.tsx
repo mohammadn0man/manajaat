@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import { RouteProp, useNavigation, NavigationProp } from '@react-navigation/native';
 import { Dua } from '../types/dua';
 import { getDuasByDay, getDayDisplayName } from '../services/duaService';
 import TopBar from '../components/TopBar';
 import DuaCard from '../components/DuaCard';
-
 import { RootStackParamList } from '../navigation/types';
+import { useTheme } from '../contexts/ThemeProvider';
 
 type DayViewScreenRouteProp = RouteProp<RootStackParamList, 'DayView'>;
 
@@ -16,6 +16,7 @@ interface DayViewScreenProps {
 
 const DayViewScreen: React.FC<DayViewScreenProps> = ({ route }) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const { styles } = useTheme();
   const { day } = route.params;
   const dayDuas = getDuasByDay(day);
   const dayDisplayName = getDayDisplayName(day);
@@ -47,11 +48,11 @@ const DayViewScreen: React.FC<DayViewScreenProps> = ({ route }) => {
               />
             )}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.listContent}
+            contentContainerStyle={styles.globalStyles.spacingUtils.py('lg')}
           />
         ) : (
-          <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>
+          <View style={styles.centerContent}>
+            <Text style={styles.textMuted}>
               No duas available for {dayDisplayName}
             </Text>
           </View>
@@ -60,29 +61,5 @@ const DayViewScreen: React.FC<DayViewScreenProps> = ({ route }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f9fafb',
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: 24,
-    paddingTop: 24,
-  },
-  listContent: {
-    paddingBottom: 20,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  emptyText: {
-    color: '#6b7280',
-    fontSize: 18,
-  },
-});
 
 export default DayViewScreen;

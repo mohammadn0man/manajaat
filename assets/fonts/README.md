@@ -1,21 +1,24 @@
-# Fonts Directory
+# Font Files
 
-This directory contains custom fonts for the Manajaat Nomani app.
+This directory should contain the following font files:
 
-## Adding Fonts
+## Arabic Fonts
+- `NotoNaskhArabic-Regular.ttf` - Regular Arabic text
+- `NotoNaskhArabic-Bold.ttf` - Bold Arabic text
 
-1. Place your font files (.ttf, .otf) in this directory
-2. Update the font loading in your app using expo-font
-3. Reference fonts in your NativeWind configuration if needed
+## Urdu Fonts  
+- `NotoNastaliqUrdu-Regular.ttf` - Regular Urdu text
+- `NotoNastaliqUrdu-Bold.ttf` - Bold Urdu text
 
-## Example Usage
+## Latin Fonts
+- `Inter-Regular.ttf` - Regular Latin text
+- `Inter-Medium.ttf` - Medium Latin text
+- `Inter-SemiBold.ttf` - Semi-bold Latin text
+- `Inter-Bold.ttf` - Bold Latin text
 
-```typescript
-import * as Font from 'expo-font';
+## Download Links
+- **Noto Naskh Arabic**: https://fonts.google.com/noto/specimen/Noto+Naskh+Arabic
+- **Noto Nastaliq Urdu**: https://fonts.google.com/noto/specimen/Noto+Nastaliq+Urdu
+- **Inter**: https://fonts.google.com/specimen/Inter
 
-const loadFonts = async () => {
-  await Font.loadAsync({
-    CustomFont: require('./assets/fonts/CustomFont.ttf'),
-  });
-};
-```
+For now, the app will use system fonts as fallbacks until these files are added.

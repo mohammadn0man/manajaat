@@ -16,7 +16,8 @@ export const normalizeDuasData = (): Dua[] => {
         day: day as DayOfWeek,
         arabic: dua.arabic,
         translations: {
-          ur: dua.translation, // The JSON has Urdu translations
+          en: dua.translations.en,
+          ur: dua.translations.ur,
         },
         reference: dua.reference,
       });

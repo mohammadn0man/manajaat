@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import { useApp } from '../contexts/AppContext';
 import { Language, Theme, FontSize } from '../services/storageService';
 import TopBar from '../components/TopBar';
+import { useTheme } from '../contexts/ThemeProvider';
 
 const SettingsScreen: React.FC = () => {
   const { 
@@ -17,11 +18,11 @@ const SettingsScreen: React.FC = () => {
     setFontSize, 
     clearFavorites 
   } = useApp();
+  const { styles } = useTheme();
 
   const languageOptions: { value: Language; label: string }[] = [
     { value: 'en', label: 'English' },
     { value: 'ur', label: 'اردو (Urdu)' },
-    { value: 'ar', label: 'العربية (Arabic)' },
   ];
 
   const themeOptions: { value: Theme; label: string }[] = [
@@ -64,17 +65,17 @@ const SettingsScreen: React.FC = () => {
     icon: keyof typeof Ionicons.glyphMap
   ) => (
     <View style={styles.section}>
-      <View style={styles.sectionHeader}>
-        <Ionicons name={icon} size={20} color="#4F46E5" />
-        <Text style={styles.sectionTitle}>{title}</Text>
+      <View style={[styles.row, styles.globalStyles.spacingUtils.mb('lg')]}>
+        <Ionicons name={icon} size={20} color="#2596be" />
+        <Text style={[styles.h4, styles.globalStyles.spacingUtils.ml('sm')]}>{title}</Text>
       </View>
-      <View style={styles.optionsContainer}>
+      <View style={[styles.card, { padding: 0, marginBottom: 0 }]}>
         {options.map((option) => (
           <TouchableOpacity
             key={option.value}
             style={[
-              styles.option,
-              currentValue === option.value && styles.selectedOption,
+              styles.listItem,
+              currentValue === option.value && { backgroundColor: '#eef4f7ff' },
             ]}
             onPress={async () => await onSelect(option.value)}
             accessibilityRole="radio"
@@ -83,14 +84,14 @@ const SettingsScreen: React.FC = () => {
           >
             <Text
               style={[
-                styles.optionText,
-                currentValue === option.value && styles.selectedOptionText,
+                styles.body,
+                currentValue === option.value && styles.textPrimary,
               ]}
             >
               {option.label}
             </Text>
             {currentValue === option.value && (
-              <Ionicons name="checkmark" size={20} color="#4F46E5" />
+              <Ionicons name="checkmark" size={20} color="#2596be" />
             )}
           </TouchableOpacity>
         ))}
@@ -108,7 +109,7 @@ const SettingsScreen: React.FC = () => {
       <ScrollView 
         style={styles.content} 
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={styles.globalStyles.spacingUtils.py('lg')}
       >
         {renderOptionSelector(
           'Language',
@@ -135,12 +136,12 @@ const SettingsScreen: React.FC = () => {
         )}
 
         <View style={styles.section}>
-          <View style={styles.sectionHeader}>
+          <View style={[styles.row, styles.globalStyles.spacingUtils.mb('lg')]}>
             <Ionicons name="heart" size={20} color="#EF4444" />
-            <Text style={styles.sectionTitle}>Favorites</Text>
+            <Text style={[styles.h4, styles.globalStyles.spacingUtils.ml('sm')]}>Favorites</Text>
           </View>
           <TouchableOpacity
-            style={styles.dangerButton}
+            style={[styles.button, styles.row, { backgroundColor: '#FEF2F2', borderColor: '#FECACA', borderWidth: 1 }]}
             onPress={handleClearFavorites}
             disabled={favorites.length === 0}
             accessibilityRole="button"
@@ -148,22 +149,22 @@ const SettingsScreen: React.FC = () => {
             accessibilityHint="Removes all duas from your favorites list"
           >
             <Ionicons name="trash" size={20} color="#EF4444" />
-            <Text style={styles.dangerButtonText}>
+            <Text style={[styles.body, { color: '#EF4444', marginLeft: styles.globalStyles.spacing.sm }]}>
               Clear All Favorites ({favorites.length})
             </Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.section}>
-          <View style={styles.sectionHeader}>
+          <View style={[styles.row, styles.globalStyles.spacingUtils.mb('lg')]}>
             <Ionicons name="information-circle" size={20} color="#6b7280" />
-            <Text style={styles.sectionTitle}>About</Text>
+            <Text style={[styles.h4, styles.globalStyles.spacingUtils.ml('sm')]}>About</Text>
           </View>
-          <View style={styles.infoContainer}>
-            <Text style={styles.infoText}>
+          <View style={styles.card}>
+            <Text style={styles.h4}>
               Manajaat Nomani v1.0.0
             </Text>
-            <Text style={styles.infoSubtext}>
+            <Text style={[styles.textMuted, styles.globalStyles.spacingUtils.mt('xs')]}>
               A beautiful app for daily Islamic supplications
             </Text>
           </View>
@@ -172,93 +173,5 @@ const SettingsScreen: React.FC = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f9fafb',
-  },
-  content: {
-    flex: 1,
-  },
-  scrollContent: {
-    paddingHorizontal: 24,
-    paddingTop: 24,
-    paddingBottom: 40,
-  },
-  section: {
-    marginBottom: 32,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#111827',
-    marginLeft: 12,
-  },
-  optionsContainer: {
-    backgroundColor: 'white',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#e5e7eb',
-    overflow: 'hidden',
-  },
-  option: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f3f4f6',
-  },
-  selectedOption: {
-    backgroundColor: '#f0f4ff',
-  },
-  optionText: {
-    fontSize: 16,
-    color: '#374151',
-  },
-  selectedOptionText: {
-    color: '#4F46E5',
-    fontWeight: '500',
-  },
-  dangerButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    borderRadius: 12,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: '#fecaca',
-    opacity: 0.7,
-  },
-  dangerButtonText: {
-    fontSize: 16,
-    color: '#EF4444',
-    marginLeft: 12,
-    fontWeight: '500',
-  },
-  infoContainer: {
-    backgroundColor: 'white',
-    borderRadius: 12,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: '#e5e7eb',
-  },
-  infoText: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#111827',
-    marginBottom: 4,
-  },
-  infoSubtext: {
-    fontSize: 14,
-    color: '#6b7280',
-  },
-});
 
 export default SettingsScreen;

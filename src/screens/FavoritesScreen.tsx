@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { View, Text, FlatList, StyleSheet, Alert } from 'react-native';
+import { View, Text, FlatList, Alert } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -10,10 +10,12 @@ import { RootStackParamList } from '../navigation/types';
 import TopBar from '../components/TopBar';
 import DuaCard from '../components/DuaCard';
 import IconButton from '../components/IconButton';
+import { useTheme } from '../contexts/ThemeProvider';
 
 const FavoritesScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { favorites, toggleFavorite, clearFavorites } = useApp();
+  const { styles } = useTheme();
 
   // Get all duas and filter favorites
   const favoriteDuas = useMemo(() => {
@@ -46,7 +48,7 @@ const FavoritesScreen: React.FC = () => {
   };
 
   const renderDuaItem = ({ item }: { item: Dua }) => (
-    <View style={styles.duaItemContainer}>
+    <View style={{ position: 'relative', marginBottom: styles.globalStyles.spacing.md }}>
       <DuaCard
         dua={item}
         onPress={handleDuaPress}
@@ -57,7 +59,14 @@ const FavoritesScreen: React.FC = () => {
         iconName="heart"
         onPress={() => handleRemoveFavorite(item.id)}
         color="#EF4444"
-        style={styles.removeButton}
+        style={{
+          position: 'absolute',
+          top: styles.globalStyles.spacing.sm,
+          left: styles.globalStyles.spacing.sm,
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          borderRadius: 20,
+          padding: 6,
+        }}
         accessibilityLabel="Remove from favorites"
         accessibilityHint="Removes this dua from your favorites list"
       />
@@ -108,13 +117,13 @@ const FavoritesScreen: React.FC = () => {
             keyExtractor={(item) => item.id}
             renderItem={renderDuaItem}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.listContent}
+            contentContainerStyle={styles.globalStyles.spacingUtils.py('lg')}
           />
         ) : (
-          <View style={styles.emptyContainer}>
+          <View style={styles.centerContent}>
             <Ionicons name="heart-outline" size={64} color="#9CA3AF" />
-            <Text style={styles.emptyTitle}>No Favorites Yet</Text>
-            <Text style={styles.emptySubtitle}>
+            <Text style={[styles.h2, styles.globalStyles.spacingUtils.mt('lg')]}>No Favorites Yet</Text>
+            <Text style={[styles.textMuted, styles.globalStyles.spacingUtils.mt('sm'), { textAlign: 'center', paddingHorizontal: styles.globalStyles.spacing['3xl'] }]}>
               Tap the heart icon on any dua to add it to your favorites
             </Text>
           </View>
@@ -123,51 +132,5 @@ const FavoritesScreen: React.FC = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f9fafb',
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: 24,
-    paddingTop: 24,
-  },
-  listContent: {
-    paddingBottom: 20,
-  },
-  duaItemContainer: {
-    position: 'relative',
-    marginBottom: 12,
-  },
-  removeButton: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: 20,
-    padding: 6,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 32,
-  },
-  emptyTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: '#111827',
-    marginTop: 16,
-    marginBottom: 8,
-  },
-  emptySubtitle: {
-    fontSize: 16,
-    color: '#6b7280',
-    textAlign: 'center',
-    lineHeight: 24,
-  },
-});
 
 export default FavoritesScreen;

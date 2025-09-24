@@ -4,190 +4,191 @@
     "friday": [
       {
         "arabic": "اللهم اجعلنا من الذاكرين",
-        "translation": "اے اللہ! ہمیں یاد کرنے والوں میں شامل فرما۔",
+        "translations": {
+          "en": "O Allah, make us among those who remember You",
+          "ur": "اے اللہ! ہمیں یاد کرنے والوں میں شامل فرما۔"
+        },
         "reference": "General"
       },
       {
         "arabic": "اللهم ارحم موتانا",
-        "translation": "اے اللہ! ہمارے مرحومین پر رحم فرما۔",
+        "translations": {
+          "en": "O Allah, have mercy on our deceased",
+          "ur": "اے اللہ! ہمارے مرحومین پر رحم فرما۔"
+        },
         "reference": "Supplication for the deceased"
       },
       {
         "arabic": "ربنا آتنا في الدنيا حسنة",
-        "translation": "اے ہمارے رب! ہمیں دنیا میں بھلائی عطا فرما۔",
+        "translations": {
+          "en": "Our Lord, give us good in this world",
+          "ur": "اے ہمارے رب! ہمیں دنیا میں بھلائی عطا فرما۔"
+        },
         "reference": "Quran 2:201 (short form)"
       },
       {
-        "arabic": "اللهم اجعل القرآن ربيع قلوبنا",
-        "translation": "اے اللہ! قرآن کو ہمارے دلوں کا نور بنا دے۔",
-        "reference": "Supplication about Quran"
+        "arabic": "اللهم اغفر لنا ذنوبنا",
+        "translations": {
+          "en": "O Allah, forgive our sins",
+          "ur": "اے اللہ! ہمارے گناہوں کو معاف فرما۔"
+        },
+        "reference": "General supplication"
       }
     ],
     "saturday": [
       {
-        "arabic": "اللهم ارزقني حسن الخاتمة",
-        "translation": "اے اللہ! مجھے اچھا انجام عطا فرما۔",
-        "reference": "General dua"
+        "arabic": "سبحان الله وبحمده",
+        "translations": {
+          "en": "Glory be to Allah and praise be to Him",
+          "ur": "اللہ کی پاکی اور اس کی تعریف"
+        },
+        "reference": "General remembrance"
       },
       {
-        "arabic": "اللهم اجعل عملنا خالصاً",
-        "translation": "اے اللہ! ہمارے اعمال کو خالص فرما۔",
-        "reference": "General"
+        "arabic": "اللهم بارك لنا في يومنا هذا",
+        "translations": {
+          "en": "O Allah, bless us in this day",
+          "ur": "اے اللہ! اس دن میں ہمارے لیے برکت عطا فرما۔"
+        },
+        "reference": "Daily supplication"
       },
       {
-        "arabic": "اللهم بشرنا بالقبول",
-        "translation": "اے اللہ! ہمیں قبولیت کی خوشخبری دے۔",
-        "reference": "Supplication for acceptance"
+        "arabic": "ربنا لا تزغ قلوبنا بعد إذ هديتنا",
+        "translations": {
+          "en": "Our Lord, do not let our hearts deviate after You have guided us",
+          "ur": "اے ہمارے رب! ہمارے دلوں کو ہدایت کے بعد بہکا نہ دے۔"
+        },
+        "reference": "Quran 3:8"
       }
     ],
     "sunday": [
       {
-        "arabic": "اللهم اجعل هذا الأسبوع مباركاً",
-        "translation": "اے اللہ! اس ہفتے کو برکت والا بنا دے۔",
-        "reference": "Common supplication"
+        "arabic": "اللهم إني أسألك الهدى والتقى",
+        "translations": {
+          "en": "O Allah, I ask You for guidance and piety",
+          "ur": "اے اللہ! میں آپ سے ہدایت اور تقویٰ مانگتا ہوں۔"
+        },
+        "reference": "General supplication"
       },
       {
-        "arabic": "ربنا هب لنا من أزواجنا وذرياتنا قرة أعين",
-        "translation": "اے ہمارے رب! ہمیں ہماری زوجات اور اولاد میں آنکھوں کی ٹھنڈک عطا فرما۔",
-        "reference": "Quranic supplication"
+        "arabic": "ربنا آتنا من لدنك رحمة",
+        "translations": {
+          "en": "Our Lord, grant us mercy from Yourself",
+          "ur": "اے ہمارے رب! اپنی طرف سے ہمیں رحمت عطا فرما۔"
+        },
+        "reference": "Quran 18:10"
+      },
+      {
+        "arabic": "اللهم اجعل القرآن ربيع قلوبنا",
+        "translations": {
+          "en": "O Allah, make the Quran the spring of our hearts",
+          "ur": "اے اللہ! قرآن کو ہمارے دلوں کا بہار بنا دے۔"
+        },
+        "reference": "General supplication"
       }
     ],
     "monday": [
       {
-        "arabic": "رَبِّ زِدْنِي عِلْمًا",
-        "translation": "اے میرے رب! مجھے علم میں اضافہ عطا فرما۔",
-        "reference": "Quran 20:114"
+        "arabic": "اللهم صل على محمد وعلى آل محمد",
+        "translations": {
+          "en": "O Allah, send blessings upon Muhammad and the family of Muhammad",
+          "ur": "اے اللہ! محمد اور آل محمد پر درود بھیج۔"
+        },
+        "reference": "Salawat"
       },
       {
-        "arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ العَافِيَةَ",
-        "translation": "اے اللہ! میں تجھ سے تندرستی اور سلامتی مانگتا/مانگتی ہوں۔",
-        "reference": "Hadith (general supplication)"
+        "arabic": "ربنا تقبل منا إنك أنت السميع العليم",
+        "translations": {
+          "en": "Our Lord, accept from us. Indeed, You are the Hearing, the Knowing",
+          "ur": "اے ہمارے رب! ہم سے قبول فرما، بے شک آپ سننے والے جاننے والے ہیں۔"
+        },
+        "reference": "Quran 2:127"
       },
       {
-        "arabic": "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً",
-        "translation": "اے ہمارے رب! ہمیں دنیا میں بھلائی عطا فرما۔",
-        "reference": "Quran 2:201"
-      },
-      {
-        "arabic": "سُبْحَانَ اللَّهِ",
-        "translation": "اللہ پاک ہے۔",
-        "reference": "Dhikr (common)"
-      },
-      {
-        "arabic": "الْحَمْدُ لِلَّهِ",
-        "translation": "تمام تعریفیں اللہ کے لیے ہیں۔",
-        "reference": "Dhikr (common)"
-      },
-      {
-        "arabic": "أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ",
-        "translation": "میں شیطانِ رجیم سے اللہ کی پناہ مانگتا/مانگتی ہوں۔",
-        "reference": "Quran (seeking refuge)"
-      },
-      {
-        "arabic": "اللَّهُمَّ اهْدِنَا",
-        "translation": "اے اللہ! ہمیں ہدایت دے۔",
-        "reference": "General supplication"
+        "arabic": "اللهم اهدنا الصراط المستقيم",
+        "translations": {
+          "en": "O Allah, guide us to the straight path",
+          "ur": "اے اللہ! ہمیں سیدھے راستے کی ہدایت دے۔"
+        },
+        "reference": "Quran 1:6"
       }
     ],
     "tuesday": [
       {
-        "arabic": "رَبِّ اغْفِرْ لِي",
-        "translation": "اے میرے رب! مجھے معاف فرما۔",
-        "reference": "Common dua"
-      },
-      {
-        "arabic": "اللَّهُمَّ اجْعَلْنِي مِنَ التَّوَّابِينَ",
-        "translation": "اے اللہ! مجھے توبہ کرنے والوں میں شامل فرما۔",
-        "reference": "Hadith (general)"
-      },
-      {
-        "arabic": "اللهم ارحمنا برحمتك",
-        "translation": "اے اللہ! اپنی رحمت سے ہم پر رحم فرما۔",
-        "reference": "Common supplication"
-      },
-      {
-        "arabic": "رَبِّ هَبْ لِي مِن لَّدُنكَ",
-        "translation": "اے میرے رب! مجھے اپنی طرف سے عطا فرما۔",
-        "reference": "Quranic-style supplication"
-      },
-      {
-        "arabic": "اللهم صلِّ علَىٰ مُحَمَّدٍ",
-        "translation": "اے اللہ! محمد ﷺ پر درود بھیج۔",
-        "reference": "Salawat (common)"
-      },
-      {
-        "arabic": "اللَّهُمَّ اجْعَلْنَا مُؤْمِنِينَ",
-        "translation": "اے اللہ! ہمیں مؤمنین میں شامل فرما۔",
+        "arabic": "اللهم إني أعوذ بك من الهم والحزن",
+        "translations": {
+          "en": "O Allah, I seek refuge in You from worry and grief",
+          "ur": "اے اللہ! میں آپ کی پناہ مانگتا ہوں پریشانی اور غم سے۔"
+        },
         "reference": "General supplication"
       },
       {
-        "arabic": "رَبَّنَا آتِنَا مِن لَّدُنكَ رَحْمَةً",
-        "translation": "اے ہمارے رب! ہمیں اپنی طرف سے رحمت عطا فرما۔",
-        "reference": "Quranic supplication"
+        "arabic": "ربنا اغفر لنا ولإخواننا الذين سبقونا بالإيمان",
+        "translations": {
+          "en": "Our Lord, forgive us and our brothers who preceded us in faith",
+          "ur": "اے ہمارے رب! ہمیں اور ہمارے بھائیوں کو معاف فرما جو ہم سے پہلے ایمان لائے۔"
+        },
+        "reference": "Quran 59:10"
       },
       {
-        "arabic": "اللهم بارك لنا في يومنا",
-        "translation": "اے اللہ! ہمارے دن میں برکت ڈال۔",
-        "reference": "Common dua"
+        "arabic": "اللهم اجعلنا من التوابين",
+        "translations": {
+          "en": "O Allah, make us among those who repent",
+          "ur": "اے اللہ! ہمیں توبہ کرنے والوں میں شامل فرما۔"
+        },
+        "reference": "General supplication"
       }
     ],
     "wednesday": [
       {
-        "arabic": "اللهم اهدني لما اختلف فيه من الحق بإذنك",
-        "translation": "اے اللہ! مجھے اس میں ہدایت دے جس میں حق اختلاف میں ہے (باذنک).",
-        "reference": "Supplication for guidance"
+        "arabic": "اللهم إني أسألك العفو والعافية",
+        "translations": {
+          "en": "O Allah, I ask You for pardon and well-being",
+          "ur": "اے اللہ! میں آپ سے معافی اور عافیت مانگتا ہوں۔"
+        },
+        "reference": "General supplication"
       },
       {
-        "arabic": "اللهم اغفر لنا ذنوبنا",
-        "translation": "اے اللہ! ہمارے گناہوں کو معاف فرما۔",
-        "reference": "General"
+        "arabic": "ربنا لا تجعلنا فتنة للقوم الظالمين",
+        "translations": {
+          "en": "Our Lord, do not make us a trial for the wrongdoing people",
+          "ur": "اے ہمارے رب! ہمیں ظالم لوگوں کے لیے آزمائش نہ بنا۔"
+        },
+        "reference": "Quran 10:85"
       },
       {
-        "arabic": "اللهم اجعل عملنا خالصاً لوجهك",
-        "translation": "اے اللہ! ہمارے عمل کو صرف تیرے لئے خالص فرما۔",
-        "reference": "Common intention dua"
-      },
-      {
-        "arabic": "اللهم ثبت قلبي",
-        "translation": "اے اللہ! میرے دل کو ثابت رکھ۔",
-        "reference": "Supplication for steadiness"
-      },
-      {
-        "arabic": "ربنا ظلمنا أنفسنا",
-        "translation": "اے ہمارے رب! ہم نے اپنے آپ پر ظلم کیا۔",
-        "reference": "Quranic phrase (seeking forgiveness)"
+        "arabic": "اللهم بارك لنا في أموالنا",
+        "translations": {
+          "en": "O Allah, bless us in our wealth",
+          "ur": "اے اللہ! ہمارے مال میں برکت عطا فرما۔"
+        },
+        "reference": "General supplication"
       }
     ],
     "thursday": [
       {
-        "arabic": "اللهم أعني ولا تعن عليّ",
-        "translation": "اے اللہ! میری مدد فرما اور میرے خلاف نہ کرنا۔",
-        "reference": "General dua"
+        "arabic": "اللهم إني أسألك الجنة وأعوذ بك من النار",
+        "translations": {
+          "en": "O Allah, I ask You for Paradise and seek refuge in You from Hell",
+          "ur": "اے اللہ! میں آپ سے جنت مانگتا ہوں اور جہنم سے آپ کی پناہ مانگتا ہوں۔"
+        },
+        "reference": "General supplication"
       },
       {
-        "arabic": "اللهم لا تُزِغْ قُلُوبَنَا",
-        "translation": "اے اللہ! ہمارے دلوں کو نہ بہکانا۔",
-        "reference": "Supplication for steadfastness"
+        "arabic": "ربنا آتنا من لدنك رحمة وهيئ لنا من أمرنا رشدا",
+        "translations": {
+          "en": "Our Lord, grant us mercy from Yourself and prepare for us from our affair right guidance",
+          "ur": "اے ہمارے رب! اپنی طرف سے ہمیں رحمت عطا فرما اور ہمارے کام میں ہدایت تیار کر۔"
+        },
+        "reference": "Quran 18:10"
       },
       {
-        "arabic": "اللهم اجعلني سبب خير",
-        "translation": "اے اللہ! مجھے خیر کا سبب بنا دے۔",
-        "reference": "General"
-      },
-      {
-        "arabic": "اللهم قوِّ إيماني",
-        "translation": "اے اللہ! میرے ایمان کو مضبوط کر۔",
-        "reference": "Supplication for faith"
-      },
-      {
-        "arabic": "اللهم افتح لي أبواب رزقك",
-        "translation": "اے اللہ! اپنے رزق کے دروازے میرے لئے کھول۔",
-        "reference": "Common supplication"
-      },
-      {
-        "arabic": "الحمد لله رب العالمين",
-        "translation": "تمام تعریفیں عالموں کے رب کے لیے ہیں۔",
-        "reference": "Quranic/ Dhikr"
+        "arabic": "اللهم اجعلنا من الشاكرين",
+        "translations": {
+          "en": "O Allah, make us among those who are grateful",
+          "ur": "اے اللہ! ہمیں شکر گزاروں میں شامل فرما۔"
+        },
+        "reference": "General supplication"
       }
     ]
   }

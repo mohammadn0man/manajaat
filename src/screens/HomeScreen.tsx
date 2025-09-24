@@ -1,14 +1,16 @@
 import React from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/types';
 import { Dua } from '../types/dua';
 import { getTodayDuas, getTodayDayName, getDayDisplayName } from '../services/duaService';
 import TopBar from '../components/TopBar';
 import DuaCard from '../components/DuaCard';
+import { useTheme } from '../contexts/ThemeProvider';
 
 const HomeScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const { styles } = useTheme();
   const todayDuas = getTodayDuas();
   const todayDayName = getTodayDayName();
   const todayDisplayName = getDayDisplayName(todayDayName);
@@ -43,11 +45,11 @@ const HomeScreen: React.FC = () => {
               />
             )}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.listContent}
+            contentContainerStyle={styles.globalStyles.spacingUtils.py('lg')}
           />
         ) : (
-          <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>
+          <View style={styles.centerContent}>
+            <Text style={styles.textMuted}>
               No duas available for today
             </Text>
           </View>
@@ -56,29 +58,5 @@ const HomeScreen: React.FC = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f9fafb',
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: 24,
-    paddingTop: 24,
-  },
-  listContent: {
-    paddingBottom: 20,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  emptyText: {
-    color: '#6b7280',
-    fontSize: 18,
-  },
-});
 
 export default HomeScreen;
