@@ -22,7 +22,7 @@ const DuaDetailScreen: React.FC<DuaDetailScreenProps> = ({ route }) => {
   const navigation = useNavigation();
   const { duaId } = route.params;
   const [dua, setDua] = useState<Dua | null>(null);
-  const { isFavorite: isDuaFavorite, toggleFavorite, language } = useApp();
+  const { isFavorite: isDuaFavorite, toggleFavorite, language, getFontSizeValue } = useApp();
   const { styles, colors } = useTheme();
 
   useEffect(() => {
@@ -103,7 +103,23 @@ const DuaDetailScreen: React.FC<DuaDetailScreenProps> = ({ route }) => {
       />
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.card}>
+        <View style={[
+          styles.card,
+          // Add extra padding for large font sizes
+          getFontSizeValue() >= 24 ? {
+            paddingHorizontal: 24,
+            paddingVertical: 40, // Increased for Arabic characters
+            marginHorizontal: 8,
+            marginVertical: 8,
+          } : getFontSizeValue() >= 20 ? {
+            paddingHorizontal: 20,
+            paddingVertical: 28, // Increased for Arabic characters
+            marginHorizontal: 4,
+            marginVertical: 4,
+          } : {
+            paddingVertical: 20, // Add some padding even for small font size
+          }
+        ]}>
           <Typography variant="arabic" color="primary">
             {dua.arabic}
           </Typography>

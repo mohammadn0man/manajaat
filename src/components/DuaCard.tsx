@@ -18,7 +18,7 @@ const DuaCard: React.FC<DuaCardProps> = ({
   compact = false,
 }) => {
   const { styles } = useTheme();
-  const { language } = useApp();
+  const { language, getFontSizeValue } = useApp();
   
   // Get the appropriate translation based on current language
   const getTranslation = () => {
@@ -34,9 +34,37 @@ const DuaCard: React.FC<DuaCardProps> = ({
   
   const translation = getTranslation();
   
+  // Add extra padding for large font sizes to prevent text cutting
+  const getDynamicPadding = () => {
+    const fontSize = getFontSizeValue();
+    if (fontSize >= 24) { // Large font size
+      return {
+        paddingHorizontal: 20,
+        paddingVertical: 50, // Increased for Arabic characters
+        marginHorizontal: 4,
+        marginVertical: 4,
+      };
+    } else if (fontSize >= 20) { // Normal font size
+      return {
+        paddingHorizontal: 16,
+        paddingVertical: 24, // Increased for Arabic characters
+        marginHorizontal: 2,
+        marginVertical: 2,
+      };
+    }
+    return {
+      paddingVertical: 16, // Add some padding even for small font size
+    };
+  };
+  
+  const dynamicPadding = getDynamicPadding();
+  
   return (
     <TouchableOpacity
-      style={compact ? styles.cardCompact : styles.card}
+      style={[
+        compact ? styles.cardCompact : styles.card,
+        dynamicPadding
+      ]}
       onPress={() => onPress(dua)}
       accessibilityRole="button"
       accessibilityLabel={`Dua: ${dua.arabic.substring(0, 50)}...`}

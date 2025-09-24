@@ -84,7 +84,7 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const { colorScheme } = useApp();
+  const { colorScheme, getFontSizeValue } = useApp();
 
   const colors: ThemeColors = {
     light: {
@@ -225,42 +225,54 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     // Typography styles
     h1: {
       ...globalStyles.typography.h1,
+      fontSize: Math.round(getFontSizeValue() * 1.6), // 32px for normal
       color: colors.foreground,
     },
     h2: {
       ...globalStyles.typography.h2,
+      fontSize: Math.round(getFontSizeValue() * 1.4), // 28px for normal
       color: colors.foreground,
     },
     h3: {
       ...globalStyles.typography.h3,
+      fontSize: Math.round(getFontSizeValue() * 1.2), // 24px for normal
       color: colors.foreground,
     },
     h4: {
       ...globalStyles.typography.h4,
+      fontSize: getFontSizeValue(), // 20px for normal
       color: colors.foreground,
     },
     body: {
       ...globalStyles.typography.body,
+      fontSize: Math.round(getFontSizeValue() * 0.8), // 16px for normal
       color: colors.foreground,
     },
     bodyLarge: {
       ...globalStyles.typography.bodyLarge,
+      fontSize: getFontSizeValue(), // 20px for normal
       color: colors.foreground,
     },
     caption: {
       ...globalStyles.typography.caption,
+      fontSize: Math.round(getFontSizeValue() * 0.7), // 14px for normal
       color: colors.mutedForeground,
     },
     small: {
       ...globalStyles.typography.small,
+      fontSize: Math.round(getFontSizeValue() * 0.6), // 12px for normal
       color: colors.mutedForeground,
     },
     arabic: {
       ...globalStyles.typography.arabic,
+      fontSize: getFontSizeValue(), // 20px for normal
+      lineHeight: Math.round(getFontSizeValue() * 1.8), // Increased line height for Arabic
       color: colors.foreground,
     },
     arabicLarge: {
       ...globalStyles.typography.arabicLarge,
+      fontSize: Math.round(getFontSizeValue() * 1.2), // 24px for normal
+      lineHeight: Math.round(getFontSizeValue() * 2.0), // Increased line height for Arabic
       color: colors.foreground,
     },
     

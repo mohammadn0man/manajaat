@@ -68,21 +68,19 @@ const Typography: React.FC<TypographyProps> = ({
       return sizeMap[size];
     }
 
-    // Use context font size for Arabic text
-    if (variant === 'arabic') {
-      return getFontSizeValue();
-    }
+    // Get base font size from context
+    const baseFontSize = getFontSizeValue();
 
-    // Default sizes for variants
+    // Default sizes for variants (scaled by user preference)
     const variantSizes = {
-      h1: 32,
-      h2: 28,
-      h3: 24,
-      h4: 20,
-      body: 16,
-      caption: 14,
-      arabic: getFontSizeValue(),
-      urdu: 18,
+      h1: Math.round(baseFontSize * 1.6), // 32px for normal
+      h2: Math.round(baseFontSize * 1.4), // 28px for normal
+      h3: Math.round(baseFontSize * 1.2), // 24px for normal
+      h4: baseFontSize, // 20px for normal
+      body: Math.round(baseFontSize * 0.8), // 16px for normal
+      caption: Math.round(baseFontSize * 0.7), // 14px for normal
+      arabic: baseFontSize, // 20px for normal
+      urdu: Math.round(baseFontSize * 0.9), // 18px for normal
     };
 
     return variantSizes[variant];
@@ -114,7 +112,7 @@ const Typography: React.FC<TypographyProps> = ({
     textAlign: getTextAlign(),
     writingDirection: getWritingDirection(),
     ...getColorStyle(color, isDarkMode),
-    ...getVariantStyle(variant),
+    ...getVariantStyle(variant, getFontSizeValue()),
   };
 
   return (
@@ -152,16 +150,16 @@ const getColorStyle = (color: string, isDarkMode: boolean) => {
 };
 
 // Variant-specific styles
-const getVariantStyle = (variant: string) => {
+const getVariantStyle = (variant: string, baseFontSize: number) => {
   const variants = {
-    h1: { fontWeight: '700' as const, lineHeight: 40 },
-    h2: { fontWeight: '600' as const, lineHeight: 36 },
-    h3: { fontWeight: '600' as const, lineHeight: 32 },
-    h4: { fontWeight: '500' as const, lineHeight: 28 },
-    body: { fontWeight: '400' as const, lineHeight: 24 },
-    caption: { fontWeight: '400' as const, lineHeight: 20 },
-    arabic: { fontWeight: '600' as const, lineHeight: 32 },
-    urdu: { fontWeight: '400' as const, lineHeight: 28 },
+    h1: { fontWeight: '700' as const, lineHeight: Math.round(baseFontSize * 2.0) },
+    h2: { fontWeight: '600' as const, lineHeight: Math.round(baseFontSize * 1.8) },
+    h3: { fontWeight: '600' as const, lineHeight: Math.round(baseFontSize * 1.6) },
+    h4: { fontWeight: '500' as const, lineHeight: Math.round(baseFontSize * 1.4) },
+    body: { fontWeight: '400' as const, lineHeight: Math.round(baseFontSize * 1.2) },
+    caption: { fontWeight: '400' as const, lineHeight: Math.round(baseFontSize * 1.0) },
+    arabic: { fontWeight: '600' as const, lineHeight: Math.round(baseFontSize * 1.8) },
+    urdu: { fontWeight: '400' as const, lineHeight: Math.round(baseFontSize * 1.4) },
   };
   return variants[variant as keyof typeof variants] || variants.body;
 };
