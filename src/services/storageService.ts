@@ -109,6 +109,65 @@ class StorageService {
     }
   }
 
+  // Progress tracking methods
+  async getTodayProgress(): Promise<number> {
+    try {
+      const todayKey = `todayProgress_${new Date().toISOString().split('T')[0]}`;
+      const progress = await AsyncStorage.getItem(todayKey);
+      return progress ? parseInt(progress, 10) : 0;
+    } catch {
+      return 0;
+    }
+  }
+
+  async setTodayProgress(progress: number): Promise<void> {
+    try {
+      const todayKey = `todayProgress_${new Date().toISOString().split('T')[0]}`;
+      await AsyncStorage.setItem(todayKey, progress.toString());
+    } catch {
+      // Ignore errors
+    }
+  }
+
+  async clearTodayProgress(): Promise<void> {
+    try {
+      const todayKey = `todayProgress_${new Date().toISOString().split('T')[0]}`;
+      await AsyncStorage.removeItem(todayKey);
+    } catch {
+      // Ignore errors
+    }
+  }
+
+  async isTodayCompleted(): Promise<boolean> {
+    try {
+      const todayKey = `completed_${new Date().toISOString().split('T')[0]}`;
+      const completed = await AsyncStorage.getItem(todayKey);
+      return completed === 'true';
+    } catch {
+      return false;
+    }
+  }
+
+  async setTodayCompleted(): Promise<void> {
+    try {
+      const todayKey = `completed_${new Date().toISOString().split('T')[0]}`;
+      await AsyncStorage.setItem(todayKey, 'true');
+    } catch {
+      // Ignore errors
+    }
+  }
+
+  async resetTodayProgress(): Promise<void> {
+    try {
+      const todayKey = `todayProgress_${new Date().toISOString().split('T')[0]}`;
+      const completedKey = `completed_${new Date().toISOString().split('T')[0]}`;
+      await AsyncStorage.removeItem(todayKey);
+      await AsyncStorage.removeItem(completedKey);
+    } catch {
+      // Ignore errors
+    }
+  }
+
   // Utility methods
   async clearAll(): Promise<void> {
     try {

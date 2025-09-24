@@ -1,19 +1,35 @@
-import React from 'react';
-import { View, Text, FlatList } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/types';
 import { Dua } from '../types/dua';
 import { getTodayDuas, getTodayDayName, getDayDisplayName } from '../services/duaService';
+import { storageService } from '../services/storageService';
 import TopBar from '../components/TopBar';
-import DuaCard from '../components/DuaCard';
+import DuaPager from '../components/DuaPager';
+import SessionCompleteModal from '../components/SessionCompleteModal';
+import CompletionState from '../components/CompletionState';
 import { useTheme } from '../contexts/ThemeProvider';
 
 const HomeScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { styles } = useTheme();
+  const [showCompleteModal, setShowCompleteModal] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
+  
   const todayDuas = getTodayDuas();
   const todayDayName = getTodayDayName();
   const todayDisplayName = getDayDisplayName(todayDayName);
+
+  // Check if today's session is completed
+  useEffect(() => {
+    const checkCompletionStatus = async () => {
+      const completed = await storageService.isTodayCompleted();
+      setIsCompleted(completed);
+    };
+    
+    checkCompletionStatus();
+  }, []);
 
   const handleDayPress = () => {
     navigation.navigate('DayView', { day: todayDayName });
@@ -21,6 +37,29 @@ const HomeScreen: React.FC = () => {
 
   const handleDuaPress = (dua: Dua) => {
     navigation.navigate('DuaDetail', { duaId: dua.id });
+  };
+
+  const handleSessionComplete = () => {
+    setShowCompleteModal(true);
+  };
+
+  const handleViewFavorites = () => {
+    navigation.navigate('Favorites');
+  };
+
+  const handleBackToHome = () => {
+    // Modal will close automatically and show completion state
+    setIsCompleted(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowCompleteModal(false);
+  };
+
+  const handleStartAgain = async () => {
+    // Reset today's progress and completion status
+    await storageService.resetTodayProgress();
+    setIsCompleted(false);
   };
 
   return (
@@ -33,19 +72,16 @@ const HomeScreen: React.FC = () => {
       />
 
       <View style={styles.content}>
-        {todayDuas.length > 0 ? (
-          <FlatList
-            data={todayDuas}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <DuaCard
-                dua={item}
-                onPress={handleDuaPress}
-                showReference={true}
-              />
-            )}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.globalStyles.spacingUtils.py('lg')}
+        {isCompleted ? (
+          <CompletionState
+            totalDuas={todayDuas.length}
+            onStartAgain={handleStartAgain}
+          />
+        ) : todayDuas.length > 0 ? (
+          <DuaPager
+            duas={todayDuas}
+            onComplete={handleSessionComplete}
+            onDuaPress={handleDuaPress}
           />
         ) : (
           <View style={styles.centerContent}>
@@ -55,6 +91,14 @@ const HomeScreen: React.FC = () => {
           </View>
         )}
       </View>
+
+      <SessionCompleteModal
+        visible={showCompleteModal}
+        onClose={handleCloseModal}
+        onViewFavorites={handleViewFavorites}
+        onBackToHome={handleBackToHome}
+        totalDuas={todayDuas.length}
+      />
     </View>
   );
 };
