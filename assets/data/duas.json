@@ -1,0 +1,194 @@
+{
+  "schema_version": "1.0",
+  "days": {
+    "friday": [
+      {
+        "arabic": "اللهم اجعلنا من الذاكرين",
+        "translation": "اے اللہ! ہمیں یاد کرنے والوں میں شامل فرما۔",
+        "reference": "General"
+      },
+      {
+        "arabic": "اللهم ارحم موتانا",
+        "translation": "اے اللہ! ہمارے مرحومین پر رحم فرما۔",
+        "reference": "Supplication for the deceased"
+      },
+      {
+        "arabic": "ربنا آتنا في الدنيا حسنة",
+        "translation": "اے ہمارے رب! ہمیں دنیا میں بھلائی عطا فرما۔",
+        "reference": "Quran 2:201 (short form)"
+      },
+      {
+        "arabic": "اللهم اجعل القرآن ربيع قلوبنا",
+        "translation": "اے اللہ! قرآن کو ہمارے دلوں کا نور بنا دے۔",
+        "reference": "Supplication about Quran"
+      }
+    ],
+    "saturday": [
+      {
+        "arabic": "اللهم ارزقني حسن الخاتمة",
+        "translation": "اے اللہ! مجھے اچھا انجام عطا فرما۔",
+        "reference": "General dua"
+      },
+      {
+        "arabic": "اللهم اجعل عملنا خالصاً",
+        "translation": "اے اللہ! ہمارے اعمال کو خالص فرما۔",
+        "reference": "General"
+      },
+      {
+        "arabic": "اللهم بشرنا بالقبول",
+        "translation": "اے اللہ! ہمیں قبولیت کی خوشخبری دے۔",
+        "reference": "Supplication for acceptance"
+      }
+    ],
+    "sunday": [
+      {
+        "arabic": "اللهم اجعل هذا الأسبوع مباركاً",
+        "translation": "اے اللہ! اس ہفتے کو برکت والا بنا دے۔",
+        "reference": "Common supplication"
+      },
+      {
+        "arabic": "ربنا هب لنا من أزواجنا وذرياتنا قرة أعين",
+        "translation": "اے ہمارے رب! ہمیں ہماری زوجات اور اولاد میں آنکھوں کی ٹھنڈک عطا فرما۔",
+        "reference": "Quranic supplication"
+      }
+    ],
+    "monday": [
+      {
+        "arabic": "رَبِّ زِدْنِي عِلْمًا",
+        "translation": "اے میرے رب! مجھے علم میں اضافہ عطا فرما۔",
+        "reference": "Quran 20:114"
+      },
+      {
+        "arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ العَافِيَةَ",
+        "translation": "اے اللہ! میں تجھ سے تندرستی اور سلامتی مانگتا/مانگتی ہوں۔",
+        "reference": "Hadith (general supplication)"
+      },
+      {
+        "arabic": "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً",
+        "translation": "اے ہمارے رب! ہمیں دنیا میں بھلائی عطا فرما۔",
+        "reference": "Quran 2:201"
+      },
+      {
+        "arabic": "سُبْحَانَ اللَّهِ",
+        "translation": "اللہ پاک ہے۔",
+        "reference": "Dhikr (common)"
+      },
+      {
+        "arabic": "الْحَمْدُ لِلَّهِ",
+        "translation": "تمام تعریفیں اللہ کے لیے ہیں۔",
+        "reference": "Dhikr (common)"
+      },
+      {
+        "arabic": "أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ",
+        "translation": "میں شیطانِ رجیم سے اللہ کی پناہ مانگتا/مانگتی ہوں۔",
+        "reference": "Quran (seeking refuge)"
+      },
+      {
+        "arabic": "اللَّهُمَّ اهْدِنَا",
+        "translation": "اے اللہ! ہمیں ہدایت دے۔",
+        "reference": "General supplication"
+      }
+    ],
+    "tuesday": [
+      {
+        "arabic": "رَبِّ اغْفِرْ لِي",
+        "translation": "اے میرے رب! مجھے معاف فرما۔",
+        "reference": "Common dua"
+      },
+      {
+        "arabic": "اللَّهُمَّ اجْعَلْنِي مِنَ التَّوَّابِينَ",
+        "translation": "اے اللہ! مجھے توبہ کرنے والوں میں شامل فرما۔",
+        "reference": "Hadith (general)"
+      },
+      {
+        "arabic": "اللهم ارحمنا برحمتك",
+        "translation": "اے اللہ! اپنی رحمت سے ہم پر رحم فرما۔",
+        "reference": "Common supplication"
+      },
+      {
+        "arabic": "رَبِّ هَبْ لِي مِن لَّدُنكَ",
+        "translation": "اے میرے رب! مجھے اپنی طرف سے عطا فرما۔",
+        "reference": "Quranic-style supplication"
+      },
+      {
+        "arabic": "اللهم صلِّ علَىٰ مُحَمَّدٍ",
+        "translation": "اے اللہ! محمد ﷺ پر درود بھیج۔",
+        "reference": "Salawat (common)"
+      },
+      {
+        "arabic": "اللَّهُمَّ اجْعَلْنَا مُؤْمِنِينَ",
+        "translation": "اے اللہ! ہمیں مؤمنین میں شامل فرما۔",
+        "reference": "General supplication"
+      },
+      {
+        "arabic": "رَبَّنَا آتِنَا مِن لَّدُنكَ رَحْمَةً",
+        "translation": "اے ہمارے رب! ہمیں اپنی طرف سے رحمت عطا فرما۔",
+        "reference": "Quranic supplication"
+      },
+      {
+        "arabic": "اللهم بارك لنا في يومنا",
+        "translation": "اے اللہ! ہمارے دن میں برکت ڈال۔",
+        "reference": "Common dua"
+      }
+    ],
+    "wednesday": [
+      {
+        "arabic": "اللهم اهدني لما اختلف فيه من الحق بإذنك",
+        "translation": "اے اللہ! مجھے اس میں ہدایت دے جس میں حق اختلاف میں ہے (باذنک).",
+        "reference": "Supplication for guidance"
+      },
+      {
+        "arabic": "اللهم اغفر لنا ذنوبنا",
+        "translation": "اے اللہ! ہمارے گناہوں کو معاف فرما۔",
+        "reference": "General"
+      },
+      {
+        "arabic": "اللهم اجعل عملنا خالصاً لوجهك",
+        "translation": "اے اللہ! ہمارے عمل کو صرف تیرے لئے خالص فرما۔",
+        "reference": "Common intention dua"
+      },
+      {
+        "arabic": "اللهم ثبت قلبي",
+        "translation": "اے اللہ! میرے دل کو ثابت رکھ۔",
+        "reference": "Supplication for steadiness"
+      },
+      {
+        "arabic": "ربنا ظلمنا أنفسنا",
+        "translation": "اے ہمارے رب! ہم نے اپنے آپ پر ظلم کیا۔",
+        "reference": "Quranic phrase (seeking forgiveness)"
+      }
+    ],
+    "thursday": [
+      {
+        "arabic": "اللهم أعني ولا تعن عليّ",
+        "translation": "اے اللہ! میری مدد فرما اور میرے خلاف نہ کرنا۔",
+        "reference": "General dua"
+      },
+      {
+        "arabic": "اللهم لا تُزِغْ قُلُوبَنَا",
+        "translation": "اے اللہ! ہمارے دلوں کو نہ بہکانا۔",
+        "reference": "Supplication for steadfastness"
+      },
+      {
+        "arabic": "اللهم اجعلني سبب خير",
+        "translation": "اے اللہ! مجھے خیر کا سبب بنا دے۔",
+        "reference": "General"
+      },
+      {
+        "arabic": "اللهم قوِّ إيماني",
+        "translation": "اے اللہ! میرے ایمان کو مضبوط کر۔",
+        "reference": "Supplication for faith"
+      },
+      {
+        "arabic": "اللهم افتح لي أبواب رزقك",
+        "translation": "اے اللہ! اپنے رزق کے دروازے میرے لئے کھول۔",
+        "reference": "Common supplication"
+      },
+      {
+        "arabic": "الحمد لله رب العالمين",
+        "translation": "تمام تعریفیں عالموں کے رب کے لیے ہیں۔",
+        "reference": "Quranic/ Dhikr"
+      }
+    ]
+  }
+}
