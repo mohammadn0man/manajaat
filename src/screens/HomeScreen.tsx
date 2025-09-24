@@ -1,35 +1,14 @@
 import React from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { RootStackParamList } from '../navigation/types';
 import { Dua } from '../types/dua';
 import { getTodayDuas, getTodayDayName, getDayDisplayName } from '../services/duaService';
-
-interface DuaItemProps {
-  dua: Dua;
-}
-
-const DuaItem: React.FC<DuaItemProps> = ({ dua }) => {
-  return (
-    <View style={styles.duaItem}>
-      <Text style={styles.arabicText}>
-        {dua.arabic}
-      </Text>
-      {dua.translations.ur && (
-        <Text style={styles.translationText}>
-          {dua.translations.ur}
-        </Text>
-      )}
-      {dua.reference && (
-        <Text style={styles.referenceText}>
-          {dua.reference}
-        </Text>
-      )}
-    </View>
-  );
-};
+import TopBar from '../components/TopBar';
+import DuaCard from '../components/DuaCard';
 
 const HomeScreen: React.FC = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const todayDuas = getTodayDuas();
   const todayDayName = getTodayDayName();
   const todayDisplayName = getDayDisplayName(todayDayName);
@@ -38,27 +17,31 @@ const HomeScreen: React.FC = () => {
     navigation.navigate('DayView', { day: todayDayName });
   };
 
+  const handleDuaPress = (dua: Dua) => {
+    navigation.navigate('DuaDetail', { duaId: dua.id });
+  };
+
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>
-          Read today's duas
-        </Text>
-        <TouchableOpacity onPress={handleDayPress}>
-          <Text style={styles.headerSubtitle}>
-            {todayDisplayName}
-          </Text>
-        </TouchableOpacity>
-      </View>
+      <TopBar
+        title="Read today's duas"
+        subtitle={todayDisplayName}
+        onBackPress={handleDayPress}
+        showBackButton={false}
+      />
 
-      {/* Content */}
       <View style={styles.content}>
         {todayDuas.length > 0 ? (
           <FlatList
             data={todayDuas}
             keyExtractor={(item) => item.id}
-            renderItem={({ item }) => <DuaItem dua={item} />}
+            renderItem={({ item }) => (
+              <DuaCard
+                dua={item}
+                onPress={handleDuaPress}
+                showReference={true}
+              />
+            )}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.listContent}
           />
@@ -79,22 +62,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f9fafb',
   },
-  header: {
-    backgroundColor: '#4F46E5',
-    paddingTop: 48,
-    paddingBottom: 24,
-    paddingHorizontal: 24,
-  },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
-    marginBottom: 8,
-  },
-  headerSubtitle: {
-    color: '#c7d2fe',
-    fontSize: 18,
-  },
   content: {
     flex: 1,
     paddingHorizontal: 24,
@@ -102,36 +69,6 @@ const styles = StyleSheet.create({
   },
   listContent: {
     paddingBottom: 20,
-  },
-  duaItem: {
-    backgroundColor: 'white',
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
-    borderWidth: 1,
-    borderColor: '#f3f4f6',
-  },
-  arabicText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#111827',
-    marginBottom: 8,
-    textAlign: 'right',
-  },
-  translationText: {
-    fontSize: 16,
-    color: '#374151',
-    marginBottom: 8,
-  },
-  referenceText: {
-    fontSize: 14,
-    color: '#6b7280',
-    fontStyle: 'italic',
   },
   emptyContainer: {
     flex: 1,

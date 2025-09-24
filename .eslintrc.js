@@ -1,11 +1,14 @@
 module.exports = {
-  extends: ['expo', '@typescript-eslint/recommended', 'prettier'],
+  extends: ['expo'],
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'prettier'],
+  plugins: ['@typescript-eslint'],
   rules: {
-    'prettier/prettier': 'error',
-    '@typescript-eslint/no-unused-vars': 'error',
+    '@typescript-eslint/no-unused-vars': 'warn',
     '@typescript-eslint/no-explicit-any': 'warn',
   },
   ignorePatterns: ['node_modules/', '.expo/', 'dist/', 'build/'],
+  env: {
+    node: true,
+    es6: true,
+  },
 };

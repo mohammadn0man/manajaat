@@ -21,18 +21,18 @@ export const getTodayDayName = (): DayOfWeek => {
 };
 
 export const getAllDays = (): DayOfWeek[] => {
-  return ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+  return ['friday', 'saturday', 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday'];
 };
 
 export const getDayDisplayName = (day: DayOfWeek): string => {
   const dayNames: Record<DayOfWeek, string> = {
+    friday: 'Friday',
+    saturday: 'Saturday',
     sunday: 'Sunday',
     monday: 'Monday',
     tuesday: 'Tuesday',
     wednesday: 'Wednesday',
     thursday: 'Thursday',
-    friday: 'Friday',
-    saturday: 'Saturday',
   };
   return dayNames[day];
 };

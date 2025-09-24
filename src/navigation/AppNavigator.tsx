@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import HomeScreen from '../screens/HomeScreen';
 import DayViewScreen from '../screens/DayViewScreen';
 import DaysListScreen from '../screens/DaysListScreen';
+import DuaDetailScreen from '../screens/DuaDetailScreen';
 import { RootStackParamList, MainTabParamList } from './types';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -59,6 +60,13 @@ const AppNavigator: React.FC = () => {
               backgroundColor: '#4F46E5',
             },
             headerTintColor: '#fff',
+          }}
+        />
+        <Stack.Screen 
+          name="DuaDetail" 
+          component={DuaDetailScreen}
+          options={{
+            headerShown: false,
           }}
         />
       </Stack.Navigator>

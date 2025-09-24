@@ -14,10 +14,10 @@ export interface Dua {
 export interface RawDuaData {
   schema_version: string;
   days: {
-    [K in DayOfWeek]: Array<{
+    [K in DayOfWeek]: {
       arabic: string;
       translation: string;
       reference: string;
-    }>;
+    }[];
   };
 }
