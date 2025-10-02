@@ -10,13 +10,10 @@ const rawData = duasData as RawDuaData;
 // Normalize the raw data into our typed format with validation
 export const normalizeDuasData = (): Dua[] => {
   try {
-    // Log the data structure for debugging
-    errorLogger.logWarning('Validating duas data structure', {
-      context: 'dataLoader.normalizeDuasData',
-      hasDays: !!rawData.days,
-      hasSchemaVersion: !!rawData.schema_version,
-      daysKeys: rawData.days ? Object.keys(rawData.days) : [],
-    });
+    // Validate the data structure
+    if (!rawData.days || !rawData.schema_version) {
+      throw new Error('Invalid duas data structure: missing required fields');
+    }
 
     return validateDuasData(rawData);
   } catch (error) {

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { memo, useMemo, useCallback } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../contexts/ThemeProvider';
+import { UI_CONSTANTS } from '../constants/ui';
 
 interface TopBarProps {
   title: string;
@@ -11,75 +12,114 @@ interface TopBarProps {
   rightComponent?: React.ReactNode;
 }
 
-const TopBar: React.FC<TopBarProps> = ({
-  title,
-  subtitle,
-  onBackPress,
-  showBackButton = false,
-  rightComponent,
-}) => {
-  const { colors, styles } = useTheme();
+const TopBar: React.FC<TopBarProps> = memo(
+  ({
+    title,
+    subtitle,
+    onBackPress,
+    showBackButton = false,
+    rightComponent,
+  }) => {
+    const { colors, styles } = useTheme();
 
-  return (
-    <View
-      style={[
+    // Memoized container style
+    const containerStyle = useMemo(
+      () => [
         styles.rowBetween,
         {
           backgroundColor: colors.primary,
-          paddingTop: 48,
-          paddingBottom: 24,
-          paddingHorizontal: 24,
+          paddingTop: UI_CONSTANTS.STATUS_BAR_HEIGHT,
+          paddingBottom: UI_CONSTANTS.PADDING.xxl,
+          paddingHorizontal: UI_CONSTANTS.PADDING.xxl,
         },
-      ]}
-    >
-      <View style={{ width: 40, alignItems: 'flex-start' }}>
-        {showBackButton && (
-          <TouchableOpacity
-            style={{ padding: 4 }}
-            onPress={onBackPress}
-            accessibilityRole="button"
-            accessibilityLabel="Go back"
-            accessibilityHint="Navigate back to previous screen"
-          >
-            <Ionicons
-              name="arrow-back"
-              size={24}
-              color={colors.primaryForeground}
-            />
-          </TouchableOpacity>
-        )}
-      </View>
+      ],
+      [styles.rowBetween, colors.primary]
+    );
 
-      <View style={styles.columnCenter}>
-        <Text
-          style={[
-            styles.h3,
-            { color: colors.primaryForeground, textAlign: 'center' },
-          ]}
-        >
-          {title}
-        </Text>
-        {subtitle && (
-          <Text
-            style={[
-              styles.body,
-              {
-                color: colors.primaryForeground,
-                textAlign: 'center',
-                marginTop: 4,
-              },
-            ]}
-          >
-            {subtitle}
-          </Text>
-        )}
-      </View>
+    // Memoized back button style
+    const backButtonStyle = useMemo(
+      () => ({
+        width: 40,
+        alignItems: 'flex-start' as const,
+      }),
+      []
+    );
 
-      <View style={{ width: 40, alignItems: 'flex-end' }}>
-        {rightComponent}
+    // Memoized center container style
+    const centerContainerStyle = useMemo(
+      () => styles.columnCenter,
+      [styles.columnCenter]
+    );
+
+    // Memoized right container style
+    const rightContainerStyle = useMemo(
+      () => ({
+        width: 40,
+        alignItems: 'flex-end' as const,
+      }),
+      []
+    );
+
+    // Memoized title style
+    const titleStyle = useMemo(
+      () => [
+        styles.h3,
+        { color: colors.primaryForeground, textAlign: 'center' as const },
+      ],
+      [styles.h3, colors.primaryForeground]
+    );
+
+    // Memoized subtitle style
+    const subtitleStyle = useMemo(
+      () => [
+        styles.body,
+        {
+          color: colors.primaryForeground,
+          textAlign: 'center' as const,
+          marginTop: UI_CONSTANTS.SPACING.xs,
+        },
+      ],
+      [styles.body, colors.primaryForeground]
+    );
+
+    // Memoized back button press handler
+    const handleBackPress = useCallback(() => {
+      if (onBackPress) {
+        onBackPress();
+      }
+    }, [onBackPress]);
+
+    return (
+      <View style={containerStyle}>
+        <View style={backButtonStyle}>
+          {showBackButton && (
+            <TouchableOpacity
+              style={{ padding: UI_CONSTANTS.SPACING.xs }}
+              onPress={handleBackPress}
+              accessibilityRole="button"
+              accessibilityLabel="Go back"
+              accessibilityHint="Navigate back to previous screen"
+            >
+              <Ionicons
+                name="arrow-back"
+                size={UI_CONSTANTS.ICON_SIZES.large}
+                color={colors.primaryForeground}
+              />
+            </TouchableOpacity>
+          )}
+        </View>
+
+        <View style={centerContainerStyle}>
+          <Text style={titleStyle}>{title}</Text>
+          {subtitle && <Text style={subtitleStyle}>{subtitle}</Text>}
+        </View>
+
+        <View style={rightContainerStyle}>{rightComponent}</View>
       </View>
-    </View>
-  );
-};
+    );
+  }
+);
+
+TopBar.displayName = 'TopBar';
 
 export default TopBar;
