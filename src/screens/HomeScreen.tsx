@@ -43,10 +43,6 @@ const HomeScreen: React.FC = () => {
     setShowCompleteModal(true);
   };
 
-  const handleViewFavorites = () => {
-    navigation.navigate('Favorites');
-  };
-
   const handleBackToHome = () => {
     // Modal will close automatically and show completion state
     setIsCompleted(true);
@@ -95,7 +91,6 @@ const HomeScreen: React.FC = () => {
       <SessionCompleteModal
         visible={showCompleteModal}
         onClose={handleCloseModal}
-        onViewFavorites={handleViewFavorites}
         onBackToHome={handleBackToHome}
         totalDuas={todayDuas.length}
       />

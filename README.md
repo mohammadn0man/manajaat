@@ -6,8 +6,11 @@ A beautiful React Native mobile application for daily Islamic supplications (dua
 
 ### Core Features
 - **Daily Duas**: Browse Islamic supplications organized by days of the week
+- **Daily Progress Tracking**: Track your daily dua reading progress with completion status
+- **Session Management**: Complete daily dua sessions with progress indicators
 - **Multilingual Support**: Support for English, Arabic, and Urdu with RTL text support
 - **Favorites System**: Save your favorite duas for quick access
+- **Sharing & Copying**: Share duas via social media or copy to clipboard
 - **Beautiful UI**: Modern, clean interface with thoughtful design
 - **Easy Navigation**: Intuitive day-by-day browsing with bottom tab navigation
 
@@ -20,8 +23,10 @@ A beautiful React Native mobile application for daily Islamic supplications (dua
 ### User Experience
 - **Responsive Design**: Optimized for both iOS and Android devices
 - **Accessibility**: Built with comprehensive accessibility features
-- **Persistent Storage**: Settings and favorites saved locally using AsyncStorage
+- **Persistent Storage**: Settings, favorites, and progress saved locally using AsyncStorage
 - **Smooth Navigation**: Stack and tab-based navigation with React Navigation v6
+- **Session Completion**: Modal dialogs and completion states for daily sessions
+- **Typography System**: Custom typography component for consistent text rendering
 
 ## 🛠️ Tech Stack
 
@@ -48,6 +53,7 @@ Before running this project, make sure you have:
 - `@react-navigation/native` & `@react-navigation/stack` & `@react-navigation/bottom-tabs` - Navigation
 - `@react-native-async-storage/async-storage` - Local data persistence
 - `expo-clipboard` - Copy functionality for duas
+- `react-native` Share API - Native sharing capabilities
 - `nativewind` - Tailwind CSS for React Native
 - `@expo/vector-icons` - Icon library
 
@@ -103,13 +109,18 @@ manajaat/
 │   └── images/                # App icons and images
 ├── src/
 │   ├── components/            # Reusable UI components
-│   │   ├── DayPill.tsx       # Day selection component
-│   │   ├── DuaCard.tsx       # Individual dua display
-│   │   ├── IconButton.tsx    # Custom icon button
-│   │   ├── TopBar.tsx        # Navigation header
-│   │   └── index.ts          # Component exports
+│   │   ├── CompletionState.tsx    # Session completion UI
+│   │   ├── DayPill.tsx           # Day selection component
+│   │   ├── DuaCard.tsx           # Individual dua display
+│   │   ├── DuaPager.tsx          # Swipeable dua navigation
+│   │   ├── IconButton.tsx        # Custom icon button
+│   │   ├── SessionCompleteModal.tsx # Session completion modal
+│   │   ├── TopBar.tsx            # Navigation header
+│   │   ├── Typography.tsx        # Custom typography system
+│   │   └── index.ts              # Component exports
 │   ├── contexts/             # React contexts
-│   │   └── AppContext.tsx    # Global app state management
+│   │   ├── AppContext.tsx    # Global app state management
+│   │   └── ThemeProvider.tsx # Theme management context
 │   ├── hooks/                # Custom React hooks
 │   ├── i18n/                 # Internationalization
 │   │   └── ur.json           # Urdu translations
@@ -158,6 +169,16 @@ interface Dua {
   };
   reference?: string;
 }
+
+// Storage service manages daily progress
+interface StorageService {
+  // Progress tracking methods
+  getTodayProgress(): Promise<number>;
+  setTodayProgress(progress: number): Promise<void>;
+  isTodayCompleted(): Promise<boolean>;
+  setTodayCompleted(): Promise<void>;
+  resetTodayProgress(): Promise<void>;
+}
 ```
 
 ## 🎨 Styling & Theming
@@ -191,8 +212,10 @@ This project uses a hybrid approach for styling:
 ### State Management
 The app uses React Context API for global state management:
 - **AppContext**: Manages language, theme, font size, and favorites
-- **Persistent Storage**: Uses AsyncStorage to save user preferences
+- **ThemeProvider**: Dedicated theme management with dynamic styling
+- **Persistent Storage**: Uses AsyncStorage to save user preferences and progress
 - **RTL Support**: Automatic layout direction based on selected language
+- **Progress Tracking**: Daily session progress and completion status
 
 ### Navigation Structure
 ```
@@ -211,12 +234,14 @@ Stack Navigator
 1. **Data Loading**: JSON file loaded and parsed on app start
 2. **Service Layer**: Business logic separated from UI components
 3. **Context Provider**: Global state accessible throughout the app
-4. **Local Storage**: User preferences and favorites persisted locally
+4. **Local Storage**: User preferences, favorites, and daily progress persisted locally
+5. **Progress Tracking**: Daily completion status with date-based storage keys
+6. **Session Management**: Modal-based completion flow with restart capabilities
 
 ## 📱 App Screens
 
 ### Main Screens
-1. **Home Screen**: Daily duas overview and quick navigation
+1. **Home Screen**: Daily duas with progress tracking and session management
 2. **Days List Screen**: Browse duas organized by weekdays
 3. **Favorites Screen**: View and manage saved favorite duas
 4. **Settings Screen**: Customize language, theme, font size, and app preferences
@@ -226,11 +251,16 @@ Stack Navigator
 2. **Dua Detail Screen**: Full dua view with Arabic text, translation, and reference
 
 ### Key Features by Screen
+- **Daily Progress**: Track reading progress with visual indicators and completion states
+- **Session Management**: Complete daily sessions with congratulatory modals
+- **Sharing & Copying**: Copy duas to clipboard or share via native sharing
 - **Favorites Management**: Add/remove duas from favorites with heart icon
+- **Swipeable Navigation**: DuaPager component for smooth dua browsing
 - **Language Switching**: Seamless transition between English, Urdu, and Arabic
 - **Theme Toggle**: Instant theme switching with system theme detection
 - **Font Scaling**: Real-time font size adjustment for better readability
 - **RTL Layout**: Automatic layout flip for Arabic and Urdu content
+- **Typography System**: Consistent text rendering with custom Typography component
 
 ## 🤝 Contributing
 

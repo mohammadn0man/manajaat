@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import AppNavigator from './src/navigation/AppNavigator';
 import { AppProvider, useApp } from './src/contexts/AppContext';
 import { ThemeProvider } from './src/contexts/ThemeProvider';
-import { loadFonts } from './src/config/fonts';
+import { useFonts } from 'expo-font';
 
 function AppContent() {
   const { colorScheme } = useApp();
@@ -18,21 +18,11 @@ function AppContent() {
 }
 
 export default function App() {
-  const [fontsLoaded, setFontsLoaded] = useState(false);
-
-  useEffect(() => {
-    const initializeApp = async () => {
-      try {
-        await loadFonts();
-        setFontsLoaded(true);
-      } catch (error) {
-        console.error('Error initializing app:', error);
-        setFontsLoaded(true); // Continue even if fonts fail to load
-      }
-    };
-
-    initializeApp();
-  }, []);
+  const [fontsLoaded] = useFonts({
+    'Amiri-Regular': require('./assets/fonts/Amiri-Regular.ttf'),
+    'Amiri-Bold': require('./assets/fonts/Amiri-Bold.ttf'),
+    'Amiri': require('./assets/fonts/Amiri-Regular.ttf'),
+  });
 
   if (!fontsLoaded) {
     return null; // Or a loading screen

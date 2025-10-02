@@ -3,8 +3,8 @@
 This directory should contain the following font files:
 
 ## Arabic Fonts
-- `NotoNaskhArabic-Regular.ttf` - Regular Arabic text
-- `NotoNaskhArabic-Bold.ttf` - Bold Arabic text
+- `Amiri-Regular.ttf` - Regular Arabic text
+- `Amiri-Bold.ttf` - Bold Arabic text
 
 ## Urdu Fonts  
 - `NotoNastaliqUrdu-Regular.ttf` - Regular Urdu text
@@ -17,7 +17,7 @@ This directory should contain the following font files:
 - `Inter-Bold.ttf` - Bold Latin text
 
 ## Download Links
-- **Noto Naskh Arabic**: https://fonts.google.com/noto/specimen/Noto+Naskh+Arabic
+- **Amiri**: https://fonts.google.com/specimen/Amiri
 - **Noto Nastaliq Urdu**: https://fonts.google.com/noto/specimen/Noto+Nastaliq+Urdu
 - **Inter**: https://fonts.google.com/specimen/Inter
 

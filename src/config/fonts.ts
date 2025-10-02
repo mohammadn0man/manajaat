@@ -4,7 +4,10 @@ import { Platform } from 'react-native';
 // Font configuration with system fallbacks
 export const fontConfig = {
   // We'll use system fonts for now, but this structure allows for custom fonts
-  // 'NotoNaskhArabic': require('../../assets/fonts/NotoNaskhArabic-Regular.ttf'),
+  'Amiri-Regular': require('../../assets/fonts/Amiri-Regular.ttf'),
+  'Amiri-Bold': require('../../assets/fonts/Amiri-Bold.ttf'),
+  // Alternative names for Android compatibility
+  'Amiri': require('../../assets/fonts/Amiri-Regular.ttf'),
   // 'NotoNastaliqUrdu': require('../../assets/fonts/NotoNastaliqUrdu-Regular.ttf'),
   // 'Inter': require('../../assets/fonts/Inter-Regular.ttf'),
 };
@@ -23,13 +26,13 @@ export const loadFonts = async (): Promise<void> => {
 // Font families with system fallbacks
 export const fontFamilies = {
   arabic: Platform.select({
-    ios: 'NotoNaskhArabic-Regular',
-    android: 'NotoNaskhArabic-Regular',
+    ios: 'Amiri-Regular',
+    android: 'Amiri-Regular', // Use full name for Android too
     default: 'System', // Fallback to system font
   }),
   arabicBold: Platform.select({
-    ios: 'NotoNaskhArabic-Bold',
-    android: 'NotoNaskhArabic-Bold', 
+    ios: 'Amiri-Bold',
+    android: 'Amiri-Bold', 
     default: 'System',
   }),
   urdu: Platform.select({

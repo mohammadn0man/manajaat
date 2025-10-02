@@ -112,7 +112,7 @@ const SettingsScreen: React.FC = () => {
         contentContainerStyle={styles.globalStyles.spacingUtils.py('lg')}
       >
         {renderOptionSelector(
-          'Language',
+          'Translation Language',
           languageOptions,
           language,
           setLanguage,

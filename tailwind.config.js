@@ -58,7 +58,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
-        arabic: ['NotoNaskhArabic', 'system-ui', 'sans-serif'],
+        arabic: ['Amiri', 'system-ui', 'sans-serif'],
         urdu: ['NotoNastaliqUrdu', 'system-ui', 'sans-serif'],
       },
       fontSize: {

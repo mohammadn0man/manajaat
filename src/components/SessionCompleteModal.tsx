@@ -16,16 +16,10 @@ const { width } = Dimensions.get('window');
 const SessionCompleteModal: React.FC<SessionCompleteModalProps> = ({
   visible,
   onClose,
-  onViewFavorites,
   onBackToHome,
   totalDuas,
 }) => {
   const { styles, colors } = useTheme();
-
-  const handleViewFavorites = () => {
-    onClose();
-    onViewFavorites();
-  };
 
   const handleBackToHome = () => {
     onClose();
@@ -97,36 +91,6 @@ const SessionCompleteModal: React.FC<SessionCompleteModalProps> = ({
 
           {/* Action Buttons */}
           <View style={{ width: '100%', gap: 12 }}>
-            <TouchableOpacity
-              style={[
-                styles.button,
-                {
-                  backgroundColor: colors.primary,
-                  paddingVertical: 16,
-                  borderRadius: 12,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }
-              ]}
-              onPress={handleViewFavorites}
-              accessibilityRole="button"
-              accessibilityLabel="View favorites"
-              accessibilityHint="Navigate to favorites screen"
-            >
-              <Ionicons name="heart" size={20} color={colors.primaryForeground} />
-              <Text style={[
-                styles.body,
-                { 
-                  color: colors.primaryForeground,
-                  marginLeft: 8,
-                  fontWeight: '600',
-                }
-              ]}>
-                View Favorites
-              </Text>
-            </TouchableOpacity>
-
             <TouchableOpacity
               style={[
                 styles.button,

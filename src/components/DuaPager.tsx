@@ -70,6 +70,11 @@ const DuaPager: React.FC<DuaPagerProps> = ({
     }).start();
   }, [currentIndex, duas.length, progressAnim]);
 
+  // Ensure slide animation is reset when currentIndex changes
+  useEffect(() => {
+    slideAnim.setValue(0);
+  }, [currentIndex, slideAnim]);
+
   // Pan responder for swipe gestures
   const panResponder = useRef(
     PanResponder.create({
@@ -96,9 +101,11 @@ const DuaPager: React.FC<DuaPagerProps> = ({
             goToNext();
           }
         } else {
-          // Reset position
+          // Reset position with proper animation
           Animated.spring(slideAnim, {
             toValue: 0,
+            tension: 100,
+            friction: 8,
             useNativeDriver: true,
           }).start();
         }
@@ -118,6 +125,9 @@ const DuaPager: React.FC<DuaPagerProps> = ({
       analyticsService.logDuaViewDuration(duas[currentIndex].id, duration);
       
       const newIndex = currentIndex - 1;
+      
+      // Reset animation value before starting
+      slideAnim.setValue(0);
       
       // Animate slide
       Animated.timing(slideAnim, {
@@ -154,6 +164,9 @@ const DuaPager: React.FC<DuaPagerProps> = ({
       analyticsService.logDuaViewDuration(duas[currentIndex].id, duration);
       
       const newIndex = currentIndex + 1;
+      
+      // Reset animation value before starting
+      slideAnim.setValue(0);
       
       // Animate slide
       Animated.timing(slideAnim, {

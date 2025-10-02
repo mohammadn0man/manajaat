@@ -70,7 +70,13 @@ const DuaCard: React.FC<DuaCardProps> = ({
       accessibilityLabel={`Dua: ${dua.arabic.substring(0, 50)}...`}
       accessibilityHint="Tap to view full dua details"
     >
-      <Text style={compact ? styles.arabic : styles.arabicLarge}>
+      <Text style={[
+        compact ? styles.arabic : styles.arabicLarge,
+        { 
+          fontFamily: 'Amiri-Regular',
+          fontWeight: 'normal' // Ensure no conflicting font weight
+        }
+      ]}>
         {dua.arabic}
       </Text>
       
