@@ -3,7 +3,11 @@ import { View, Text } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/types';
 import { Dua } from '../types/dua';
-import { getTodayDuas, getTodayDayName, getDayDisplayName } from '../services/duaService';
+import {
+  getTodayDuas,
+  getTodayDayName,
+  getDayDisplayName,
+} from '../services/duaService';
 import { storageService } from '../services/storageService';
 import TopBar from '../components/TopBar';
 import DuaPager from '../components/DuaPager';
@@ -16,7 +20,7 @@ const HomeScreen: React.FC = () => {
   const { styles } = useTheme();
   const [showCompleteModal, setShowCompleteModal] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
-  
+
   const todayDuas = getTodayDuas();
   const todayDayName = getTodayDayName();
   const todayDisplayName = getDayDisplayName(todayDayName);
@@ -27,7 +31,7 @@ const HomeScreen: React.FC = () => {
       const completed = await storageService.isTodayCompleted();
       setIsCompleted(completed);
     };
-    
+
     checkCompletionStatus();
   }, []);
 
@@ -81,9 +85,7 @@ const HomeScreen: React.FC = () => {
           />
         ) : (
           <View style={styles.centerContent}>
-            <Text style={styles.textMuted}>
-              No duas available for today
-            </Text>
+            <Text style={styles.textMuted}>No duas available for today</Text>
           </View>
         )}
       </View>

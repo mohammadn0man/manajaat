@@ -1,5 +1,5 @@
 import React, { createContext, useContext, ReactNode } from 'react';
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { useApp } from './AppContext';
 import { globalStyles } from '../styles/globalStyles';
 
@@ -38,7 +38,7 @@ export interface ThemeStyles {
     rowCenter: object;
     column: object;
     columnCenter: object;
-    
+
     // Component styles
     card: object;
     cardCompact: object;
@@ -48,14 +48,14 @@ export interface ThemeStyles {
     listItem: object;
     section: object;
     sectionHeader: object;
-    
+
     // Text styles
     text: object;
     textSecondary: object;
     textMuted: object;
     textPrimary: object;
     textAccent: object;
-    
+
     // Typography styles
     h1: object;
     h2: object;
@@ -67,11 +67,11 @@ export interface ThemeStyles {
     small: object;
     arabic: object;
     arabicLarge: object;
-    
+
     // Border and background
     border: object;
     background: object;
-    
+
     // Global styles access
     globalStyles: typeof globalStyles;
   };
@@ -161,7 +161,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     columnCenter: {
       ...globalStyles.layout.columnCenter,
     },
-    
+
     // Component styles
     card: {
       ...globalStyles.components.card,
@@ -199,7 +199,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     sectionHeader: {
       ...globalStyles.components.sectionHeader,
     },
-    
+
     // Text styles
     text: {
       ...globalStyles.typography.body,
@@ -221,7 +221,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       ...globalStyles.typography.body,
       color: colors.accent,
     },
-    
+
     // Typography styles
     h1: {
       ...globalStyles.typography.h1,
@@ -277,7 +277,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       lineHeight: Math.round(getFontSizeValue() * 3.0), // Increased line height for better Arabic spacing
       color: colors.foreground,
     },
-    
+
     // Border and background
     border: {
       borderColor: colors.border,

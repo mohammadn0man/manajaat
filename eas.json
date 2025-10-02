@@ -9,13 +9,21 @@
       "distribution": "internal"
     },
     "preview": {
+      "android": {
+        "buildType": "apk"
+      },
       "distribution": "internal"
     },
     "production": {
-      "autoIncrement": true
+      "android": { "gradleCommand": ":app:bundleRelease" },
+      "distribution": "store"
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./fastlane/google-service-account.json"
+      }
+    }
   }
 }

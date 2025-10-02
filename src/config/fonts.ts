@@ -7,7 +7,7 @@ export const fontConfig = {
   'Amiri-Regular': require('../../assets/fonts/Amiri-Regular.ttf'),
   'Amiri-Bold': require('../../assets/fonts/Amiri-Bold.ttf'),
   // Alternative names for Android compatibility
-  'Amiri': require('../../assets/fonts/Amiri-Regular.ttf'),
+  Amiri: require('../../assets/fonts/Amiri-Regular.ttf'),
   // 'NotoNastaliqUrdu': require('../../assets/fonts/NotoNastaliqUrdu-Regular.ttf'),
   // 'Inter': require('../../assets/fonts/Inter-Regular.ttf'),
 };
@@ -32,7 +32,7 @@ export const fontFamilies = {
   }),
   arabicBold: Platform.select({
     ios: 'Amiri-Bold',
-    android: 'Amiri-Bold', 
+    android: 'Amiri-Bold',
     default: 'System',
   }),
   urdu: Platform.select({

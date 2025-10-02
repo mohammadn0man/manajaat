@@ -1,6 +1,10 @@
 import React from 'react';
 import { View, Text, FlatList } from 'react-native';
-import { RouteProp, useNavigation, NavigationProp } from '@react-navigation/native';
+import {
+  RouteProp,
+  useNavigation,
+  NavigationProp,
+} from '@react-navigation/native';
 import { Dua } from '../types/dua';
 import { getDuasByDay, getDayDisplayName } from '../services/duaService';
 import TopBar from '../components/TopBar';
@@ -20,7 +24,6 @@ const DayViewScreen: React.FC<DayViewScreenProps> = ({ route }) => {
   const { day } = route.params;
   const dayDuas = getDuasByDay(day);
   const dayDisplayName = getDayDisplayName(day);
-
 
   const handleDuaPress = (dua: Dua) => {
     navigation.navigate('DuaDetail', { duaId: dua.id });

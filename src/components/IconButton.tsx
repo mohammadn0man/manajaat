@@ -23,11 +23,7 @@ const IconButton = ({
   ...touchableProps
 }: IconButtonProps) => (
   <TouchableOpacity
-    style={[
-      styles.container,
-      { backgroundColor },
-      style,
-    ]}
+    style={[styles.container, { backgroundColor }, style]}
     accessibilityRole="button"
     accessibilityLabel={accessibilityLabel}
     accessibilityHint={accessibilityHint}

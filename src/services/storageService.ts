@@ -33,7 +33,7 @@ class StorageService {
     try {
       const favorites = await this.getFavorites();
       const index = favorites.indexOf(duaId);
-      
+
       if (index > -1) {
         // Remove from favorites
         favorites.splice(index, 1);
@@ -41,8 +41,11 @@ class StorageService {
         // Add to favorites
         favorites.push(duaId);
       }
-      
-      await AsyncStorage.setItem(STORAGE_KEYS.FAVORITES, JSON.stringify(favorites));
+
+      await AsyncStorage.setItem(
+        STORAGE_KEYS.FAVORITES,
+        JSON.stringify(favorites)
+      );
       return index === -1; // Return true if added, false if removed
     } catch {
       return false;

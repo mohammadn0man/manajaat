@@ -8,15 +8,15 @@ import TopBar from '../components/TopBar';
 import { useTheme } from '../contexts/ThemeProvider';
 
 const SettingsScreen: React.FC = () => {
-  const { 
-    language, 
-    theme, 
-    fontSize, 
+  const {
+    language,
+    theme,
+    fontSize,
     favorites,
-    setLanguage, 
-    setTheme, 
-    setFontSize, 
-    clearFavorites 
+    setLanguage,
+    setTheme,
+    setFontSize,
+    clearFavorites,
   } = useApp();
   const { styles } = useTheme();
 
@@ -67,7 +67,9 @@ const SettingsScreen: React.FC = () => {
     <View style={styles.section}>
       <View style={[styles.row, styles.globalStyles.spacingUtils.mb('lg')]}>
         <Ionicons name={icon} size={20} color="#2596be" />
-        <Text style={[styles.h4, styles.globalStyles.spacingUtils.ml('sm')]}>{title}</Text>
+        <Text style={[styles.h4, styles.globalStyles.spacingUtils.ml('sm')]}>
+          {title}
+        </Text>
       </View>
       <View style={[styles.card, { padding: 0, marginBottom: 0 }]}>
         {options.map((option) => (
@@ -101,13 +103,10 @@ const SettingsScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <TopBar
-        title="Settings"
-        subtitle="Customize your app experience"
-      />
+      <TopBar title="Settings" subtitle="Customize your app experience" />
 
-      <ScrollView 
-        style={styles.content} 
+      <ScrollView
+        style={styles.content}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.globalStyles.spacingUtils.py('lg')}
       >
@@ -138,10 +137,22 @@ const SettingsScreen: React.FC = () => {
         <View style={styles.section}>
           <View style={[styles.row, styles.globalStyles.spacingUtils.mb('lg')]}>
             <Ionicons name="heart" size={20} color="#EF4444" />
-            <Text style={[styles.h4, styles.globalStyles.spacingUtils.ml('sm')]}>Favorites</Text>
+            <Text
+              style={[styles.h4, styles.globalStyles.spacingUtils.ml('sm')]}
+            >
+              Favorites
+            </Text>
           </View>
           <TouchableOpacity
-            style={[styles.button, styles.row, { backgroundColor: '#FEF2F2', borderColor: '#FECACA', borderWidth: 1 }]}
+            style={[
+              styles.button,
+              styles.row,
+              {
+                backgroundColor: '#FEF2F2',
+                borderColor: '#FECACA',
+                borderWidth: 1,
+              },
+            ]}
             onPress={handleClearFavorites}
             disabled={favorites.length === 0}
             accessibilityRole="button"
@@ -149,7 +160,15 @@ const SettingsScreen: React.FC = () => {
             accessibilityHint="Removes all duas from your favorites list"
           >
             <Ionicons name="trash" size={20} color="#EF4444" />
-            <Text style={[styles.body, { color: '#EF4444', marginLeft: styles.globalStyles.spacing.sm }]}>
+            <Text
+              style={[
+                styles.body,
+                {
+                  color: '#EF4444',
+                  marginLeft: styles.globalStyles.spacing.sm,
+                },
+              ]}
+            >
               Clear All Favorites ({favorites.length})
             </Text>
           </TouchableOpacity>
@@ -158,13 +177,20 @@ const SettingsScreen: React.FC = () => {
         <View style={styles.section}>
           <View style={[styles.row, styles.globalStyles.spacingUtils.mb('lg')]}>
             <Ionicons name="information-circle" size={20} color="#6b7280" />
-            <Text style={[styles.h4, styles.globalStyles.spacingUtils.ml('sm')]}>About</Text>
+            <Text
+              style={[styles.h4, styles.globalStyles.spacingUtils.ml('sm')]}
+            >
+              About
+            </Text>
           </View>
           <View style={styles.card}>
-            <Text style={styles.h4}>
-              Manajaat Nomani v1.0.0
-            </Text>
-            <Text style={[styles.textMuted, styles.globalStyles.spacingUtils.mt('xs')]}>
+            <Text style={styles.h4}>Manajaat Nomani v1.0.0</Text>
+            <Text
+              style={[
+                styles.textMuted,
+                styles.globalStyles.spacingUtils.mt('xs'),
+              ]}
+            >
               A beautiful app for daily Islamic supplications
             </Text>
           </View>

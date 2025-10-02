@@ -17,29 +17,20 @@ const DayPill: React.FC<DayPillProps> = ({
   count,
 }) => {
   const dayName = getDayDisplayName(day);
-  
+
   return (
     <TouchableOpacity
-      style={[
-        styles.container,
-        isSelected && styles.selectedContainer,
-      ]}
+      style={[styles.container, isSelected && styles.selectedContainer]}
       onPress={() => onPress(day)}
       accessibilityRole="button"
       accessibilityLabel={`${dayName}${count ? `, ${count} duas` : ''}`}
       accessibilityHint={`View duas for ${dayName}`}
     >
-      <Text style={[
-        styles.text,
-        isSelected && styles.selectedText,
-      ]}>
+      <Text style={[styles.text, isSelected && styles.selectedText]}>
         {dayName}
       </Text>
       {count !== undefined && (
-        <Text style={[
-          styles.count,
-          isSelected && styles.selectedCount,
-        ]}>
+        <Text style={[styles.count, isSelected && styles.selectedCount]}>
           {count}
         </Text>
       )}

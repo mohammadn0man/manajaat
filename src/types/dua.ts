@@ -1,4 +1,11 @@
-export type DayOfWeek = 'friday' | 'saturday' | 'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday';
+export type DayOfWeek =
+  | 'friday'
+  | 'saturday'
+  | 'sunday'
+  | 'monday'
+  | 'tuesday'
+  | 'wednesday'
+  | 'thursday';
 
 export interface Dua {
   id: string;

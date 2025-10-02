@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import AppNavigator from './src/navigation/AppNavigator';
@@ -8,7 +7,7 @@ import { useFonts } from 'expo-font';
 
 function AppContent() {
   const { colorScheme } = useApp();
-  
+
   return (
     <View style={styles.container}>
       <AppNavigator />
@@ -21,7 +20,7 @@ export default function App() {
   const [fontsLoaded] = useFonts({
     'Amiri-Regular': require('./assets/fonts/Amiri-Regular.ttf'),
     'Amiri-Bold': require('./assets/fonts/Amiri-Bold.ttf'),
-    'Amiri': require('./assets/fonts/Amiri-Regular.ttf'),
+    Amiri: require('./assets/fonts/Amiri-Regular.ttf'),
   });
 
   if (!fontsLoaded) {

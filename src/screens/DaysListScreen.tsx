@@ -3,7 +3,11 @@ import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { DayOfWeek } from '../types/dua';
-import { getAllDays, getDayDisplayName, getDuasByDay } from '../services/duaService';
+import {
+  getAllDays,
+  getDayDisplayName,
+  getDuasByDay,
+} from '../services/duaService';
 import TopBar from '../components/TopBar';
 import { RootStackParamList } from '../navigation/types';
 import { useTheme } from '../contexts/ThemeProvider';
@@ -32,10 +36,13 @@ const DayItem: React.FC<DayItemProps> = ({ day }) => {
     >
       <View style={styles.rowBetween}>
         <View style={styles.column}>
-          <Text style={styles.h4}>
-            {dayDisplayName}
-          </Text>
-          <Text style={[styles.textMuted, styles.globalStyles.spacingUtils.mt('xs')]}>
+          <Text style={styles.h4}>{dayDisplayName}</Text>
+          <Text
+            style={[
+              styles.textMuted,
+              styles.globalStyles.spacingUtils.mt('xs'),
+            ]}
+          >
             {dayDuas.length} duas available
           </Text>
         </View>
@@ -51,10 +58,7 @@ const DaysListScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <TopBar
-        title="All Days"
-        subtitle="Browse duas by day of the week"
-      />
+      <TopBar title="All Days" subtitle="Browse duas by day of the week" />
 
       <View style={styles.content}>
         <FlatList

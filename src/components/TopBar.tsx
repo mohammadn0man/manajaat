@@ -19,9 +19,19 @@ const TopBar: React.FC<TopBarProps> = ({
   rightComponent,
 }) => {
   const { colors, styles } = useTheme();
-  
+
   return (
-    <View style={[styles.rowBetween, { backgroundColor: colors.primary, paddingTop: 48, paddingBottom: 24, paddingHorizontal: 24 }]}>
+    <View
+      style={[
+        styles.rowBetween,
+        {
+          backgroundColor: colors.primary,
+          paddingTop: 48,
+          paddingBottom: 24,
+          paddingHorizontal: 24,
+        },
+      ]}
+    >
       <View style={{ width: 40, alignItems: 'flex-start' }}>
         {showBackButton && (
           <TouchableOpacity
@@ -31,16 +41,40 @@ const TopBar: React.FC<TopBarProps> = ({
             accessibilityLabel="Go back"
             accessibilityHint="Navigate back to previous screen"
           >
-            <Ionicons name="arrow-back" size={24} color={colors.primaryForeground} />
+            <Ionicons
+              name="arrow-back"
+              size={24}
+              color={colors.primaryForeground}
+            />
           </TouchableOpacity>
         )}
       </View>
-      
+
       <View style={styles.columnCenter}>
-        <Text style={[styles.h3, { color: colors.primaryForeground, textAlign: 'center' }]}>{title}</Text>
-        {subtitle && <Text style={[styles.body, { color: colors.primaryForeground, textAlign: 'center', marginTop: 4 }]}>{subtitle}</Text>}
+        <Text
+          style={[
+            styles.h3,
+            { color: colors.primaryForeground, textAlign: 'center' },
+          ]}
+        >
+          {title}
+        </Text>
+        {subtitle && (
+          <Text
+            style={[
+              styles.body,
+              {
+                color: colors.primaryForeground,
+                textAlign: 'center',
+                marginTop: 4,
+              },
+            ]}
+          >
+            {subtitle}
+          </Text>
+        )}
       </View>
-      
+
       <View style={{ width: 40, alignItems: 'flex-end' }}>
         {rightComponent}
       </View>

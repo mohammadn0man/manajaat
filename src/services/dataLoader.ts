@@ -8,7 +8,7 @@ const rawData = duasData as RawDuaData;
 // Normalize the raw data into our typed format
 export const normalizeDuasData = (): Dua[] => {
   const normalizedDuas: Dua[] = [];
-  
+
   Object.entries(rawData.days).forEach(([day, duas]) => {
     duas.forEach((dua, index) => {
       normalizedDuas.push({
@@ -23,7 +23,7 @@ export const normalizeDuasData = (): Dua[] => {
       });
     });
   });
-  
+
   return normalizedDuas;
 };
 

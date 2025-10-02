@@ -29,16 +29,19 @@ const Typography: React.FC<TypographyProps> = ({
     // Check if content contains Arabic characters
     const hasArabic = /[\u0600-\u06FF]/.test(String(children));
     // Check if content contains Urdu characters
-    const hasUrdu = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/.test(String(children));
-    
+    const hasUrdu =
+      /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/.test(
+        String(children)
+      );
+
     if (hasArabic || language === 'ar') {
       return weight === 'bold' ? fontFamilies.arabicBold : fontFamilies.arabic;
     }
-    
+
     if (hasUrdu || language === 'ur') {
       return weight === 'bold' ? fontFamilies.urduBold : fontFamilies.urdu;
     }
-    
+
     // Default to Latin fonts
     switch (weight) {
       case 'medium':
@@ -98,8 +101,11 @@ const Typography: React.FC<TypographyProps> = ({
   // Get writing direction
   const getWritingDirection = (): 'ltr' | 'rtl' => {
     const hasArabic = /[\u0600-\u06FF]/.test(String(children));
-    const hasUrdu = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/.test(String(children));
-    
+    const hasUrdu =
+      /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/.test(
+        String(children)
+      );
+
     if (hasArabic || hasUrdu || language === 'ar' || language === 'ur') {
       return 'rtl';
     }
@@ -116,10 +122,7 @@ const Typography: React.FC<TypographyProps> = ({
   };
 
   return (
-    <Text
-      style={[typographyStyle, style]}
-      {...props}
-    >
+    <Text style={[typographyStyle, style]} {...props}>
       {children}
     </Text>
   );
@@ -152,14 +155,38 @@ const getColorStyle = (color: string, isDarkMode: boolean) => {
 // Variant-specific styles
 const getVariantStyle = (variant: string, baseFontSize: number) => {
   const variants = {
-    h1: { fontWeight: '700' as const, lineHeight: Math.round(baseFontSize * 2.0) },
-    h2: { fontWeight: '600' as const, lineHeight: Math.round(baseFontSize * 1.8) },
-    h3: { fontWeight: '600' as const, lineHeight: Math.round(baseFontSize * 1.6) },
-    h4: { fontWeight: '500' as const, lineHeight: Math.round(baseFontSize * 1.4) },
-    body: { fontWeight: '400' as const, lineHeight: Math.round(baseFontSize * 1.2) },
-    caption: { fontWeight: '400' as const, lineHeight: Math.round(baseFontSize * 1.0) },
-    arabic: { fontWeight: '600' as const, lineHeight: Math.round(baseFontSize * 1.8) },
-    urdu: { fontWeight: '400' as const, lineHeight: Math.round(baseFontSize * 1.4) },
+    h1: {
+      fontWeight: '700' as const,
+      lineHeight: Math.round(baseFontSize * 2.0),
+    },
+    h2: {
+      fontWeight: '600' as const,
+      lineHeight: Math.round(baseFontSize * 1.8),
+    },
+    h3: {
+      fontWeight: '600' as const,
+      lineHeight: Math.round(baseFontSize * 1.6),
+    },
+    h4: {
+      fontWeight: '500' as const,
+      lineHeight: Math.round(baseFontSize * 1.4),
+    },
+    body: {
+      fontWeight: '400' as const,
+      lineHeight: Math.round(baseFontSize * 1.2),
+    },
+    caption: {
+      fontWeight: '400' as const,
+      lineHeight: Math.round(baseFontSize * 1.0),
+    },
+    arabic: {
+      fontWeight: '600' as const,
+      lineHeight: Math.round(baseFontSize * 1.8),
+    },
+    urdu: {
+      fontWeight: '400' as const,
+      lineHeight: Math.round(baseFontSize * 1.4),
+    },
   };
   return variants[variant as keyof typeof variants] || variants.body;
 };

@@ -22,7 +22,7 @@ class AnalyticsService {
     };
 
     this.events.push(analyticsEvent);
-    
+
     // In a real app, you would send this to your analytics provider
     // For now, we'll just log to console
     console.log('Analytics Event:', analyticsEvent);
@@ -52,7 +52,11 @@ class AnalyticsService {
   /**
    * Log session completion event
    */
-  logSessionCompleted(date: string, total: number, durationSeconds?: number): void {
+  logSessionCompleted(
+    date: string,
+    total: number,
+    durationSeconds?: number
+  ): void {
     this.logEvent('session_completed', {
       date,
       total,

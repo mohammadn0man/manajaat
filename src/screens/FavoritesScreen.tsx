@@ -20,7 +20,7 @@ const FavoritesScreen: React.FC = () => {
   // Get all duas and filter favorites
   const favoriteDuas = useMemo(() => {
     const allDuas = getDuasData();
-    return allDuas.filter(dua => favorites.includes(dua.id));
+    return allDuas.filter((dua) => favorites.includes(dua.id));
   }, [favorites]);
 
   const handleDuaPress = (dua: Dua) => {
@@ -48,7 +48,12 @@ const FavoritesScreen: React.FC = () => {
   };
 
   const renderDuaItem = ({ item }: { item: Dua }) => (
-    <View style={{ position: 'relative', marginBottom: styles.globalStyles.spacing.md }}>
+    <View
+      style={{
+        position: 'relative',
+        marginBottom: styles.globalStyles.spacing.md,
+      }}
+    >
       <DuaCard
         dua={item}
         onPress={handleDuaPress}
@@ -122,8 +127,21 @@ const FavoritesScreen: React.FC = () => {
         ) : (
           <View style={styles.centerContent}>
             <Ionicons name="heart-outline" size={64} color="#9CA3AF" />
-            <Text style={[styles.h2, styles.globalStyles.spacingUtils.mt('lg')]}>No Favorites Yet</Text>
-            <Text style={[styles.textMuted, styles.globalStyles.spacingUtils.mt('sm'), { textAlign: 'center', paddingHorizontal: styles.globalStyles.spacing['3xl'] }]}>
+            <Text
+              style={[styles.h2, styles.globalStyles.spacingUtils.mt('lg')]}
+            >
+              No Favorites Yet
+            </Text>
+            <Text
+              style={[
+                styles.textMuted,
+                styles.globalStyles.spacingUtils.mt('sm'),
+                {
+                  textAlign: 'center',
+                  paddingHorizontal: styles.globalStyles.spacing['3xl'],
+                },
+              ]}
+            >
               Tap the heart icon on any dua to add it to your favorites
             </Text>
           </View>

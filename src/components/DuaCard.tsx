@@ -19,7 +19,7 @@ const DuaCard: React.FC<DuaCardProps> = ({
 }) => {
   const { styles } = useTheme();
   const { language, getFontSizeValue } = useApp();
-  
+
   // Get the appropriate translation based on current language
   const getTranslation = () => {
     switch (language) {
@@ -31,20 +31,22 @@ const DuaCard: React.FC<DuaCardProps> = ({
         return dua.translations.en;
     }
   };
-  
+
   const translation = getTranslation();
-  
+
   // Add extra padding for large font sizes to prevent text cutting
   const getDynamicPadding = () => {
     const fontSize = getFontSizeValue();
-    if (fontSize >= 24) { // Large font size
+    if (fontSize >= 24) {
+      // Large font size
       return {
         paddingHorizontal: 20,
         paddingVertical: 50, // Increased for Arabic characters
         marginHorizontal: 4,
         marginVertical: 4,
       };
-    } else if (fontSize >= 20) { // Normal font size
+    } else if (fontSize >= 20) {
+      // Normal font size
       return {
         paddingHorizontal: 16,
         paddingVertical: 24, // Increased for Arabic characters
@@ -56,38 +58,48 @@ const DuaCard: React.FC<DuaCardProps> = ({
       paddingVertical: 16, // Add some padding even for small font size
     };
   };
-  
+
   const dynamicPadding = getDynamicPadding();
-  
+
   return (
     <TouchableOpacity
-      style={[
-        compact ? styles.cardCompact : styles.card,
-        dynamicPadding
-      ]}
+      style={[compact ? styles.cardCompact : styles.card, dynamicPadding]}
       onPress={() => onPress(dua)}
       accessibilityRole="button"
       accessibilityLabel={`Dua: ${dua.arabic.substring(0, 50)}...`}
       accessibilityHint="Tap to view full dua details"
     >
-      <Text style={[
-        compact ? styles.arabic : styles.arabicLarge,
-        { 
-          fontFamily: 'Amiri-Regular',
-          fontWeight: 'normal' // Ensure no conflicting font weight
-        }
-      ]}>
+      <Text
+        style={[
+          compact ? styles.arabic : styles.arabicLarge,
+          {
+            fontFamily: 'Amiri-Regular',
+            fontWeight: 'normal', // Ensure no conflicting font weight
+          },
+        ]}
+      >
         {dua.arabic}
       </Text>
-      
+
       {translation && (
-        <Text style={[styles.textSecondary, styles.globalStyles.spacingUtils.mt('sm')]}>
+        <Text
+          style={[
+            styles.textSecondary,
+            styles.globalStyles.spacingUtils.mt('sm'),
+          ]}
+        >
           {translation}
         </Text>
       )}
-      
+
       {showReference && dua.reference && (
-        <Text style={[styles.textMuted, styles.globalStyles.spacingUtils.mt('sm'), { fontStyle: 'italic' }]}>
+        <Text
+          style={[
+            styles.textMuted,
+            styles.globalStyles.spacingUtils.mt('sm'),
+            { fontStyle: 'italic' },
+          ]}
+        >
           {dua.reference}
         </Text>
       )}

@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  View, 
-  Text, 
-  TouchableOpacity, 
-  Animated, 
-  PanResponder, 
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Animated,
+  PanResponder,
   Dimensions,
   AccessibilityInfo,
 } from 'react-native';
@@ -34,12 +34,12 @@ const DuaPager: React.FC<DuaPagerProps> = ({
 }) => {
   const { styles, colors } = useTheme();
   const { isRTL } = useApp();
-  
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [sessionStartTime] = useState<number>(Date.now());
   const [duaStartTime, setDuaStartTime] = useState<number>(Date.now());
-  
+
   const slideAnim = useRef(new Animated.Value(0)).current;
   const progressAnim = useRef(new Animated.Value(0)).current;
 
@@ -50,13 +50,13 @@ const DuaPager: React.FC<DuaPagerProps> = ({
       const index = Math.min(savedProgress, duas.length - 1);
       setCurrentIndex(index);
       setDuaStartTime(Date.now());
-      
+
       // Log initial dua view
       if (duas.length > 0) {
         analyticsService.logDuaView(duas[index].id, index, duas.length);
       }
     };
-    
+
     loadProgress();
   }, [duas]);
 
@@ -79,7 +79,10 @@ const DuaPager: React.FC<DuaPagerProps> = ({
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: (_, gestureState) => {
-        return Math.abs(gestureState.dx) > Math.abs(gestureState.dy) && Math.abs(gestureState.dx) > 10;
+        return (
+          Math.abs(gestureState.dx) > Math.abs(gestureState.dy) &&
+          Math.abs(gestureState.dx) > 10
+        );
       },
       onPanResponderMove: (_, gestureState) => {
         if (!isAnimating) {
@@ -91,7 +94,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
 
         const { dx } = gestureState;
         const shouldSwipe = Math.abs(dx) > SWIPE_THRESHOLD;
-        
+
         if (shouldSwipe) {
           if (dx > 0) {
             // Swipe right - go to previous
@@ -116,19 +119,19 @@ const DuaPager: React.FC<DuaPagerProps> = ({
   const goToPrevious = async () => {
     if (currentIndex > 0 && !isAnimating) {
       setIsAnimating(true);
-      
+
       // Log navigation
       analyticsService.logDuaNavigated(currentIndex, currentIndex - 1);
-      
+
       // Log duration for current dua
       const duration = (Date.now() - duaStartTime) / 1000;
       analyticsService.logDuaViewDuration(duas[currentIndex].id, duration);
-      
+
       const newIndex = currentIndex - 1;
-      
+
       // Reset animation value before starting
       slideAnim.setValue(0);
-      
+
       // Animate slide
       Animated.timing(slideAnim, {
         toValue: isRTL ? -screenWidth : screenWidth,
@@ -139,15 +142,17 @@ const DuaPager: React.FC<DuaPagerProps> = ({
         setDuaStartTime(Date.now());
         slideAnim.setValue(0);
         setIsAnimating(false);
-        
+
         // Save progress
         storageService.setTodayProgress(newIndex);
-        
+
         // Log new dua view
         analyticsService.logDuaView(duas[newIndex].id, newIndex, duas.length);
-        
+
         // Announce to screen reader
-        AccessibilityInfo.announceForAccessibility(`Dua ${newIndex + 1} of ${duas.length}`);
+        AccessibilityInfo.announceForAccessibility(
+          `Dua ${newIndex + 1} of ${duas.length}`
+        );
       });
     }
   };
@@ -155,19 +160,19 @@ const DuaPager: React.FC<DuaPagerProps> = ({
   const goToNext = async () => {
     if (currentIndex < duas.length - 1 && !isAnimating) {
       setIsAnimating(true);
-      
+
       // Log navigation
       analyticsService.logDuaNavigated(currentIndex, currentIndex + 1);
-      
+
       // Log duration for current dua
       const duration = (Date.now() - duaStartTime) / 1000;
       analyticsService.logDuaViewDuration(duas[currentIndex].id, duration);
-      
+
       const newIndex = currentIndex + 1;
-      
+
       // Reset animation value before starting
       slideAnim.setValue(0);
-      
+
       // Animate slide
       Animated.timing(slideAnim, {
         toValue: isRTL ? screenWidth : -screenWidth,
@@ -178,38 +183,53 @@ const DuaPager: React.FC<DuaPagerProps> = ({
         setDuaStartTime(Date.now());
         slideAnim.setValue(0);
         setIsAnimating(false);
-        
+
         // Save progress
         storageService.setTodayProgress(newIndex);
-        
+
         // Log new dua view
         analyticsService.logDuaView(duas[newIndex].id, newIndex, duas.length);
-        
+
         // Announce to screen reader
-        AccessibilityInfo.announceForAccessibility(`Dua ${newIndex + 1} of ${duas.length}`);
+        AccessibilityInfo.announceForAccessibility(
+          `Dua ${newIndex + 1} of ${duas.length}`
+        );
       });
     }
   };
 
   const handleComplete = async () => {
     if (isAnimating) return;
-    
+
     // Log session completion
     const totalDuration = (Date.now() - sessionStartTime) / 1000;
-    analyticsService.logSessionCompleted(dateKeyForToday(), duas.length, totalDuration);
-    
+    analyticsService.logSessionCompleted(
+      dateKeyForToday(),
+      duas.length,
+      totalDuration
+    );
+
     // Mark as completed
     await storageService.setTodayCompleted();
     await storageService.clearTodayProgress();
-    
+
     onComplete();
   };
 
   if (duas.length === 0) {
     return (
       <View style={styles.centerContent}>
-        <Ionicons name="book-outline" size={64} color={colors.mutedForeground} />
-        <Text style={[styles.h3, { color: colors.foreground, marginTop: 16, textAlign: 'center' }]}>
+        <Ionicons
+          name="book-outline"
+          size={64}
+          color={colors.mutedForeground}
+        />
+        <Text
+          style={[
+            styles.h3,
+            { color: colors.foreground, marginTop: 16, textAlign: 'center' },
+          ]}
+        >
           No duas available for today
         </Text>
         <Text style={[styles.textMuted, { textAlign: 'center', marginTop: 8 }]}>
@@ -227,11 +247,13 @@ const DuaPager: React.FC<DuaPagerProps> = ({
   return (
     <View style={styles.container}>
       {/* Progress Bar */}
-      <View style={{
-        paddingHorizontal: 24,
-        paddingVertical: 16,
-        backgroundColor: colors.background,
-      }}>
+      <View
+        style={{
+          paddingHorizontal: 24,
+          paddingVertical: 16,
+          backgroundColor: colors.background,
+        }}
+      >
         <View style={styles.rowBetween}>
           <Text style={[styles.caption, { color: colors.mutedForeground }]}>
             {currentIndex + 1} of {duas.length}
@@ -240,15 +262,17 @@ const DuaPager: React.FC<DuaPagerProps> = ({
             {Math.round(((currentIndex + 1) / duas.length) * 100)}%
           </Text>
         </View>
-        
+
         {/* Progress Bar */}
-        <View style={{
-          height: 4,
-          backgroundColor: colors.muted,
-          borderRadius: 2,
-          marginTop: 8,
-          overflow: 'hidden',
-        }}>
+        <View
+          style={{
+            height: 4,
+            backgroundColor: colors.muted,
+            borderRadius: 2,
+            marginTop: 8,
+            overflow: 'hidden',
+          }}
+        >
           <Animated.View
             style={{
               height: '100%',
@@ -288,14 +312,16 @@ const DuaPager: React.FC<DuaPagerProps> = ({
 
       {/* Navigation Buttons */}
       {!isOnlyOne && (
-        <View style={{
-          flexDirection: isRTL ? 'row-reverse' : 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          paddingHorizontal: 24,
-          paddingVertical: 20,
-          backgroundColor: colors.background,
-        }}>
+        <View
+          style={{
+            flexDirection: isRTL ? 'row-reverse' : 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            paddingHorizontal: 24,
+            paddingVertical: 20,
+            backgroundColor: colors.background,
+          }}
+        >
           {/* Previous Button */}
           <TouchableOpacity
             style={[
@@ -308,7 +334,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
                 flexDirection: isRTL ? 'row-reverse' : 'row',
                 alignItems: 'center',
                 opacity: isFirst ? 0.5 : 1,
-              }
+              },
             ]}
             onPress={goToPrevious}
             disabled={isFirst || isAnimating}
@@ -316,20 +342,26 @@ const DuaPager: React.FC<DuaPagerProps> = ({
             accessibilityLabel="Previous dua"
             accessibilityHint="Go to previous dua"
           >
-            <Ionicons 
-              name={isRTL ? "chevron-forward" : "chevron-back"} 
-              size={20} 
-              color={isFirst ? colors.mutedForeground : colors.primaryForeground} 
-            />
-            <Text style={[
-              styles.body,
-              {
-                color: isFirst ? colors.mutedForeground : colors.primaryForeground,
-                marginLeft: isRTL ? 0 : 8,
-                marginRight: isRTL ? 8 : 0,
-                fontWeight: '600',
+            <Ionicons
+              name={isRTL ? 'chevron-forward' : 'chevron-back'}
+              size={20}
+              color={
+                isFirst ? colors.mutedForeground : colors.primaryForeground
               }
-            ]}>
+            />
+            <Text
+              style={[
+                styles.body,
+                {
+                  color: isFirst
+                    ? colors.mutedForeground
+                    : colors.primaryForeground,
+                  marginLeft: isRTL ? 0 : 8,
+                  marginRight: isRTL ? 8 : 0,
+                  fontWeight: '600',
+                },
+              ]}
+            >
               Previous
             </Text>
           </TouchableOpacity>
@@ -345,30 +377,34 @@ const DuaPager: React.FC<DuaPagerProps> = ({
                 borderRadius: 12,
                 flexDirection: isRTL ? 'row-reverse' : 'row',
                 alignItems: 'center',
-              }
+              },
             ]}
             onPress={isLast ? handleComplete : goToNext}
             disabled={isAnimating}
             accessibilityRole="button"
-            accessibilityLabel={isLast ? "I am done" : "Next dua"}
-            accessibilityHint={isLast ? "Complete today's session" : "Go to next dua"}
+            accessibilityLabel={isLast ? 'I am done' : 'Next dua'}
+            accessibilityHint={
+              isLast ? "Complete today's session" : 'Go to next dua'
+            }
           >
-            <Text style={[
-              styles.body,
-              {
-                color: 'white',
-                marginLeft: isRTL ? 0 : 8,
-                marginRight: isRTL ? 8 : 0,
-                fontWeight: '600',
-              }
-            ]}>
-              {isLast ? "I'm done" : "Next"}
+            <Text
+              style={[
+                styles.body,
+                {
+                  color: 'white',
+                  marginLeft: isRTL ? 0 : 8,
+                  marginRight: isRTL ? 8 : 0,
+                  fontWeight: '600',
+                },
+              ]}
+            >
+              {isLast ? "I'm done" : 'Next'}
             </Text>
             {!isLast && (
-              <Ionicons 
-                name={isRTL ? "chevron-back" : "chevron-forward"} 
-                size={20} 
-                color="white" 
+              <Ionicons
+                name={isRTL ? 'chevron-back' : 'chevron-forward'}
+                size={20}
+                color="white"
               />
             )}
           </TouchableOpacity>
@@ -377,11 +413,13 @@ const DuaPager: React.FC<DuaPagerProps> = ({
 
       {/* Single Dua Complete Button */}
       {isOnlyOne && (
-        <View style={{
-          paddingHorizontal: 24,
-          paddingVertical: 20,
-          backgroundColor: colors.background,
-        }}>
+        <View
+          style={{
+            paddingHorizontal: 24,
+            paddingVertical: 20,
+            backgroundColor: colors.background,
+          }}
+        >
           <TouchableOpacity
             style={[
               styles.button,
@@ -390,7 +428,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
                 paddingVertical: 16,
                 borderRadius: 12,
                 alignItems: 'center',
-              }
+              },
             ]}
             onPress={handleComplete}
             disabled={isAnimating}
@@ -398,13 +436,15 @@ const DuaPager: React.FC<DuaPagerProps> = ({
             accessibilityLabel="I am done"
             accessibilityHint="Complete today's session"
           >
-            <Text style={[
-              styles.body,
-              {
-                color: 'white',
-                fontWeight: '600',
-              }
-            ]}>
+            <Text
+              style={[
+                styles.body,
+                {
+                  color: 'white',
+                  fontWeight: '600',
+                },
+              ]}
+            >
               I'm done
             </Text>
           </TouchableOpacity>
