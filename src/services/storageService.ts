@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { errorLogger } from '../utils/errorLogger';
 
 // Storage keys
 const STORAGE_KEYS = {
@@ -24,7 +25,13 @@ class StorageService {
     try {
       const favorites = await AsyncStorage.getItem(STORAGE_KEYS.FAVORITES);
       return favorites ? JSON.parse(favorites) : [];
-    } catch {
+    } catch (error) {
+      errorLogger.logError(
+        'Failed to get favorites from storage',
+        error,
+        { context: 'storageService.getFavorites' },
+        'medium'
+      );
       return [];
     }
   }
@@ -47,7 +54,13 @@ class StorageService {
         JSON.stringify(favorites)
       );
       return index === -1; // Return true if added, false if removed
-    } catch {
+    } catch (error) {
+      errorLogger.logError(
+        'Failed to toggle favorite',
+        error,
+        { context: 'storageService.toggleFavorite', duaId },
+        'medium'
+      );
       return false;
     }
   }
@@ -55,8 +68,13 @@ class StorageService {
   async clearFavorites(): Promise<void> {
     try {
       await AsyncStorage.removeItem(STORAGE_KEYS.FAVORITES);
-    } catch {
-      // Ignore errors
+    } catch (error) {
+      errorLogger.logError(
+        'Failed to clear favorites',
+        error,
+        { context: 'storageService.clearFavorites' },
+        'medium'
+      );
     }
   }
 
@@ -79,7 +97,13 @@ class StorageService {
         theme: (theme as Theme) || 'system',
         fontSize: (fontSize as FontSize) || 'normal',
       };
-    } catch {
+    } catch (error) {
+      errorLogger.logError(
+        'Failed to get settings from storage',
+        error,
+        { context: 'storageService.getSettings' },
+        'medium'
+      );
       return {
         language: 'en',
         theme: 'system',
@@ -91,24 +115,39 @@ class StorageService {
   async setLanguage(language: Language): Promise<void> {
     try {
       await AsyncStorage.setItem(STORAGE_KEYS.LANGUAGE, language);
-    } catch {
-      // Ignore errors
+    } catch (error) {
+      errorLogger.logError(
+        'Failed to set language',
+        error,
+        { context: 'storageService.setLanguage', language },
+        'medium'
+      );
     }
   }
 
   async setTheme(theme: Theme): Promise<void> {
     try {
       await AsyncStorage.setItem(STORAGE_KEYS.THEME, theme);
-    } catch {
-      // Ignore errors
+    } catch (error) {
+      errorLogger.logError(
+        'Failed to set theme',
+        error,
+        { context: 'storageService.setTheme', theme },
+        'medium'
+      );
     }
   }
 
   async setFontSize(fontSize: FontSize): Promise<void> {
     try {
       await AsyncStorage.setItem(STORAGE_KEYS.FONT_SIZE, fontSize);
-    } catch {
-      // Ignore errors
+    } catch (error) {
+      errorLogger.logError(
+        'Failed to set font size',
+        error,
+        { context: 'storageService.setFontSize', fontSize },
+        'medium'
+      );
     }
   }
 
@@ -118,7 +157,13 @@ class StorageService {
       const todayKey = `todayProgress_${new Date().toISOString().split('T')[0]}`;
       const progress = await AsyncStorage.getItem(todayKey);
       return progress ? parseInt(progress, 10) : 0;
-    } catch {
+    } catch (error) {
+      errorLogger.logError(
+        'Failed to get today progress',
+        error,
+        { context: 'storageService.getTodayProgress' },
+        'medium'
+      );
       return 0;
     }
   }
@@ -127,8 +172,13 @@ class StorageService {
     try {
       const todayKey = `todayProgress_${new Date().toISOString().split('T')[0]}`;
       await AsyncStorage.setItem(todayKey, progress.toString());
-    } catch {
-      // Ignore errors
+    } catch (error) {
+      errorLogger.logError(
+        'Failed to set today progress',
+        error,
+        { context: 'storageService.setTodayProgress', progress },
+        'medium'
+      );
     }
   }
 
@@ -136,8 +186,13 @@ class StorageService {
     try {
       const todayKey = `todayProgress_${new Date().toISOString().split('T')[0]}`;
       await AsyncStorage.removeItem(todayKey);
-    } catch {
-      // Ignore errors
+    } catch (error) {
+      errorLogger.logError(
+        'Failed to clear today progress',
+        error,
+        { context: 'storageService.clearTodayProgress' },
+        'medium'
+      );
     }
   }
 
@@ -146,7 +201,13 @@ class StorageService {
       const todayKey = `completed_${new Date().toISOString().split('T')[0]}`;
       const completed = await AsyncStorage.getItem(todayKey);
       return completed === 'true';
-    } catch {
+    } catch (error) {
+      errorLogger.logError(
+        'Failed to check if today is completed',
+        error,
+        { context: 'storageService.isTodayCompleted' },
+        'medium'
+      );
       return false;
     }
   }
@@ -155,8 +216,13 @@ class StorageService {
     try {
       const todayKey = `completed_${new Date().toISOString().split('T')[0]}`;
       await AsyncStorage.setItem(todayKey, 'true');
-    } catch {
-      // Ignore errors
+    } catch (error) {
+      errorLogger.logError(
+        'Failed to set today as completed',
+        error,
+        { context: 'storageService.setTodayCompleted' },
+        'medium'
+      );
     }
   }
 
@@ -166,8 +232,13 @@ class StorageService {
       const completedKey = `completed_${new Date().toISOString().split('T')[0]}`;
       await AsyncStorage.removeItem(todayKey);
       await AsyncStorage.removeItem(completedKey);
-    } catch {
-      // Ignore errors
+    } catch (error) {
+      errorLogger.logError(
+        'Failed to reset today progress',
+        error,
+        { context: 'storageService.resetTodayProgress' },
+        'medium'
+      );
     }
   }
 
@@ -175,8 +246,13 @@ class StorageService {
   async clearAll(): Promise<void> {
     try {
       await AsyncStorage.clear();
-    } catch {
-      // Ignore errors
+    } catch (error) {
+      errorLogger.logError(
+        'Failed to clear all storage',
+        error,
+        { context: 'storageService.clearAll' },
+        'high'
+      );
     }
   }
 }

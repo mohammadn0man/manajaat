@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, Text, Modal, TouchableOpacity, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  Modal,
+  TouchableOpacity,
+  useWindowDimensions,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../contexts/ThemeProvider';
 
@@ -11,8 +17,6 @@ interface SessionCompleteModalProps {
   totalDuas: number;
 }
 
-const { width } = Dimensions.get('window');
-
 const SessionCompleteModal: React.FC<SessionCompleteModalProps> = ({
   visible,
   onClose,
@@ -20,6 +24,7 @@ const SessionCompleteModal: React.FC<SessionCompleteModalProps> = ({
   totalDuas,
 }) => {
   const { styles, colors } = useTheme();
+  const { width } = useWindowDimensions();
 
   const handleBackToHome = () => {
     onClose();

@@ -1,11 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+} from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   Animated,
   PanResponder,
-  Dimensions,
+  useWindowDimensions,
   AccessibilityInfo,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -16,6 +22,9 @@ import DuaCard from './DuaCard';
 import { storageService } from '../services/storageService';
 import { analyticsService } from '../services/analyticsService';
 import { dateKeyForToday } from '../utils/dateUtils';
+import { UI_CONSTANTS } from '../constants/ui';
+import { errorLogger } from '../utils/errorLogger';
+import { validateArrayIndex } from '../utils/validation';
 
 interface DuaPagerProps {
   duas: Dua[];
@@ -23,9 +32,7 @@ interface DuaPagerProps {
   onDuaPress: (dua: Dua) => void;
 }
 
-const { width: screenWidth } = Dimensions.get('window');
-const SWIPE_THRESHOLD = 50;
-const ANIMATION_DURATION = 250;
+// Constants moved to UI_CONSTANTS
 
 const DuaPager: React.FC<DuaPagerProps> = ({
   duas,
@@ -34,38 +41,70 @@ const DuaPager: React.FC<DuaPagerProps> = ({
 }) => {
   const { styles, colors } = useTheme();
   const { isRTL } = useApp();
+  const { width: screenWidth } = useWindowDimensions();
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [sessionStartTime] = useState<number>(Date.now());
   const [duaStartTime, setDuaStartTime] = useState<number>(Date.now());
+  const [isMounted, setIsMounted] = useState(true);
 
   const slideAnim = useRef(new Animated.Value(0)).current;
   const progressAnim = useRef(new Animated.Value(0)).current;
 
-  // Load initial progress
+  // Cleanup on unmount
   useEffect(() => {
-    const loadProgress = async () => {
-      const savedProgress = await storageService.getTodayProgress();
-      const index = Math.min(savedProgress, duas.length - 1);
-      setCurrentIndex(index);
-      setDuaStartTime(Date.now());
+    return () => {
+      setIsMounted(false);
+    };
+  }, []);
 
-      // Log initial dua view
-      if (duas.length > 0) {
-        analyticsService.logDuaView(duas[index].id, index, duas.length);
+  // Load initial progress with race condition protection
+  useEffect(() => {
+    let isMountedRef = true;
+
+    const loadProgress = async () => {
+      try {
+        const savedProgress = await storageService.getTodayProgress();
+
+        if (!isMountedRef || !isMounted) return;
+
+        const index = Math.min(savedProgress, duas.length - 1);
+
+        if (!validateArrayIndex(duas, index, 'DuaPager.loadProgress')) {
+          return;
+        }
+
+        setCurrentIndex(index);
+        setDuaStartTime(Date.now());
+
+        // Log initial dua view
+        if (duas.length > 0 && duas[index]) {
+          analyticsService.logDuaView(duas[index].id, index, duas.length);
+        }
+      } catch (error) {
+        errorLogger.logError(
+          'Failed to load progress',
+          error,
+          { context: 'DuaPager.loadProgress' },
+          'medium'
+        );
       }
     };
 
     loadProgress();
-  }, [duas]);
+
+    return () => {
+      isMountedRef = false;
+    };
+  }, [duas, isMounted]);
 
   // Update progress animation when index changes
   useEffect(() => {
     const progress = duas.length > 0 ? (currentIndex + 1) / duas.length : 0;
     Animated.timing(progressAnim, {
       toValue: progress,
-      duration: ANIMATION_DURATION,
+      duration: UI_CONSTANTS.ANIMATION_DURATION,
       useNativeDriver: false,
     }).start();
   }, [currentIndex, duas.length, progressAnim]);
@@ -75,13 +114,194 @@ const DuaPager: React.FC<DuaPagerProps> = ({
     slideAnim.setValue(0);
   }, [currentIndex, slideAnim]);
 
-  // Pan responder for swipe gestures
-  const panResponder = useRef(
-    PanResponder.create({
+  // Pan responder will be created after function declarations
+
+  const goToPrevious = useCallback(async () => {
+    if (currentIndex > 0 && !isAnimating && isMounted) {
+      setIsAnimating(true);
+
+      try {
+        // Log navigation
+        analyticsService.logDuaNavigated(currentIndex, currentIndex - 1);
+
+        // Log duration for current dua
+        const duration = (Date.now() - duaStartTime) / 1000;
+        if (duas[currentIndex]) {
+          analyticsService.logDuaViewDuration(duas[currentIndex].id, duration);
+        }
+
+        const newIndex = currentIndex - 1;
+
+        if (!validateArrayIndex(duas, newIndex, 'DuaPager.goToPrevious')) {
+          setIsAnimating(false);
+          return;
+        }
+
+        // Reset animation value before starting
+        slideAnim.setValue(0);
+
+        // Animate slide
+        Animated.timing(slideAnim, {
+          toValue: isRTL ? -screenWidth : screenWidth,
+          duration: UI_CONSTANTS.ANIMATION_DURATION,
+          useNativeDriver: true,
+        }).start(() => {
+          if (!isMounted) return;
+
+          setCurrentIndex(newIndex);
+          setDuaStartTime(Date.now());
+          slideAnim.setValue(0);
+          setIsAnimating(false);
+
+          // Save progress
+          storageService.setTodayProgress(newIndex);
+
+          // Log new dua view
+          if (duas[newIndex]) {
+            analyticsService.logDuaView(
+              duas[newIndex].id,
+              newIndex,
+              duas.length
+            );
+          }
+
+          // Announce to screen reader
+          AccessibilityInfo.announceForAccessibility(
+            `Dua ${newIndex + 1} of ${duas.length}`
+          );
+        });
+      } catch (error) {
+        errorLogger.logError(
+          'Failed to navigate to previous dua',
+          error,
+          { context: 'DuaPager.goToPrevious', currentIndex },
+          'medium'
+        );
+        setIsAnimating(false);
+      }
+    }
+  }, [
+    currentIndex,
+    isAnimating,
+    isMounted,
+    duas,
+    duaStartTime,
+    isRTL,
+    screenWidth,
+    slideAnim,
+  ]);
+
+  const goToNext = useCallback(async () => {
+    if (currentIndex < duas.length - 1 && !isAnimating && isMounted) {
+      setIsAnimating(true);
+
+      try {
+        // Log navigation
+        analyticsService.logDuaNavigated(currentIndex, currentIndex + 1);
+
+        // Log duration for current dua
+        const duration = (Date.now() - duaStartTime) / 1000;
+        if (duas[currentIndex]) {
+          analyticsService.logDuaViewDuration(duas[currentIndex].id, duration);
+        }
+
+        const newIndex = currentIndex + 1;
+
+        if (!validateArrayIndex(duas, newIndex, 'DuaPager.goToNext')) {
+          setIsAnimating(false);
+          return;
+        }
+
+        // Reset animation value before starting
+        slideAnim.setValue(0);
+
+        // Animate slide
+        Animated.timing(slideAnim, {
+          toValue: isRTL ? screenWidth : -screenWidth,
+          duration: UI_CONSTANTS.ANIMATION_DURATION,
+          useNativeDriver: true,
+        }).start(() => {
+          if (!isMounted) return;
+
+          setCurrentIndex(newIndex);
+          setDuaStartTime(Date.now());
+          slideAnim.setValue(0);
+          setIsAnimating(false);
+
+          // Save progress
+          storageService.setTodayProgress(newIndex);
+
+          // Log new dua view
+          if (duas[newIndex]) {
+            analyticsService.logDuaView(
+              duas[newIndex].id,
+              newIndex,
+              duas.length
+            );
+          }
+
+          // Announce to screen reader
+          AccessibilityInfo.announceForAccessibility(
+            `Dua ${newIndex + 1} of ${duas.length}`
+          );
+        });
+      } catch (error) {
+        errorLogger.logError(
+          'Failed to navigate to next dua',
+          error,
+          { context: 'DuaPager.goToNext', currentIndex },
+          'medium'
+        );
+        setIsAnimating(false);
+      }
+    }
+  }, [
+    currentIndex,
+    isAnimating,
+    isMounted,
+    duas,
+    duaStartTime,
+    isRTL,
+    screenWidth,
+    slideAnim,
+  ]);
+
+  const handleComplete = useCallback(async () => {
+    if (isAnimating || !isMounted) return;
+
+    try {
+      // Log session completion
+      const totalDuration = (Date.now() - sessionStartTime) / 1000;
+      analyticsService.logSessionCompleted(
+        dateKeyForToday(),
+        duas.length,
+        totalDuration
+      );
+
+      // Mark as completed
+      await storageService.setTodayCompleted();
+      await storageService.clearTodayProgress();
+
+      if (isMounted) {
+        onComplete();
+      }
+    } catch (error) {
+      errorLogger.logError(
+        'Failed to complete session',
+        error,
+        { context: 'DuaPager.handleComplete' },
+        'high'
+      );
+    }
+  }, [isAnimating, isMounted, sessionStartTime, duas.length, onComplete]);
+
+  // Pan responder for swipe gestures with proper cleanup
+  const panResponder = useMemo(() => {
+    return PanResponder.create({
       onMoveShouldSetPanResponder: (_, gestureState) => {
         return (
           Math.abs(gestureState.dx) > Math.abs(gestureState.dy) &&
-          Math.abs(gestureState.dx) > 10
+          Math.abs(gestureState.dx) > UI_CONSTANTS.GESTURE_MIN_DISTANCE
         );
       },
       onPanResponderMove: (_, gestureState) => {
@@ -93,7 +313,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
         if (isAnimating) return;
 
         const { dx } = gestureState;
-        const shouldSwipe = Math.abs(dx) > SWIPE_THRESHOLD;
+        const shouldSwipe = Math.abs(dx) > UI_CONSTANTS.SWIPE_THRESHOLD;
 
         if (shouldSwipe) {
           if (dx > 0) {
@@ -107,114 +327,120 @@ const DuaPager: React.FC<DuaPagerProps> = ({
           // Reset position with proper animation
           Animated.spring(slideAnim, {
             toValue: 0,
-            tension: 100,
-            friction: 8,
+            tension: UI_CONSTANTS.SPRING_TENSION,
+            friction: UI_CONSTANTS.SPRING_FRICTION,
             useNativeDriver: true,
           }).start();
         }
       },
-    })
-  ).current;
+    });
+  }, [isAnimating, slideAnim, goToPrevious, goToNext]);
 
-  const goToPrevious = async () => {
-    if (currentIndex > 0 && !isAnimating) {
-      setIsAnimating(true);
+  // Memoized styles for performance - must be called before any early returns
+  const progressBarContainerStyle = useMemo(
+    () => ({
+      paddingHorizontal: UI_CONSTANTS.PADDING.xxl,
+      paddingVertical: UI_CONSTANTS.PADDING.lg,
+      backgroundColor: colors.background,
+    }),
+    [colors.background]
+  );
 
-      // Log navigation
-      analyticsService.logDuaNavigated(currentIndex, currentIndex - 1);
+  const progressBarStyle = useMemo(
+    () => ({
+      height: UI_CONSTANTS.PROGRESS_BAR_HEIGHT,
+      backgroundColor: colors.muted,
+      borderRadius: UI_CONSTANTS.BORDER_RADIUS.small,
+      marginTop: UI_CONSTANTS.SPACING.sm,
+      overflow: 'hidden' as const,
+    }),
+    [colors.muted]
+  );
 
-      // Log duration for current dua
-      const duration = (Date.now() - duaStartTime) / 1000;
-      analyticsService.logDuaViewDuration(duas[currentIndex].id, duration);
+  const progressBarFillStyle = useMemo(
+    () => ({
+      height: '100%' as const,
+      backgroundColor: colors.primary,
+      borderRadius: UI_CONSTANTS.BORDER_RADIUS.small,
+      width: progressAnim.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0%', '100%'],
+      }),
+    }),
+    [colors.primary, progressAnim]
+  );
 
-      const newIndex = currentIndex - 1;
+  const navigationContainerStyle = useMemo(
+    () => ({
+      flexDirection: (isRTL ? 'row-reverse' : 'row') as 'row' | 'row-reverse',
+      justifyContent: 'space-between' as const,
+      alignItems: 'center' as const,
+      paddingHorizontal: UI_CONSTANTS.PADDING.xxl,
+      paddingVertical: UI_CONSTANTS.PADDING.xl,
+      backgroundColor: colors.background,
+    }),
+    [isRTL, colors.background]
+  );
 
-      // Reset animation value before starting
-      slideAnim.setValue(0);
+  const singleButtonContainerStyle = useMemo(
+    () => ({
+      paddingHorizontal: UI_CONSTANTS.PADDING.xxl,
+      paddingVertical: UI_CONSTANTS.PADDING.xl,
+      backgroundColor: colors.background,
+    }),
+    [colors.background]
+  );
 
-      // Animate slide
-      Animated.timing(slideAnim, {
-        toValue: isRTL ? -screenWidth : screenWidth,
-        duration: ANIMATION_DURATION,
-        useNativeDriver: true,
-      }).start(() => {
-        setCurrentIndex(newIndex);
-        setDuaStartTime(Date.now());
-        slideAnim.setValue(0);
-        setIsAnimating(false);
+  const singleButtonStyle = useMemo(
+    () => [
+      styles.button,
+      {
+        backgroundColor: UI_CONSTANTS.SUCCESS_COLOR,
+        paddingVertical: UI_CONSTANTS.PADDING.lg,
+        borderRadius: UI_CONSTANTS.BORDER_RADIUS.large,
+        alignItems: 'center',
+      },
+    ],
+    [styles.button]
+  );
 
-        // Save progress
-        storageService.setTodayProgress(newIndex);
+  // Calculate derived state before early return
+  const currentDua = duas.length > 0 ? duas[currentIndex] : null;
+  const isFirst = currentIndex === 0;
+  const isLast = currentIndex === duas.length - 1;
+  const isOnlyOne = duas.length === 1;
 
-        // Log new dua view
-        analyticsService.logDuaView(duas[newIndex].id, newIndex, duas.length);
+  // All conditional memoized styles must be before early return
+  const previousButtonStyle = useMemo(
+    () => [
+      styles.button,
+      {
+        backgroundColor: isFirst ? colors.muted : colors.primary,
+        paddingHorizontal: UI_CONSTANTS.PADDING.xl,
+        paddingVertical: UI_CONSTANTS.PADDING.md,
+        borderRadius: UI_CONSTANTS.BORDER_RADIUS.large,
+        flexDirection: isRTL ? 'row-reverse' : 'row',
+        alignItems: 'center',
+        opacity: isFirst ? 0.5 : 1,
+      },
+    ],
+    [isFirst, isRTL, colors.muted, colors.primary, styles.button]
+  );
 
-        // Announce to screen reader
-        AccessibilityInfo.announceForAccessibility(
-          `Dua ${newIndex + 1} of ${duas.length}`
-        );
-      });
-    }
-  };
-
-  const goToNext = async () => {
-    if (currentIndex < duas.length - 1 && !isAnimating) {
-      setIsAnimating(true);
-
-      // Log navigation
-      analyticsService.logDuaNavigated(currentIndex, currentIndex + 1);
-
-      // Log duration for current dua
-      const duration = (Date.now() - duaStartTime) / 1000;
-      analyticsService.logDuaViewDuration(duas[currentIndex].id, duration);
-
-      const newIndex = currentIndex + 1;
-
-      // Reset animation value before starting
-      slideAnim.setValue(0);
-
-      // Animate slide
-      Animated.timing(slideAnim, {
-        toValue: isRTL ? screenWidth : -screenWidth,
-        duration: ANIMATION_DURATION,
-        useNativeDriver: true,
-      }).start(() => {
-        setCurrentIndex(newIndex);
-        setDuaStartTime(Date.now());
-        slideAnim.setValue(0);
-        setIsAnimating(false);
-
-        // Save progress
-        storageService.setTodayProgress(newIndex);
-
-        // Log new dua view
-        analyticsService.logDuaView(duas[newIndex].id, newIndex, duas.length);
-
-        // Announce to screen reader
-        AccessibilityInfo.announceForAccessibility(
-          `Dua ${newIndex + 1} of ${duas.length}`
-        );
-      });
-    }
-  };
-
-  const handleComplete = async () => {
-    if (isAnimating) return;
-
-    // Log session completion
-    const totalDuration = (Date.now() - sessionStartTime) / 1000;
-    analyticsService.logSessionCompleted(
-      dateKeyForToday(),
-      duas.length,
-      totalDuration
-    );
-
-    // Mark as completed
-    await storageService.setTodayCompleted();
-    await storageService.clearTodayProgress();
-
-    onComplete();
-  };
+  const nextButtonStyle = useMemo(
+    () => [
+      styles.button,
+      {
+        backgroundColor: isLast ? UI_CONSTANTS.SUCCESS_COLOR : colors.primary,
+        paddingHorizontal: UI_CONSTANTS.PADDING.xl,
+        paddingVertical: UI_CONSTANTS.PADDING.md,
+        borderRadius: UI_CONSTANTS.BORDER_RADIUS.large,
+        flexDirection: isRTL ? 'row-reverse' : 'row',
+        alignItems: 'center',
+      },
+    ],
+    [isLast, isRTL, colors.primary, styles.button]
+  );
 
   if (duas.length === 0) {
     return (
@@ -239,21 +465,10 @@ const DuaPager: React.FC<DuaPagerProps> = ({
     );
   }
 
-  const currentDua = duas[currentIndex];
-  const isFirst = currentIndex === 0;
-  const isLast = currentIndex === duas.length - 1;
-  const isOnlyOne = duas.length === 1;
-
   return (
     <View style={styles.container}>
       {/* Progress Bar */}
-      <View
-        style={{
-          paddingHorizontal: 24,
-          paddingVertical: 16,
-          backgroundColor: colors.background,
-        }}
-      >
+      <View style={progressBarContainerStyle}>
         <View style={styles.rowBetween}>
           <Text style={[styles.caption, { color: colors.mutedForeground }]}>
             {currentIndex + 1} of {duas.length}
@@ -264,25 +479,9 @@ const DuaPager: React.FC<DuaPagerProps> = ({
         </View>
 
         {/* Progress Bar */}
-        <View
-          style={{
-            height: 4,
-            backgroundColor: colors.muted,
-            borderRadius: 2,
-            marginTop: 8,
-            overflow: 'hidden',
-          }}
-        >
+        <View style={progressBarStyle}>
           <Animated.View
-            style={{
-              height: '100%',
-              backgroundColor: colors.primary,
-              borderRadius: 2,
-              width: progressAnim.interpolate({
-                inputRange: [0, 1],
-                outputRange: ['0%', '100%'],
-              }),
-            }}
+            style={progressBarFillStyle}
             accessibilityRole="progressbar"
             accessibilityValue={{
               min: 0,
@@ -301,41 +500,23 @@ const DuaPager: React.FC<DuaPagerProps> = ({
           }}
           {...panResponder.panHandlers}
         >
-          <DuaCard
-            dua={currentDua}
-            onPress={onDuaPress}
-            showReference={true}
-            compact={false}
-          />
+          {currentDua && (
+            <DuaCard
+              dua={currentDua}
+              onPress={onDuaPress}
+              showReference={true}
+              compact={false}
+            />
+          )}
         </Animated.View>
       </View>
 
       {/* Navigation Buttons */}
       {!isOnlyOne && (
-        <View
-          style={{
-            flexDirection: isRTL ? 'row-reverse' : 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            paddingHorizontal: 24,
-            paddingVertical: 20,
-            backgroundColor: colors.background,
-          }}
-        >
+        <View style={navigationContainerStyle}>
           {/* Previous Button */}
           <TouchableOpacity
-            style={[
-              styles.button,
-              {
-                backgroundColor: isFirst ? colors.muted : colors.primary,
-                paddingHorizontal: 20,
-                paddingVertical: 12,
-                borderRadius: 12,
-                flexDirection: isRTL ? 'row-reverse' : 'row',
-                alignItems: 'center',
-                opacity: isFirst ? 0.5 : 1,
-              },
-            ]}
+            style={previousButtonStyle}
             onPress={goToPrevious}
             disabled={isFirst || isAnimating}
             accessibilityRole="button"
@@ -368,17 +549,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
 
           {/* Next/Complete Button */}
           <TouchableOpacity
-            style={[
-              styles.button,
-              {
-                backgroundColor: isLast ? '#10B981' : colors.primary,
-                paddingHorizontal: 20,
-                paddingVertical: 12,
-                borderRadius: 12,
-                flexDirection: isRTL ? 'row-reverse' : 'row',
-                alignItems: 'center',
-              },
-            ]}
+            style={nextButtonStyle}
             onPress={isLast ? handleComplete : goToNext}
             disabled={isAnimating}
             accessibilityRole="button"
@@ -413,23 +584,9 @@ const DuaPager: React.FC<DuaPagerProps> = ({
 
       {/* Single Dua Complete Button */}
       {isOnlyOne && (
-        <View
-          style={{
-            paddingHorizontal: 24,
-            paddingVertical: 20,
-            backgroundColor: colors.background,
-          }}
-        >
+        <View style={singleButtonContainerStyle}>
           <TouchableOpacity
-            style={[
-              styles.button,
-              {
-                backgroundColor: '#10B981',
-                paddingVertical: 16,
-                borderRadius: 12,
-                alignItems: 'center',
-              },
-            ]}
+            style={singleButtonStyle}
             onPress={handleComplete}
             disabled={isAnimating}
             accessibilityRole="button"
