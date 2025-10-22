@@ -12,7 +12,6 @@ import { useTheme } from '../contexts/ThemeProvider';
 interface SessionCompleteModalProps {
   visible: boolean;
   onClose: () => void;
-  onViewFavorites: () => void;
   onBackToHome: () => void;
   totalDuas: number;
 }

@@ -43,6 +43,7 @@ export const getAllTranslations = (
 
   if (translations.en) availableTranslations.en = translations.en;
   if (translations.ur) availableTranslations.ur = translations.ur;
+  if (translations.ar) availableTranslations.ar = translations.ar;
 
   return availableTranslations;
 };

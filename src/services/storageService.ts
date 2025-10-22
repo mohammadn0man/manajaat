@@ -212,7 +212,7 @@ class StorageService {
     }
   }
 
-  async setTodayCompleted(p0: boolean): Promise<void> {
+  async setTodayCompleted(): Promise<void> {
     try {
       const todayKey = `completed_${new Date().toISOString().split('T')[0]}`;
       await AsyncStorage.setItem(todayKey, 'true');

@@ -73,6 +73,13 @@ export interface ThemeStyles {
     border: object;
     background: object;
 
+    // Additional component styles
+    errorContainer: object;
+    errorText: object;
+    headerActions: object;
+    translationText: object;
+    referenceText: object;
+
     // Global styles access
     globalStyles: typeof globalStyles;
   };
@@ -311,6 +318,34 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
         },
         background: {
           backgroundColor: colors.background,
+        },
+
+        // Additional styles for specific components
+        errorContainer: {
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: 24,
+        },
+        errorText: {
+          ...globalStyles.typography.body,
+          color: colors.mutedForeground,
+          textAlign: 'center',
+        },
+        headerActions: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 8,
+        },
+        translationText: {
+          marginTop: 16,
+          lineHeight: Math.round(
+            getFontSizeValue() * UI_CONSTANTS.LINE_HEIGHT_MULTIPLIERS.arabic
+          ),
+        },
+        referenceText: {
+          marginTop: 12,
+          fontStyle: 'italic',
         },
       }),
     [colors, getFontSizeValue]
