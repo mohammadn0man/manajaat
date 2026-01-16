@@ -56,7 +56,8 @@ const DuaCard: React.FC<DuaCardProps> = ({
       // Large font size
       return {
         paddingHorizontal: 20,
-        paddingVertical: 50, // Increased for Arabic characters
+        paddingTop: 20, // Increased for Arabic characters
+        paddingBottom: 20, // 25% less than top
         marginHorizontal: 4,
         marginVertical: 4,
       };
@@ -64,13 +65,15 @@ const DuaCard: React.FC<DuaCardProps> = ({
       // Normal font size
       return {
         paddingHorizontal: 16,
-        paddingVertical: 24, // Increased for Arabic characters
+        paddingTop: 24, // Increased for Arabic characters
+        paddingBottom: 18, // 25% less than top
         marginHorizontal: 2,
         marginVertical: 2,
       };
     }
     return {
-      paddingVertical: 16, // Add some padding even for small font size
+      paddingTop: 16, // Add some padding even for small font size
+      paddingBottom: 12, // 25% less than top
     };
   };
 

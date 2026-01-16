@@ -391,7 +391,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
             alignItems: 'center',
             paddingHorizontal: 24,
             paddingTop: 20,
-            paddingBottom: 110,
+            paddingBottom: 95,
             position: 'absolute',
             bottom: 0,
             left: 0,
@@ -417,7 +417,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
             accessibilityHint="Go to previous dua"
           >
             <BlurView
-              intensity={80}
+              intensity={100}
               tint="light"
               style={{
                 flexDirection: isRTL ? 'row-reverse' : 'row',
@@ -430,8 +430,8 @@ const DuaPager: React.FC<DuaPagerProps> = ({
                 style={{
                   ...StyleSheet.absoluteFillObject,
                   backgroundColor: isFirst
-                    ? `${colors.muted}BB`
-                    : `${colors.primary}DD`,
+                    ? `${colors.muted}55`
+                    : `${colors.primary}66`,
                   borderRadius: 20,
                 }}
               />
@@ -480,7 +480,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
             }
           >
             <BlurView
-              intensity={80}
+              intensity={100}
               tint="light"
               style={{
                 flexDirection: isRTL ? 'row-reverse' : 'row',
@@ -492,7 +492,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
               <View
                 style={{
                   ...StyleSheet.absoluteFillObject,
-                  backgroundColor: isLast ? '#10B981DD' : `${colors.primary}DD`,
+                  backgroundColor: isLast ? '#10B98166' : `${colors.primary}66`,
                   borderRadius: 20,
                 }}
               />
@@ -551,7 +551,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
             accessibilityHint="Complete today's session"
           >
             <BlurView
-              intensity={80}
+              intensity={100}
               tint="light"
               style={{
                 alignItems: 'center',
@@ -561,7 +561,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
               <View
                 style={{
                   ...StyleSheet.absoluteFillObject,
-                  backgroundColor: '#10B981DD',
+                  backgroundColor: '#10B98166',
                   borderRadius: 20,
                 }}
               />

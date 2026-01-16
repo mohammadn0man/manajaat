@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import { Platform } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { BlurView } from 'expo-blur';
 
 import HomeScreen from '../screens/HomeScreen';
@@ -43,7 +43,7 @@ const MainTabs: React.FC = () => {
         headerShown: false,
         tabBarStyle: {
           position: 'absolute',
-          backgroundColor: Platform.OS === 'ios' ? 'transparent' : 'rgba(255, 255, 255, 0.85)',
+          backgroundColor: 'transparent',
           borderTopWidth: 0,
           elevation: 0,
           height: 70,
@@ -59,17 +59,15 @@ const MainTabs: React.FC = () => {
         },
         tabBarBackground: () => (
           <BlurView
-            intensity={95}
-            tint="systemChromeMaterialLight"
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              bottom: 0,
-              right: 0,
-              overflow: 'hidden',
-              borderRadius: 30,
-            }}
+            intensity={100}
+            tint="light"
+            style={[
+              StyleSheet.absoluteFill,
+              {
+                overflow: 'hidden',
+                borderRadius: 30,
+              },
+            ]}
           />
         ),
         tabBarLabelStyle: {
