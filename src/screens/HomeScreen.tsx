@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/types';
-import { Dua } from '../types/dua';
 import {
   getTodayDuas,
   getTodayDayName,
@@ -39,10 +38,6 @@ const HomeScreen: React.FC = () => {
     navigation.navigate('DayView', { day: todayDayName });
   };
 
-  const handleDuaPress = (dua: Dua) => {
-    navigation.navigate('DuaDetail', { duaId: dua.id });
-  };
-
   const handleSessionComplete = () => {
     setShowCompleteModal(true);
   };
@@ -54,6 +49,11 @@ const HomeScreen: React.FC = () => {
 
   const handleCloseModal = () => {
     setShowCompleteModal(false);
+  };
+
+  const handleViewFavorites = () => {
+    setShowCompleteModal(false);
+    // Note: Currently not used by SessionCompleteModal
   };
 
   const handleStartAgain = async () => {
@@ -81,7 +81,6 @@ const HomeScreen: React.FC = () => {
           <DuaPager
             duas={todayDuas}
             onComplete={handleSessionComplete}
-            onDuaPress={handleDuaPress}
           />
         ) : (
           <View style={styles.centerContent}>
@@ -93,6 +92,7 @@ const HomeScreen: React.FC = () => {
       <SessionCompleteModal
         visible={showCompleteModal}
         onClose={handleCloseModal}
+        onViewFavorites={handleViewFavorites}
         onBackToHome={handleBackToHome}
         totalDuas={todayDuas.length}
       />

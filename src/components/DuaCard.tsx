@@ -6,7 +6,7 @@ import { useApp } from '../contexts/AppContext';
 
 interface DuaCardProps {
   dua: Dua;
-  onPress: (dua: Dua) => void;
+  onPress?: (dua: Dua) => void;
   showReference?: boolean;
   compact?: boolean;
 }
@@ -64,10 +64,12 @@ const DuaCard: React.FC<DuaCardProps> = ({
   return (
     <TouchableOpacity
       style={[compact ? styles.cardCompact : styles.card, dynamicPadding]}
-      onPress={() => onPress(dua)}
-      accessibilityRole="button"
+      onPress={() => onPress?.(dua)}
+      disabled={!onPress}
+      activeOpacity={onPress ? 0.7 : 1}
+      accessibilityRole={onPress ? "button" : "text"}
       accessibilityLabel={`Dua: ${dua.arabic.substring(0, 50)}...`}
-      accessibilityHint="Tap to view full dua details"
+      accessibilityHint={onPress ? "Tap to view full dua details" : undefined}
     >
       <Text
         style={[

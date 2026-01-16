@@ -4,9 +4,8 @@ import {
   Text,
   TouchableOpacity,
   Animated,
-  PanResponder,
-  Dimensions,
   AccessibilityInfo,
+  ScrollView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Dua } from '../types/dua';
@@ -20,12 +19,8 @@ import { dateKeyForToday } from '../utils/dateUtils';
 interface DuaPagerProps {
   duas: Dua[];
   onComplete: () => void;
-  onDuaPress: (dua: Dua) => void;
+  onDuaPress?: (dua: Dua) => void;
 }
-
-const { width: screenWidth } = Dimensions.get('window');
-const SWIPE_THRESHOLD = 50;
-const ANIMATION_DURATION = 250;
 
 const DuaPager: React.FC<DuaPagerProps> = ({
   duas,
@@ -40,8 +35,8 @@ const DuaPager: React.FC<DuaPagerProps> = ({
   const [sessionStartTime] = useState<number>(Date.now());
   const [duaStartTime, setDuaStartTime] = useState<number>(Date.now());
 
-  const slideAnim = useRef(new Animated.Value(0)).current;
   const progressAnim = useRef(new Animated.Value(0)).current;
+  const scrollViewRef = useRef<ScrollView>(null);
 
   // Load initial progress
   useEffect(() => {
@@ -65,56 +60,17 @@ const DuaPager: React.FC<DuaPagerProps> = ({
     const progress = duas.length > 0 ? (currentIndex + 1) / duas.length : 0;
     Animated.timing(progressAnim, {
       toValue: progress,
-      duration: ANIMATION_DURATION,
+      duration: 250,
       useNativeDriver: false,
     }).start();
   }, [currentIndex, duas.length, progressAnim]);
 
-  // Ensure slide animation is reset when currentIndex changes
+  // Reset scroll position when card changes
   useEffect(() => {
-    slideAnim.setValue(0);
-  }, [currentIndex, slideAnim]);
-
-  // Pan responder for swipe gestures
-  const panResponder = useRef(
-    PanResponder.create({
-      onMoveShouldSetPanResponder: (_, gestureState) => {
-        return (
-          Math.abs(gestureState.dx) > Math.abs(gestureState.dy) &&
-          Math.abs(gestureState.dx) > 10
-        );
-      },
-      onPanResponderMove: (_, gestureState) => {
-        if (!isAnimating) {
-          slideAnim.setValue(gestureState.dx);
-        }
-      },
-      onPanResponderRelease: (_, gestureState) => {
-        if (isAnimating) return;
-
-        const { dx } = gestureState;
-        const shouldSwipe = Math.abs(dx) > SWIPE_THRESHOLD;
-
-        if (shouldSwipe) {
-          if (dx > 0) {
-            // Swipe right - go to previous
-            goToPrevious();
-          } else {
-            // Swipe left - go to next
-            goToNext();
-          }
-        } else {
-          // Reset position with proper animation
-          Animated.spring(slideAnim, {
-            toValue: 0,
-            tension: 100,
-            friction: 8,
-            useNativeDriver: true,
-          }).start();
-        }
-      },
-    })
-  ).current;
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({ y: 0, animated: false });
+    }
+  }, [currentIndex]);
 
   const goToPrevious = async () => {
     if (currentIndex > 0 && !isAnimating) {
@@ -129,31 +85,20 @@ const DuaPager: React.FC<DuaPagerProps> = ({
 
       const newIndex = currentIndex - 1;
 
-      // Reset animation value before starting
-      slideAnim.setValue(0);
+      setCurrentIndex(newIndex);
+      setDuaStartTime(Date.now());
+      setIsAnimating(false);
 
-      // Animate slide
-      Animated.timing(slideAnim, {
-        toValue: isRTL ? -screenWidth : screenWidth,
-        duration: ANIMATION_DURATION,
-        useNativeDriver: true,
-      }).start(() => {
-        setCurrentIndex(newIndex);
-        setDuaStartTime(Date.now());
-        slideAnim.setValue(0);
-        setIsAnimating(false);
+      // Save progress
+      await storageService.setTodayProgress(newIndex);
 
-        // Save progress
-        storageService.setTodayProgress(newIndex);
+      // Log new dua view
+      analyticsService.logDuaView(duas[newIndex].id, newIndex, duas.length);
 
-        // Log new dua view
-        analyticsService.logDuaView(duas[newIndex].id, newIndex, duas.length);
-
-        // Announce to screen reader
-        AccessibilityInfo.announceForAccessibility(
-          `Dua ${newIndex + 1} of ${duas.length}`
-        );
-      });
+      // Announce to screen reader
+      AccessibilityInfo.announceForAccessibility(
+        `Dua ${newIndex + 1} of ${duas.length}`
+      );
     }
   };
 
@@ -170,31 +115,20 @@ const DuaPager: React.FC<DuaPagerProps> = ({
 
       const newIndex = currentIndex + 1;
 
-      // Reset animation value before starting
-      slideAnim.setValue(0);
+      setCurrentIndex(newIndex);
+      setDuaStartTime(Date.now());
+      setIsAnimating(false);
 
-      // Animate slide
-      Animated.timing(slideAnim, {
-        toValue: isRTL ? screenWidth : -screenWidth,
-        duration: ANIMATION_DURATION,
-        useNativeDriver: true,
-      }).start(() => {
-        setCurrentIndex(newIndex);
-        setDuaStartTime(Date.now());
-        slideAnim.setValue(0);
-        setIsAnimating(false);
+      // Save progress
+      await storageService.setTodayProgress(newIndex);
 
-        // Save progress
-        storageService.setTodayProgress(newIndex);
+      // Log new dua view
+      analyticsService.logDuaView(duas[newIndex].id, newIndex, duas.length);
 
-        // Log new dua view
-        analyticsService.logDuaView(duas[newIndex].id, newIndex, duas.length);
-
-        // Announce to screen reader
-        AccessibilityInfo.announceForAccessibility(
-          `Dua ${newIndex + 1} of ${duas.length}`
-        );
-      });
+      // Announce to screen reader
+      AccessibilityInfo.announceForAccessibility(
+        `Dua ${newIndex + 1} of ${duas.length}`
+      );
     }
   };
 
@@ -294,21 +228,26 @@ const DuaPager: React.FC<DuaPagerProps> = ({
       </View>
 
       {/* Dua Card */}
-      <View style={{ flex: 1, justifyContent: 'center' }}>
-        <Animated.View
-          style={{
-            transform: [{ translateX: slideAnim }],
-          }}
-          {...panResponder.panHandlers}
-        >
-          <DuaCard
-            dua={currentDua}
-            onPress={onDuaPress}
-            showReference={true}
-            compact={false}
-          />
-        </Animated.View>
-      </View>
+      <ScrollView
+        ref={scrollViewRef}
+        style={{ flex: 1 }}
+        contentContainerStyle={{ 
+          flexGrow: 1,
+          justifyContent: 'center',
+          paddingVertical: 20,
+        }}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        bounces={true}
+        scrollEnabled={true}
+      >
+        <DuaCard
+          dua={currentDua}
+          onPress={onDuaPress}
+          showReference={true}
+          compact={false}
+        />
+      </ScrollView>
 
       {/* Navigation Buttons */}
       {!isOnlyOne && (
