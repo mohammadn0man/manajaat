@@ -6,7 +6,7 @@ A beautiful React Native mobile application for daily Islamic supplications (dua
 
 ### Core Features
 - **Daily Duas**: Browse Islamic supplications organized by days of the week
-- **Daily Progress Tracking**: Track your daily dua reading progress with completion status
+- **Daily Progress Tracking**: Track your daily dua reading progress with completion status.
 - **Session Management**: Complete daily dua sessions with progress indicators
 - **Multilingual Support**: Support for English, Arabic, and Urdu with RTL text support
 - **Favorites System**: Save your favorite duas for quick access
