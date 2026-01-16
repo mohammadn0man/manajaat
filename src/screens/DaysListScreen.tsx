@@ -66,7 +66,10 @@ const DaysListScreen: React.FC = () => {
           keyExtractor={(item) => item}
           renderItem={({ item }) => <DayItem day={item} />}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.globalStyles.spacingUtils.py('lg')}
+          contentContainerStyle={[
+            styles.globalStyles.spacingUtils.py('lg'),
+            { paddingBottom: 110 },
+          ]}
         />
       </View>
     </View>

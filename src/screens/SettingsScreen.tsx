@@ -108,7 +108,10 @@ const SettingsScreen: React.FC = () => {
       <ScrollView
         style={styles.content}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.globalStyles.spacingUtils.py('lg')}
+        contentContainerStyle={[
+          styles.globalStyles.spacingUtils.py('lg'),
+          { paddingBottom: 110 },
+        ]}
       >
         {renderOptionSelector(
           'Translation Language',

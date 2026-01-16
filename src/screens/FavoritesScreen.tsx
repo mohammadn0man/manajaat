@@ -122,7 +122,10 @@ const FavoritesScreen: React.FC = () => {
             keyExtractor={(item) => item.id}
             renderItem={renderDuaItem}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.globalStyles.spacingUtils.py('lg')}
+            contentContainerStyle={[
+              styles.globalStyles.spacingUtils.py('lg'),
+              { paddingBottom: 110 },
+            ]}
           />
         ) : (
           <View style={styles.centerContent}>

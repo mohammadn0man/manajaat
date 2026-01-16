@@ -65,7 +65,7 @@ const HomeScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <TopBar
-        title="Read today's duas"
+        title="Read today's Duas"
         subtitle={todayDisplayName}
         onBackPress={handleDayPress}
         showBackButton={false}

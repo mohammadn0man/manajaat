@@ -8,7 +8,9 @@ import {
   ScrollView,
   PanResponder,
   Dimensions,
+  StyleSheet,
 } from 'react-native';
+import { BlurView } from 'expo-blur';
 import { Ionicons } from '@expo/vector-icons';
 import { Dua } from '../types/dua';
 import { useTheme } from '../contexts/ThemeProvider';
@@ -81,14 +83,6 @@ const DuaPager: React.FC<DuaPagerProps> = ({
       useNativeDriver: false,
     }).start();
   }, [currentIndex, duas.length, progressAnim]);
-
-  // Reset scroll position when card changes
-  useEffect(() => {
-    slideAnim.setValue(0);
-    if (scrollViewRef.current) {
-      scrollViewRef.current.scrollTo({ y: 0, animated: false });
-    }
-  }, [currentIndex, slideAnim]);
 
   // Pan responder for swipe gestures
   const panResponder = useRef(
@@ -174,22 +168,32 @@ const DuaPager: React.FC<DuaPagerProps> = ({
 
       const newIndex = currentIdx - 1;
 
-      // Animate slide out (RTL: left, LTR: right)
+      // Set new card starting position (off-screen from the direction it's coming from)
+      // Previous card comes from left (LTR) or right (RTL)
+      slideAnim.setValue(rtl ? screenWidth : -screenWidth);
+
+      // Update content immediately
+      setCurrentIndex(newIndex);
+      setDuaStartTime(Date.now());
+
+      // Reset scroll to top for new card
+      if (scrollViewRef.current) {
+        scrollViewRef.current.scrollTo({ y: 0, animated: false });
+      }
+
+      // Save progress
+      storageService.setTodayProgress(newIndex);
+
+      // Log new dua view
+      analyticsService.logDuaView(duas[newIndex].id, newIndex, duas.length);
+
+      // Animate new card sliding in to center
       Animated.timing(slideAnim, {
-        toValue: rtl ? -screenWidth : screenWidth,
+        toValue: 0,
         duration: 250,
         useNativeDriver: true,
       }).start(() => {
-        setCurrentIndex(newIndex);
-        setDuaStartTime(Date.now());
-        slideAnim.setValue(0);
         setIsAnimating(false);
-
-        // Save progress
-        storageService.setTodayProgress(newIndex);
-
-        // Log new dua view
-        analyticsService.logDuaView(duas[newIndex].id, newIndex, duas.length);
 
         // Announce to screen reader
         AccessibilityInfo.announceForAccessibility(
@@ -214,22 +218,32 @@ const DuaPager: React.FC<DuaPagerProps> = ({
 
       const newIndex = currentIdx + 1;
 
-      // Animate slide out (RTL: right, LTR: left)
+      // Set new card starting position (off-screen from the direction it's coming from)
+      // Next card comes from right (LTR) or left (RTL)
+      slideAnim.setValue(rtl ? -screenWidth : screenWidth);
+
+      // Update content immediately
+      setCurrentIndex(newIndex);
+      setDuaStartTime(Date.now());
+
+      // Reset scroll to top for new card
+      if (scrollViewRef.current) {
+        scrollViewRef.current.scrollTo({ y: 0, animated: false });
+      }
+
+      // Save progress
+      storageService.setTodayProgress(newIndex);
+
+      // Log new dua view
+      analyticsService.logDuaView(duas[newIndex].id, newIndex, duas.length);
+
+      // Animate new card sliding in to center
       Animated.timing(slideAnim, {
-        toValue: rtl ? screenWidth : -screenWidth,
+        toValue: 0,
         duration: 250,
         useNativeDriver: true,
       }).start(() => {
-        setCurrentIndex(newIndex);
-        setDuaStartTime(Date.now());
-        slideAnim.setValue(0);
         setIsAnimating(false);
-
-        // Save progress
-        storageService.setTodayProgress(newIndex);
-
-        // Log new dua view
-        analyticsService.logDuaView(duas[newIndex].id, newIndex, duas.length);
 
         // Announce to screen reader
         AccessibilityInfo.announceForAccessibility(
@@ -349,7 +363,8 @@ const DuaPager: React.FC<DuaPagerProps> = ({
             contentContainerStyle={{ 
               flexGrow: 1,
               justifyContent: 'center',
-              paddingVertical: 20,
+              paddingTop: 20,
+              paddingBottom: 140,
             }}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
@@ -375,67 +390,87 @@ const DuaPager: React.FC<DuaPagerProps> = ({
             justifyContent: 'space-between',
             alignItems: 'center',
             paddingHorizontal: 24,
-            paddingVertical: 20,
-            backgroundColor: colors.background,
+            paddingTop: 20,
+            paddingBottom: 110,
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
           }}
         >
           {/* Previous Button */}
           <TouchableOpacity
-            style={[
-              styles.button,
-              {
-                backgroundColor: isFirst ? colors.muted : colors.primary,
-                paddingHorizontal: 20,
-                paddingVertical: 12,
-                borderRadius: 12,
-                flexDirection: isRTL ? 'row-reverse' : 'row',
-                alignItems: 'center',
-                opacity: isFirst ? 0.5 : 1,
-              },
-            ]}
+            style={{
+              borderRadius: 20,
+              overflow: 'hidden',
+              opacity: isFirst ? 0.5 : 1,
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.15,
+              shadowRadius: 8,
+              elevation: 5,
+            }}
             onPress={goToPrevious}
             disabled={isFirst || isAnimating}
             accessibilityRole="button"
             accessibilityLabel="Previous dua"
             accessibilityHint="Go to previous dua"
           >
-            <Ionicons
-              name={isRTL ? 'chevron-forward' : 'chevron-back'}
-              size={20}
-              color={
-                isFirst ? colors.mutedForeground : colors.primaryForeground
-              }
-            />
-            <Text
-              style={[
-                styles.body,
-                {
-                  color: isFirst
-                    ? colors.mutedForeground
-                    : colors.primaryForeground,
-                  marginLeft: isRTL ? 0 : 8,
-                  marginRight: isRTL ? 8 : 0,
-                  fontWeight: '600',
-                },
-              ]}
+            <BlurView
+              intensity={80}
+              tint="light"
+              style={{
+                flexDirection: isRTL ? 'row-reverse' : 'row',
+                alignItems: 'center',
+                paddingHorizontal: 20,
+                paddingVertical: 12,
+              }}
             >
-              Previous
-            </Text>
+              <View
+                style={{
+                  ...StyleSheet.absoluteFillObject,
+                  backgroundColor: isFirst
+                    ? `${colors.muted}BB`
+                    : `${colors.primary}DD`,
+                  borderRadius: 20,
+                }}
+              />
+              <Ionicons
+                name={isRTL ? 'chevron-forward' : 'chevron-back'}
+                size={20}
+                color={
+                  isFirst ? colors.mutedForeground : colors.primaryForeground
+                }
+              />
+              <Text
+                style={[
+                  styles.body,
+                  {
+                    color: isFirst
+                      ? colors.mutedForeground
+                      : colors.primaryForeground,
+                    marginLeft: isRTL ? 0 : 8,
+                    marginRight: isRTL ? 8 : 0,
+                    fontWeight: '600',
+                  },
+                ]}
+              >
+                Previous
+              </Text>
+            </BlurView>
           </TouchableOpacity>
 
           {/* Next/Complete Button */}
           <TouchableOpacity
-            style={[
-              styles.button,
-              {
-                backgroundColor: isLast ? '#10B981' : colors.primary,
-                paddingHorizontal: 20,
-                paddingVertical: 12,
-                borderRadius: 12,
-                flexDirection: isRTL ? 'row-reverse' : 'row',
-                alignItems: 'center',
-              },
-            ]}
+            style={{
+              borderRadius: 20,
+              overflow: 'hidden',
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.15,
+              shadowRadius: 8,
+              elevation: 5,
+            }}
             onPress={isLast ? handleComplete : goToNext}
             disabled={isAnimating}
             accessibilityRole="button"
@@ -444,26 +479,44 @@ const DuaPager: React.FC<DuaPagerProps> = ({
               isLast ? "Complete today's session" : 'Go to next dua'
             }
           >
-            <Text
-              style={[
-                styles.body,
-                {
-                  color: 'white',
-                  marginLeft: isRTL ? 0 : 8,
-                  marginRight: isRTL ? 8 : 0,
-                  fontWeight: '600',
-                },
-              ]}
+            <BlurView
+              intensity={80}
+              tint="light"
+              style={{
+                flexDirection: isRTL ? 'row-reverse' : 'row',
+                alignItems: 'center',
+                paddingHorizontal: 20,
+                paddingVertical: 12,
+              }}
             >
-              {isLast ? "I'm done" : 'Next'}
-            </Text>
-            {!isLast && (
-              <Ionicons
-                name={isRTL ? 'chevron-back' : 'chevron-forward'}
-                size={20}
-                color="white"
+              <View
+                style={{
+                  ...StyleSheet.absoluteFillObject,
+                  backgroundColor: isLast ? '#10B981DD' : `${colors.primary}DD`,
+                  borderRadius: 20,
+                }}
               />
-            )}
+              <Text
+                style={[
+                  styles.body,
+                  {
+                    color: 'white',
+                    marginLeft: isRTL ? 0 : 8,
+                    marginRight: isRTL ? 8 : 0,
+                    fontWeight: '600',
+                  },
+                ]}
+              >
+                {isLast ? "I'm done" : 'Next'}
+              </Text>
+              {!isLast && (
+                <Ionicons
+                  name={isRTL ? 'chevron-back' : 'chevron-forward'}
+                  size={20}
+                  color="white"
+                />
+              )}
+            </BlurView>
           </TouchableOpacity>
         </View>
       )}
@@ -473,37 +526,57 @@ const DuaPager: React.FC<DuaPagerProps> = ({
         <View
           style={{
             paddingHorizontal: 24,
-            paddingVertical: 20,
-            backgroundColor: colors.background,
+            paddingTop: 20,
+            paddingBottom: 110,
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
           }}
         >
           <TouchableOpacity
-            style={[
-              styles.button,
-              {
-                backgroundColor: '#10B981',
-                paddingVertical: 16,
-                borderRadius: 12,
-                alignItems: 'center',
-              },
-            ]}
+            style={{
+              borderRadius: 20,
+              overflow: 'hidden',
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.15,
+              shadowRadius: 8,
+              elevation: 5,
+            }}
             onPress={handleComplete}
             disabled={isAnimating}
             accessibilityRole="button"
             accessibilityLabel="I am done"
             accessibilityHint="Complete today's session"
           >
-            <Text
-              style={[
-                styles.body,
-                {
-                  color: 'white',
-                  fontWeight: '600',
-                },
-              ]}
+            <BlurView
+              intensity={80}
+              tint="light"
+              style={{
+                alignItems: 'center',
+                paddingVertical: 16,
+              }}
             >
-              I'm done
-            </Text>
+              <View
+                style={{
+                  ...StyleSheet.absoluteFillObject,
+                  backgroundColor: '#10B981DD',
+                  borderRadius: 20,
+                }}
+              />
+              <Text
+                style={[
+                  styles.body,
+                  {
+                    color: 'white',
+                    fontWeight: '600',
+                  },
+                ]}
+              >
+                I'm done
+              </Text>
+            </BlurView>
           </TouchableOpacity>
         </View>
       )}

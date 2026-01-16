@@ -3,6 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
+import { Platform } from 'react-native';
+import { BlurView } from 'expo-blur';
 
 import HomeScreen from '../screens/HomeScreen';
 import DayViewScreen from '../screens/DayViewScreen';
@@ -37,8 +39,43 @@ const MainTabs: React.FC = () => {
           return <Ionicons name={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: '#2596be',
-        tabBarInactiveTintColor: 'gray',
+        tabBarInactiveTintColor: '#8E8E93',
         headerShown: false,
+        tabBarStyle: {
+          position: 'absolute',
+          backgroundColor: Platform.OS === 'ios' ? 'transparent' : 'rgba(255, 255, 255, 0.85)',
+          borderTopWidth: 0,
+          elevation: 0,
+          height: 70,
+          paddingBottom: 8,
+          paddingTop: 8,
+          borderRadius: 30,
+          marginHorizontal: 20,
+          marginBottom: 20,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 10 },
+          shadowOpacity: 0.12,
+          shadowRadius: 20,
+        },
+        tabBarBackground: () => (
+          <BlurView
+            intensity={95}
+            tint="systemChromeMaterialLight"
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              bottom: 0,
+              right: 0,
+              overflow: 'hidden',
+              borderRadius: 30,
+            }}
+          />
+        ),
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '500',
+        },
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
