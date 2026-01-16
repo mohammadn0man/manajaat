@@ -3,6 +3,7 @@ import { TouchableOpacity, Text } from 'react-native';
 import { Dua } from '../types/dua';
 import { useTheme } from '../contexts/ThemeProvider';
 import { useApp } from '../contexts/AppContext';
+import { fontFamilies } from '../config/fonts';
 
 interface DuaCardProps {
   dua: Dua;
@@ -48,6 +49,15 @@ const DuaCard: React.FC<DuaCardProps> = ({
   // Calculate reference font size (smaller than translation)
   const getReferenceFontSize = () => {
     return arabicFontSize * 0.75;
+  };
+
+  // Get translation font family based on language
+  const getTranslationFontFamily = () => {
+    if (language === 'ur') {
+      return fontFamilies.urdu;
+    }
+    // Return undefined for system fonts (let React Native handle it)
+    return fontFamilies.latin === 'System' ? undefined : fontFamilies.latin;
   };
 
   // Add extra padding for large font sizes to prevent text cutting
@@ -107,6 +117,7 @@ const DuaCard: React.FC<DuaCardProps> = ({
             styles.textSecondary,
             styles.globalStyles.spacingUtils.mt('sm'),
             { 
+              fontFamily: getTranslationFontFamily(),
               fontSize: getTranslationFontSize(),
               lineHeight: language === 'ur' ? getTranslationFontSize() * 1.8 : undefined,
             },
@@ -122,6 +133,7 @@ const DuaCard: React.FC<DuaCardProps> = ({
             styles.textMuted,
             styles.globalStyles.spacingUtils.mt('sm'),
             { 
+              fontFamily: fontFamilies.latin === 'System' ? undefined : fontFamilies.latin,
               fontStyle: 'italic',
               fontSize: getReferenceFontSize(),
             },

@@ -43,9 +43,9 @@ const MainTabs: React.FC = () => {
         headerShown: false,
         tabBarStyle: {
           position: 'absolute',
-          backgroundColor: 'transparent',
+          backgroundColor: Platform.OS === 'android' ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
           borderTopWidth: 0,
-          elevation: 0,
+          elevation: Platform.OS === 'android' ? 8 : 0,
           height: 70,
           paddingBottom: 8,
           paddingTop: 8,
@@ -59,13 +59,14 @@ const MainTabs: React.FC = () => {
         },
         tabBarBackground: () => (
           <BlurView
-            intensity={100}
+            intensity={Platform.OS === 'ios' ? 100 : 0}
             tint="light"
             style={[
               StyleSheet.absoluteFill,
               {
                 overflow: 'hidden',
                 borderRadius: 30,
+                backgroundColor: Platform.OS === 'android' ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
               },
             ]}
           />

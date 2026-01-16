@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Alert, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Alert, ScrollView, StyleSheet, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
 
@@ -77,12 +77,31 @@ const SettingsScreen: React.FC = () => {
           borderRadius: 20,
           overflow: 'hidden',
           marginBottom: 0,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.08,
+          shadowRadius: 4,
+          elevation: 3,
         }}
       >
-        <BlurView intensity={80} tint="light" style={{ overflow: 'hidden' }}>
+        <BlurView 
+          intensity={Platform.OS === 'ios' ? 80 : 0} 
+          tint="light" 
+          style={{ 
+            overflow: 'hidden',
+            backgroundColor: Platform.OS === 'android' ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
+          }}
+        >
+          {Platform.OS === 'ios' && (
+            <View
+              style={{
+                backgroundColor: 'rgba(255, 255, 255, 0.3)',
+              }}
+            />
+          )}
           <View
             style={{
-              backgroundColor: 'rgba(255, 255, 255, 0.3)',
+              backgroundColor: Platform.OS === 'android' ? 'transparent' : 'rgba(255, 255, 255, 0.3)',
             }}
           >
             {options.map((option, index) => (
@@ -115,9 +134,11 @@ const SettingsScreen: React.FC = () => {
                 <Text
                   style={[
                     styles.body,
-                    currentValue === option.value && {
-                      color: colors.primary,
-                      fontWeight: '600',
+                    {
+                      color: currentValue === option.value 
+                        ? colors.primary 
+                        : '#1F2937', // Very dark grey
+                      fontWeight: currentValue === option.value ? '600' : '400',
                     },
                   ]}
                 >
@@ -184,6 +205,11 @@ const SettingsScreen: React.FC = () => {
               borderRadius: 20,
               overflow: 'hidden',
               opacity: favorites.length === 0 ? 0.5 : 1,
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.08,
+              shadowRadius: 4,
+              elevation: 3,
             }}
             onPress={handleClearFavorites}
             disabled={favorites.length === 0}
@@ -192,21 +218,24 @@ const SettingsScreen: React.FC = () => {
             accessibilityHint="Removes all duas from your favorites list"
           >
             <BlurView
-              intensity={80}
+              intensity={Platform.OS === 'ios' ? 80 : 0}
               tint="light"
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
                 paddingVertical: 16,
                 paddingHorizontal: 20,
+                backgroundColor: Platform.OS === 'android' ? '#EF444420' : 'transparent',
               }}
             >
-              <View
-                style={{
-                  ...StyleSheet.absoluteFillObject,
-                  backgroundColor: '#EF444433',
-                }}
-              />
+              {Platform.OS === 'ios' && (
+                <View
+                  style={{
+                    ...StyleSheet.absoluteFillObject,
+                    backgroundColor: '#EF444433',
+                  }}
+                />
+              )}
               <Ionicons name="trash" size={22} color="#EF4444" />
               <Text
                 style={[
@@ -237,21 +266,29 @@ const SettingsScreen: React.FC = () => {
             style={{
               borderRadius: 20,
               overflow: 'hidden',
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.08,
+              shadowRadius: 4,
+              elevation: 3,
             }}
           >
             <BlurView
-              intensity={80}
+              intensity={Platform.OS === 'ios' ? 80 : 0}
               tint="light"
               style={{
                 padding: 20,
+                backgroundColor: Platform.OS === 'android' ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
               }}
             >
-              <View
-                style={{
-                  ...StyleSheet.absoluteFillObject,
-                  backgroundColor: 'rgba(255, 255, 255, 0.3)',
-                }}
-              />
+              {Platform.OS === 'ios' && (
+                <View
+                  style={{
+                    ...StyleSheet.absoluteFillObject,
+                    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+                  }}
+                />
+              )}
               <Text style={[styles.h4, { fontWeight: '600' }]}>
                 Manajaat Nomani v1.0.0
               </Text>

@@ -1,4 +1,5 @@
 // Global styles system for consistent theming across the app
+import { fontFamilies } from '../config/fonts';
 
 // Global spacing system
 export const spacing = {
@@ -93,12 +94,14 @@ export const typography = {
   arabic: {
     fontSize: 20,
     fontWeight: 'bold' as const,
+    fontFamily: fontFamilies.arabicBold,
     lineHeight: 28,
     textAlign: 'right' as const,
   },
   arabicLarge: {
     fontSize: 24,
     fontWeight: 'bold' as const,
+    fontFamily: fontFamilies.arabicBold,
     lineHeight: 32,
     textAlign: 'right' as const,
   },

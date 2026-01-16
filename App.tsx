@@ -17,15 +17,25 @@ function AppContent() {
 }
 
 export default function App() {
-  const [fontsLoaded] = useFonts({
+  const [fontsLoaded, fontError] = useFonts({
+    // Arabic fonts (works for Arabic, Urdu, and English!)
     'Amiri-Regular': require('./assets/fonts/Amiri-Regular.ttf'),
     'Amiri-Bold': require('./assets/fonts/Amiri-Bold.ttf'),
     Amiri: require('./assets/fonts/Amiri-Regular.ttf'),
   });
 
-  if (!fontsLoaded) {
-    return null; // Or a loading screen
+  // Log font loading status
+  if (fontError) {
+    console.error('Font loading error:', fontError);
+    // Continue anyway with system fonts
   }
+  
+  if (!fontsLoaded) {
+    console.log('Loading fonts...');
+    return null; // Loading fonts
+  }
+  
+  console.log('Fonts loaded successfully!');
 
   return (
     <AppProvider>

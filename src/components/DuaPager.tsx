@@ -9,6 +9,7 @@ import {
   PanResponder,
   Dimensions,
   StyleSheet,
+  Platform,
 } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { Ionicons } from '@expo/vector-icons';
@@ -427,6 +428,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
           {/* Previous Button */}
           <TouchableOpacity
             style={{
+              flex: 1,
               borderRadius: 20,
               overflow: 'hidden',
               opacity: isFirst ? 0.5 : 1,
@@ -435,6 +437,8 @@ const DuaPager: React.FC<DuaPagerProps> = ({
               shadowOpacity: 0.15,
               shadowRadius: 8,
               elevation: 5,
+              marginRight: isRTL ? 0 : 12,
+              marginLeft: isRTL ? 12 : 0,
             }}
             onPress={goToPrevious}
             disabled={isFirst || isAnimating}
@@ -443,24 +447,30 @@ const DuaPager: React.FC<DuaPagerProps> = ({
             accessibilityHint="Go to previous dua"
           >
             <BlurView
-              intensity={100}
+              intensity={Platform.OS === 'ios' ? 100 : 0}
               tint="light"
               style={{
                 flexDirection: isRTL ? 'row-reverse' : 'row',
                 alignItems: 'center',
+                justifyContent: 'center',
                 paddingHorizontal: 20,
                 paddingVertical: 12,
+                backgroundColor: Platform.OS === 'android' 
+                  ? (isFirst ? colors.muted : colors.primary)
+                  : 'transparent',
               }}
             >
-              <View
-                style={{
-                  ...StyleSheet.absoluteFillObject,
-                  backgroundColor: isFirst
-                    ? `${colors.muted}55`
-                    : `${colors.primary}66`,
-                  borderRadius: 20,
-                }}
-              />
+              {Platform.OS === 'ios' && (
+                <View
+                  style={{
+                    ...StyleSheet.absoluteFillObject,
+                    backgroundColor: isFirst
+                      ? `${colors.muted}55`
+                      : `${colors.primary}66`,
+                    borderRadius: 20,
+                  }}
+                />
+              )}
               <Ionicons
                 name={isRTL ? 'chevron-forward' : 'chevron-back'}
                 size={20}
@@ -489,6 +499,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
           {/* Next/Complete Button */}
           <TouchableOpacity
             style={{
+              flex: 1,
               borderRadius: 20,
               overflow: 'hidden',
               shadowColor: '#000',
@@ -506,22 +517,28 @@ const DuaPager: React.FC<DuaPagerProps> = ({
             }
           >
             <BlurView
-              intensity={100}
+              intensity={Platform.OS === 'ios' ? 100 : 0}
               tint="light"
               style={{
                 flexDirection: isRTL ? 'row-reverse' : 'row',
                 alignItems: 'center',
+                justifyContent: 'center',
                 paddingHorizontal: 20,
                 paddingVertical: 12,
+                backgroundColor: Platform.OS === 'android' 
+                  ? (isLast ? '#10B981' : colors.primary)
+                  : 'transparent',
               }}
             >
-              <View
-                style={{
-                  ...StyleSheet.absoluteFillObject,
-                  backgroundColor: isLast ? '#10B98166' : `${colors.primary}66`,
-                  borderRadius: 20,
-                }}
-              />
+              {Platform.OS === 'ios' && (
+                <View
+                  style={{
+                    ...StyleSheet.absoluteFillObject,
+                    backgroundColor: isLast ? '#10B98166' : `${colors.primary}66`,
+                    borderRadius: 20,
+                  }}
+                />
+              )}
               <Text
                 style={[
                   styles.body,
@@ -577,20 +594,23 @@ const DuaPager: React.FC<DuaPagerProps> = ({
             accessibilityHint="Complete today's session"
           >
             <BlurView
-              intensity={100}
+              intensity={Platform.OS === 'ios' ? 100 : 0}
               tint="light"
               style={{
                 alignItems: 'center',
                 paddingVertical: 16,
+                backgroundColor: Platform.OS === 'android' ? '#10B981' : 'transparent',
               }}
             >
-              <View
-                style={{
-                  ...StyleSheet.absoluteFillObject,
-                  backgroundColor: '#10B98166',
-                  borderRadius: 20,
-                }}
-              />
+              {Platform.OS === 'ios' && (
+                <View
+                  style={{
+                    ...StyleSheet.absoluteFillObject,
+                    backgroundColor: '#10B98166',
+                    borderRadius: 20,
+                  }}
+                />
+              )}
               <Text
                 style={[
                   styles.body,

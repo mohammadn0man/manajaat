@@ -82,52 +82,6 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     theme === 'dark' || (theme === 'system' && systemColorScheme === 'dark');
   const colorScheme = isDarkMode ? 'dark' : 'light';
 
-  useEffect(() => {
-    // Set RTL state during initial load without popup
-    if (isInitialLoad && I18nManager.isRTL !== isRTL) {
-      console.log('Setting RTL during initial load:', {
-        current: I18nManager.isRTL,
-        new: isRTL,
-      });
-      I18nManager.forceRTL(isRTL);
-    }
-  }, [isRTL, isInitialLoad]);
-
-  // Separate effect for manual language changes (after initial load)
-  useEffect(() => {
-    if (!isInitialLoad && I18nManager.isRTL !== isRTL) {
-      console.log('Manual RTL state change:', {
-        current: I18nManager.isRTL,
-        new: isRTL,
-      });
-      I18nManager.forceRTL(isRTL);
-
-      // Show restart prompt for iOS only when user manually changes language
-      if (isRTL) {
-        Alert.alert(
-          'Restart Required',
-          'The app needs to restart to apply the language change.',
-          [
-            {
-              text: 'Later',
-              style: 'cancel',
-            },
-            {
-              text: 'Restart',
-              onPress: () => {
-                // On iOS, the app will need to be manually restarted
-                // This is a limitation of iOS - the app cannot restart itself
-                console.log(
-                  'Please restart the app manually to apply RTL changes'
-                );
-              },
-            },
-          ]
-        );
-      }
-    }
-  }, [isRTL, isInitialLoad]);
-
   const setLanguage = async (newLanguage: Language) => {
     setLanguageState(newLanguage);
     await storageService.setLanguage(newLanguage);

@@ -1,15 +1,14 @@
 import * as Font from 'expo-font';
 import { Platform } from 'react-native';
 
-// Font configuration with system fallbacks
+// Font configuration - custom fonts bundled with the app for consistency
+// Note: Using Amiri for both Arabic and Urdu (Amiri supports Urdu beautifully)
+// System fonts used for English until we can troubleshoot Inter fonts
 export const fontConfig = {
-  // We'll use system fonts for now, but this structure allows for custom fonts
+  // Arabic/Urdu fonts (Amiri)
   'Amiri-Regular': require('../../assets/fonts/Amiri-Regular.ttf'),
   'Amiri-Bold': require('../../assets/fonts/Amiri-Bold.ttf'),
-  // Alternative names for Android compatibility
   Amiri: require('../../assets/fonts/Amiri-Regular.ttf'),
-  // 'NotoNastaliqUrdu': require('../../assets/fonts/NotoNastaliqUrdu-Regular.ttf'),
-  // 'Inter': require('../../assets/fonts/Inter-Regular.ttf'),
 };
 
 export const loadFonts = async (): Promise<void> => {
@@ -23,48 +22,18 @@ export const loadFonts = async (): Promise<void> => {
   }
 };
 
-// Font families with system fallbacks
+// Font families - using Amiri for Arabic/Urdu, System fonts for English
+// Note: Using Amiri for Urdu as it supports Urdu script beautifully
+// Using System fonts for English until we can troubleshoot Inter fonts
 export const fontFamilies = {
-  arabic: Platform.select({
-    ios: 'Amiri-Regular',
-    android: 'Amiri-Regular', // Use full name for Android too
-    default: 'System', // Fallback to system font
-  }),
-  arabicBold: Platform.select({
-    ios: 'Amiri-Bold',
-    android: 'Amiri-Bold',
-    default: 'System',
-  }),
-  urdu: Platform.select({
-    ios: 'NotoNastaliqUrdu-Regular',
-    android: 'NotoNastaliqUrdu-Regular',
-    default: 'System',
-  }),
-  urduBold: Platform.select({
-    ios: 'NotoNastaliqUrdu-Bold',
-    android: 'NotoNastaliqUrdu-Bold',
-    default: 'System',
-  }),
-  latin: Platform.select({
-    ios: 'Inter-Regular',
-    android: 'Inter-Regular',
-    default: 'System',
-  }),
-  latinMedium: Platform.select({
-    ios: 'Inter-Medium',
-    android: 'Inter-Medium',
-    default: 'System',
-  }),
-  latinSemiBold: Platform.select({
-    ios: 'Inter-SemiBold',
-    android: 'Inter-SemiBold',
-    default: 'System',
-  }),
-  latinBold: Platform.select({
-    ios: 'Inter-Bold',
-    android: 'Inter-Bold',
-    default: 'System',
-  }),
+  arabic: 'Amiri-Regular',
+  arabicBold: 'Amiri-Bold',
+  urdu: 'Amiri-Regular', // Amiri works great for Urdu
+  urduBold: 'Amiri-Bold',
+  latin: 'System', // System font for now
+  latinMedium: 'System',
+  latinSemiBold: 'System',
+  latinBold: 'System',
 } as const;
 
 export type FontFamily = keyof typeof fontFamilies;

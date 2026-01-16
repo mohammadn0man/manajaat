@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../contexts/ThemeProvider';
 import { BlurView } from 'expo-blur';
@@ -25,19 +25,26 @@ const TopBar: React.FC<TopBarProps> = ({
     <View style={localStyles.container}>
       {/* Glassmorphism Background */}
       <BlurView
-        intensity={80}
+        intensity={Platform.OS === 'ios' ? 80 : 0}
         tint="systemChromeMaterialLight"
-        style={localStyles.blurContainer}
+        style={[
+          localStyles.blurContainer,
+          Platform.OS === 'android' && {
+            backgroundColor: colors.primary,
+          },
+        ]}
       >
         {/* Tinted Overlay */}
-        <View
-          style={[
-            localStyles.glassOverlay,
-            {
-              backgroundColor: `${colors.primary}CC`, // 80% opacity
-            },
-          ]}
-        />
+        {Platform.OS === 'ios' && (
+          <View
+            style={[
+              localStyles.glassOverlay,
+              {
+                backgroundColor: `${colors.primary}CC`, // 80% opacity
+              },
+            ]}
+          />
+        )}
         
         {/* Content */}
         <View style={[styles.rowBetween, localStyles.contentContainer]}>
