@@ -164,9 +164,17 @@ const DuaPager: React.FC<DuaPagerProps> = ({
 
       // Log duration for current dua
       const duration = (Date.now() - duaStartTime) / 1000;
-      analyticsService.logDuaViewDuration(duas[currentIdx].id, duration);
+      if (duas[currentIdx]) {
+        analyticsService.logDuaViewDuration(duas[currentIdx].id, duration);
+      }
 
       const newIndex = currentIdx - 1;
+
+      // Validate new index
+      if (newIndex < 0 || newIndex >= duas.length || !duas[newIndex]) {
+        setIsAnimating(false);
+        return;
+      }
 
       // Set new card starting position (off-screen from the direction it's coming from)
       // Previous card comes from left (LTR) or right (RTL)
@@ -214,9 +222,17 @@ const DuaPager: React.FC<DuaPagerProps> = ({
 
       // Log duration for current dua
       const duration = (Date.now() - duaStartTime) / 1000;
-      analyticsService.logDuaViewDuration(duas[currentIdx].id, duration);
+      if (duas[currentIdx]) {
+        analyticsService.logDuaViewDuration(duas[currentIdx].id, duration);
+      }
 
       const newIndex = currentIdx + 1;
+
+      // Validate new index
+      if (newIndex < 0 || newIndex >= duas.length || !duas[newIndex]) {
+        setIsAnimating(false);
+        return;
+      }
 
       // Set new card starting position (off-screen from the direction it's coming from)
       // Next card comes from right (LTR) or left (RTL)
@@ -292,6 +308,16 @@ const DuaPager: React.FC<DuaPagerProps> = ({
         </Text>
       </View>
     );
+  }
+
+  // Safety check: ensure currentIndex is within bounds
+  if (currentIndex >= duas.length) {
+    setCurrentIndex(duas.length - 1);
+    return null;
+  }
+  if (currentIndex < 0) {
+    setCurrentIndex(0);
+    return null;
   }
 
   const currentDua = duas[currentIndex];
