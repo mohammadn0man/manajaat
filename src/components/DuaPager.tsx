@@ -6,6 +6,8 @@ import {
   Animated,
   AccessibilityInfo,
   ScrollView,
+  PanResponder,
+  Dimensions,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Dua } from '../types/dua';
@@ -22,6 +24,9 @@ interface DuaPagerProps {
   onDuaPress?: (dua: Dua) => void;
 }
 
+const { width: screenWidth } = Dimensions.get('window');
+const SWIPE_THRESHOLD = 50;
+
 const DuaPager: React.FC<DuaPagerProps> = ({
   duas,
   onComplete,
@@ -36,7 +41,19 @@ const DuaPager: React.FC<DuaPagerProps> = ({
   const [duaStartTime, setDuaStartTime] = useState<number>(Date.now());
 
   const progressAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(0)).current;
   const scrollViewRef = useRef<ScrollView>(null);
+  const currentIndexRef = useRef(currentIndex);
+  const isRTLRef = useRef(isRTL);
+  
+  // Keep refs in sync with state
+  useEffect(() => {
+    currentIndexRef.current = currentIndex;
+  }, [currentIndex]);
+  
+  useEffect(() => {
+    isRTLRef.current = isRTL;
+  }, [isRTL]);
 
   // Load initial progress
   useEffect(() => {
@@ -67,68 +84,158 @@ const DuaPager: React.FC<DuaPagerProps> = ({
 
   // Reset scroll position when card changes
   useEffect(() => {
+    slideAnim.setValue(0);
     if (scrollViewRef.current) {
       scrollViewRef.current.scrollTo({ y: 0, animated: false });
     }
-  }, [currentIndex]);
+  }, [currentIndex, slideAnim]);
+
+  // Pan responder for swipe gestures
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => false,
+      onMoveShouldSetPanResponder: (_, gestureState) => {
+        if (isAnimating) return false;
+        
+        // Only capture clear horizontal swipes
+        const isHorizontalSwipe = Math.abs(gestureState.dx) > Math.abs(gestureState.dy) * 2;
+        const isSignificantMove = Math.abs(gestureState.dx) > 15;
+        
+        return isHorizontalSwipe && isSignificantMove;
+      },
+      onPanResponderGrant: () => {
+        // Stop any ongoing animations
+        slideAnim.stopAnimation();
+      },
+      onPanResponderMove: (_, gestureState) => {
+        if (!isAnimating && Math.abs(gestureState.dx) > Math.abs(gestureState.dy)) {
+          slideAnim.setValue(gestureState.dx);
+        }
+      },
+      onPanResponderRelease: (_, gestureState) => {
+        if (isAnimating) {
+          slideAnim.setValue(0);
+          return;
+        }
+
+        const { dx } = gestureState;
+        const shouldSwipe = Math.abs(dx) > SWIPE_THRESHOLD;
+        const currentIdx = currentIndexRef.current;
+        const rtl = isRTLRef.current;
+
+        if (shouldSwipe) {
+          // In RTL mode, reverse the swipe direction
+          const isSwipeRight = dx > 0;
+          const shouldGoNext = rtl ? isSwipeRight : !isSwipeRight;
+          
+          if (shouldGoNext && currentIdx < duas.length - 1) {
+            // Go to next
+            goToNext();
+          } else if (!shouldGoNext && currentIdx > 0) {
+            // Go to previous
+            goToPrevious();
+          } else {
+            // Can't go further, reset
+            Animated.spring(slideAnim, {
+              toValue: 0,
+              tension: 100,
+              friction: 8,
+              useNativeDriver: true,
+            }).start();
+          }
+        } else {
+          // Reset position
+          Animated.spring(slideAnim, {
+            toValue: 0,
+            tension: 100,
+            friction: 8,
+            useNativeDriver: true,
+          }).start();
+        }
+      },
+      onPanResponderTerminate: () => {
+        slideAnim.setValue(0);
+      },
+    })
+  ).current;
 
   const goToPrevious = async () => {
-    if (currentIndex > 0 && !isAnimating) {
+    const currentIdx = currentIndexRef.current;
+    const rtl = isRTLRef.current;
+    if (currentIdx > 0 && !isAnimating) {
       setIsAnimating(true);
 
       // Log navigation
-      analyticsService.logDuaNavigated(currentIndex, currentIndex - 1);
+      analyticsService.logDuaNavigated(currentIdx, currentIdx - 1);
 
       // Log duration for current dua
       const duration = (Date.now() - duaStartTime) / 1000;
-      analyticsService.logDuaViewDuration(duas[currentIndex].id, duration);
+      analyticsService.logDuaViewDuration(duas[currentIdx].id, duration);
 
-      const newIndex = currentIndex - 1;
+      const newIndex = currentIdx - 1;
 
-      setCurrentIndex(newIndex);
-      setDuaStartTime(Date.now());
-      setIsAnimating(false);
+      // Animate slide out (RTL: left, LTR: right)
+      Animated.timing(slideAnim, {
+        toValue: rtl ? -screenWidth : screenWidth,
+        duration: 250,
+        useNativeDriver: true,
+      }).start(() => {
+        setCurrentIndex(newIndex);
+        setDuaStartTime(Date.now());
+        slideAnim.setValue(0);
+        setIsAnimating(false);
 
-      // Save progress
-      await storageService.setTodayProgress(newIndex);
+        // Save progress
+        storageService.setTodayProgress(newIndex);
 
-      // Log new dua view
-      analyticsService.logDuaView(duas[newIndex].id, newIndex, duas.length);
+        // Log new dua view
+        analyticsService.logDuaView(duas[newIndex].id, newIndex, duas.length);
 
-      // Announce to screen reader
-      AccessibilityInfo.announceForAccessibility(
-        `Dua ${newIndex + 1} of ${duas.length}`
-      );
+        // Announce to screen reader
+        AccessibilityInfo.announceForAccessibility(
+          `Dua ${newIndex + 1} of ${duas.length}`
+        );
+      });
     }
   };
 
   const goToNext = async () => {
-    if (currentIndex < duas.length - 1 && !isAnimating) {
+    const currentIdx = currentIndexRef.current;
+    const rtl = isRTLRef.current;
+    if (currentIdx < duas.length - 1 && !isAnimating) {
       setIsAnimating(true);
 
       // Log navigation
-      analyticsService.logDuaNavigated(currentIndex, currentIndex + 1);
+      analyticsService.logDuaNavigated(currentIdx, currentIdx + 1);
 
       // Log duration for current dua
       const duration = (Date.now() - duaStartTime) / 1000;
-      analyticsService.logDuaViewDuration(duas[currentIndex].id, duration);
+      analyticsService.logDuaViewDuration(duas[currentIdx].id, duration);
 
-      const newIndex = currentIndex + 1;
+      const newIndex = currentIdx + 1;
 
-      setCurrentIndex(newIndex);
-      setDuaStartTime(Date.now());
-      setIsAnimating(false);
+      // Animate slide out (RTL: right, LTR: left)
+      Animated.timing(slideAnim, {
+        toValue: rtl ? screenWidth : -screenWidth,
+        duration: 250,
+        useNativeDriver: true,
+      }).start(() => {
+        setCurrentIndex(newIndex);
+        setDuaStartTime(Date.now());
+        slideAnim.setValue(0);
+        setIsAnimating(false);
 
-      // Save progress
-      await storageService.setTodayProgress(newIndex);
+        // Save progress
+        storageService.setTodayProgress(newIndex);
 
-      // Log new dua view
-      analyticsService.logDuaView(duas[newIndex].id, newIndex, duas.length);
+        // Log new dua view
+        analyticsService.logDuaView(duas[newIndex].id, newIndex, duas.length);
 
-      // Announce to screen reader
-      AccessibilityInfo.announceForAccessibility(
-        `Dua ${newIndex + 1} of ${duas.length}`
-      );
+        // Announce to screen reader
+        AccessibilityInfo.announceForAccessibility(
+          `Dua ${newIndex + 1} of ${duas.length}`
+        );
+      });
     }
   };
 
@@ -205,6 +312,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
             borderRadius: 2,
             marginTop: 8,
             overflow: 'hidden',
+            flexDirection: isRTL ? 'row-reverse' : 'row',
           }}
         >
           <Animated.View
@@ -228,26 +336,36 @@ const DuaPager: React.FC<DuaPagerProps> = ({
       </View>
 
       {/* Dua Card */}
-      <ScrollView
-        ref={scrollViewRef}
-        style={{ flex: 1 }}
-        contentContainerStyle={{ 
-          flexGrow: 1,
-          justifyContent: 'center',
-          paddingVertical: 20,
-        }}
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        bounces={true}
-        scrollEnabled={true}
-      >
-        <DuaCard
-          dua={currentDua}
-          onPress={onDuaPress}
-          showReference={true}
-          compact={false}
-        />
-      </ScrollView>
+      <View style={{ flex: 1 }} {...panResponder.panHandlers}>
+        <Animated.View
+          style={{
+            flex: 1,
+            transform: [{ translateX: slideAnim }],
+          }}
+        >
+          <ScrollView
+            ref={scrollViewRef}
+            style={{ flex: 1 }}
+            contentContainerStyle={{ 
+              flexGrow: 1,
+              justifyContent: 'center',
+              paddingVertical: 20,
+            }}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            bounces={true}
+            scrollEnabled={true}
+            scrollEventThrottle={16}
+          >
+            <DuaCard
+              dua={currentDua}
+              onPress={onDuaPress}
+              showReference={true}
+              compact={false}
+            />
+          </ScrollView>
+        </Animated.View>
+      </View>
 
       {/* Navigation Buttons */}
       {!isOnlyOne && (
