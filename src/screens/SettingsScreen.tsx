@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Alert, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, Alert, ScrollView, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { BlurView } from 'expo-blur';
 
 import { useApp } from '../contexts/AppContext';
 import { Language, Theme, FontSize } from '../services/storageService';
@@ -18,7 +19,7 @@ const SettingsScreen: React.FC = () => {
     setFontSize,
     clearFavorites,
   } = useApp();
-  const { styles } = useTheme();
+  const { styles, colors } = useTheme();
 
   const languageOptions: { value: Language; label: string }[] = [
     { value: 'en', label: 'English' },
@@ -65,38 +66,70 @@ const SettingsScreen: React.FC = () => {
     icon: keyof typeof Ionicons.glyphMap
   ) => (
     <View style={styles.section}>
-      <View style={[styles.row, styles.globalStyles.spacingUtils.mb('lg')]}>
-        <Ionicons name={icon} size={20} color="#2596be" />
+      <View style={[styles.row, styles.globalStyles.spacingUtils.mb('md')]}>
+        <Ionicons name={icon} size={22} color={colors.primary} />
         <Text style={[styles.h4, styles.globalStyles.spacingUtils.ml('sm')]}>
           {title}
         </Text>
       </View>
-      <View style={[styles.card, { padding: 0, marginBottom: 0 }]}>
-        {options.map((option) => (
-          <TouchableOpacity
-            key={option.value}
-            style={[
-              styles.listItem,
-              currentValue === option.value && { backgroundColor: '#eef4f7ff' },
-            ]}
-            onPress={async () => await onSelect(option.value)}
-            accessibilityRole="radio"
-            accessibilityState={{ checked: currentValue === option.value }}
-            accessibilityLabel={option.label}
+      <View
+        style={{
+          borderRadius: 20,
+          overflow: 'hidden',
+          marginBottom: 0,
+        }}
+      >
+        <BlurView intensity={80} tint="light" style={{ overflow: 'hidden' }}>
+          <View
+            style={{
+              backgroundColor: 'rgba(255, 255, 255, 0.3)',
+            }}
           >
-            <Text
-              style={[
-                styles.body,
-                currentValue === option.value && styles.textPrimary,
-              ]}
-            >
-              {option.label}
-            </Text>
-            {currentValue === option.value && (
-              <Ionicons name="checkmark" size={20} color="#2596be" />
-            )}
-          </TouchableOpacity>
-        ))}
+            {options.map((option, index) => (
+              <TouchableOpacity
+                key={option.value}
+                style={[
+                  styles.listItem,
+                  index !== options.length - 1 && {
+                    borderBottomWidth: 1,
+                    borderBottomColor: 'rgba(0, 0, 0, 0.05)',
+                  },
+                ]}
+                onPress={async () => await onSelect(option.value)}
+                accessibilityRole="radio"
+                accessibilityState={{ checked: currentValue === option.value }}
+                accessibilityLabel={option.label}
+              >
+                {currentValue === option.value && (
+                  <View
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      backgroundColor: `${colors.primary}22`,
+                    }}
+                  />
+                )}
+                <Text
+                  style={[
+                    styles.body,
+                    currentValue === option.value && {
+                      color: colors.primary,
+                      fontWeight: '600',
+                    },
+                  ]}
+                >
+                  {option.label}
+                </Text>
+                {currentValue === option.value && (
+                  <Ionicons name="checkmark-circle" size={22} color={colors.primary} />
+                )}
+              </TouchableOpacity>
+            ))}
+          </View>
+        </BlurView>
       </View>
     </View>
   );
@@ -138,8 +171,8 @@ const SettingsScreen: React.FC = () => {
         )}
 
         <View style={styles.section}>
-          <View style={[styles.row, styles.globalStyles.spacingUtils.mb('lg')]}>
-            <Ionicons name="heart" size={20} color="#EF4444" />
+          <View style={[styles.row, styles.globalStyles.spacingUtils.mb('md')]}>
+            <Ionicons name="heart" size={22} color="#EF4444" />
             <Text
               style={[styles.h4, styles.globalStyles.spacingUtils.ml('sm')]}
             >
@@ -147,55 +180,90 @@ const SettingsScreen: React.FC = () => {
             </Text>
           </View>
           <TouchableOpacity
-            style={[
-              styles.button,
-              styles.row,
-              {
-                backgroundColor: '#FEF2F2',
-                borderColor: '#FECACA',
-                borderWidth: 1,
-              },
-            ]}
+            style={{
+              borderRadius: 20,
+              overflow: 'hidden',
+              opacity: favorites.length === 0 ? 0.5 : 1,
+            }}
             onPress={handleClearFavorites}
             disabled={favorites.length === 0}
             accessibilityRole="button"
             accessibilityLabel="Clear all favorites"
             accessibilityHint="Removes all duas from your favorites list"
           >
-            <Ionicons name="trash" size={20} color="#EF4444" />
-            <Text
-              style={[
-                styles.body,
-                {
-                  color: '#EF4444',
-                  marginLeft: styles.globalStyles.spacing.sm,
-                },
-              ]}
+            <BlurView
+              intensity={80}
+              tint="light"
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingVertical: 16,
+                paddingHorizontal: 20,
+              }}
             >
-              Clear All Favorites ({favorites.length})
-            </Text>
+              <View
+                style={{
+                  ...StyleSheet.absoluteFillObject,
+                  backgroundColor: '#EF444433',
+                }}
+              />
+              <Ionicons name="trash" size={22} color="#EF4444" />
+              <Text
+                style={[
+                  styles.body,
+                  {
+                    color: '#EF4444',
+                    marginLeft: styles.globalStyles.spacing.sm,
+                    fontWeight: '600',
+                  },
+                ]}
+              >
+                Clear All Favorites ({favorites.length})
+              </Text>
+            </BlurView>
           </TouchableOpacity>
         </View>
 
         <View style={styles.section}>
-          <View style={[styles.row, styles.globalStyles.spacingUtils.mb('lg')]}>
-            <Ionicons name="information-circle" size={20} color="#6b7280" />
+          <View style={[styles.row, styles.globalStyles.spacingUtils.mb('md')]}>
+            <Ionicons name="information-circle" size={22} color={colors.primary} />
             <Text
               style={[styles.h4, styles.globalStyles.spacingUtils.ml('sm')]}
             >
               About
             </Text>
           </View>
-          <View style={styles.card}>
-            <Text style={styles.h4}>Manajaat Nomani v1.0.0</Text>
-            <Text
-              style={[
-                styles.textMuted,
-                styles.globalStyles.spacingUtils.mt('xs'),
-              ]}
+          <View
+            style={{
+              borderRadius: 20,
+              overflow: 'hidden',
+            }}
+          >
+            <BlurView
+              intensity={80}
+              tint="light"
+              style={{
+                padding: 20,
+              }}
             >
-              A beautiful app for daily Islamic supplications
-            </Text>
+              <View
+                style={{
+                  ...StyleSheet.absoluteFillObject,
+                  backgroundColor: 'rgba(255, 255, 255, 0.3)',
+                }}
+              />
+              <Text style={[styles.h4, { fontWeight: '600' }]}>
+                Manajaat Nomani v1.0.0
+              </Text>
+              <Text
+                style={[
+                  styles.textMuted,
+                  styles.globalStyles.spacingUtils.mt('xs'),
+                ]}
+              >
+                A beautiful app for daily Islamic supplications
+              </Text>
+            </BlurView>
           </View>
         </View>
       </ScrollView>
