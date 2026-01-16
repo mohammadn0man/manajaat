@@ -33,11 +33,26 @@ const DuaCard: React.FC<DuaCardProps> = ({
   };
 
   const translation = getTranslation();
+  const arabicFontSize = getFontSizeValue();
+
+  // Calculate translation font size (proportionally smaller than Arabic)
+  // Arabic sizes: small=16, normal=20, large=24
+  // Urdu should be 95% (closer to Arabic size), English 85%
+  const getTranslationFontSize = () => {
+    if (language === 'ur') {
+      return arabicFontSize * 0.95;
+    }
+    return arabicFontSize * 0.85;
+  };
+
+  // Calculate reference font size (smaller than translation)
+  const getReferenceFontSize = () => {
+    return arabicFontSize * 0.75;
+  };
 
   // Add extra padding for large font sizes to prevent text cutting
   const getDynamicPadding = () => {
-    const fontSize = getFontSizeValue();
-    if (fontSize >= 24) {
+    if (arabicFontSize >= 24) {
       // Large font size
       return {
         paddingHorizontal: 20,
@@ -45,7 +60,7 @@ const DuaCard: React.FC<DuaCardProps> = ({
         marginHorizontal: 4,
         marginVertical: 4,
       };
-    } else if (fontSize >= 20) {
+    } else if (arabicFontSize >= 20) {
       // Normal font size
       return {
         paddingHorizontal: 16,
@@ -88,6 +103,10 @@ const DuaCard: React.FC<DuaCardProps> = ({
           style={[
             styles.textSecondary,
             styles.globalStyles.spacingUtils.mt('sm'),
+            { 
+              fontSize: getTranslationFontSize(),
+              lineHeight: language === 'ur' ? getTranslationFontSize() * 1.8 : undefined,
+            },
           ]}
         >
           {translation}
@@ -99,7 +118,10 @@ const DuaCard: React.FC<DuaCardProps> = ({
           style={[
             styles.textMuted,
             styles.globalStyles.spacingUtils.mt('sm'),
-            { fontStyle: 'italic' },
+            { 
+              fontStyle: 'italic',
+              fontSize: getReferenceFontSize(),
+            },
           ]}
         >
           {dua.reference}
