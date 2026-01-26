@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { memo, useMemo, useCallback } from 'react';
 import { TouchableOpacity, Text } from 'react-native';
 import { Dua } from '../types/dua';
 import { useTheme } from '../contexts/ThemeProvider';
 import { useApp } from '../contexts/AppContext';
+import { getTranslationForLanguage } from '../utils/translationUtils';
+import { getDynamicPadding } from '../utils/styleUtils';
 
 interface DuaCardProps {
   dua: Dua;
@@ -11,100 +13,84 @@ interface DuaCardProps {
   compact?: boolean;
 }
 
-const DuaCard: React.FC<DuaCardProps> = ({
-  dua,
-  onPress,
-  showReference = true,
-  compact = false,
-}) => {
-  const { styles } = useTheme();
-  const { language, getFontSizeValue } = useApp();
+const DuaCard: React.FC<DuaCardProps> = memo(
+  ({ dua, onPress, showReference = true, compact = false }) => {
+    const { styles } = useTheme();
+    const { language, getFontSizeValue } = useApp();
 
-  // Get the appropriate translation based on current language
-  const getTranslation = () => {
-    switch (language) {
-      case 'en':
-        return dua.translations.en;
-      case 'ur':
-        return dua.translations.ur;
-      default:
-        return dua.translations.en;
-    }
-  };
+    // Memoized translation
+    const translation = useMemo(() => {
+      return getTranslationForLanguage(dua.translations, language);
+    }, [dua.translations, language]);
 
-  const translation = getTranslation();
+    // Memoized dynamic padding
+    const memoizedDynamicPadding = useMemo(() => {
+      const fontSize = getFontSizeValue();
+      return getDynamicPadding(fontSize);
+    }, [getFontSizeValue]);
 
-  // Add extra padding for large font sizes to prevent text cutting
-  const getDynamicPadding = () => {
-    const fontSize = getFontSizeValue();
-    if (fontSize >= 24) {
-      // Large font size
-      return {
-        paddingHorizontal: 20,
-        paddingVertical: 50, // Increased for Arabic characters
-        marginHorizontal: 4,
-        marginVertical: 4,
-      };
-    } else if (fontSize >= 20) {
-      // Normal font size
-      return {
-        paddingHorizontal: 16,
-        paddingVertical: 24, // Increased for Arabic characters
-        marginHorizontal: 2,
-        marginVertical: 2,
-      };
-    }
-    return {
-      paddingVertical: 16, // Add some padding even for small font size
-    };
-  };
+    // Memoized onPress handler
+    const handlePress = useCallback(() => {
+      onPress(dua);
+    }, [onPress, dua]);
 
-  const dynamicPadding = getDynamicPadding();
+    // Memoized card style
+    const cardStyle = useMemo(
+      () => [
+        compact ? styles.cardCompact : styles.card,
+        memoizedDynamicPadding,
+      ],
+      [compact, styles.card, styles.cardCompact, memoizedDynamicPadding]
+    );
 
-  return (
-    <TouchableOpacity
-      style={[compact ? styles.cardCompact : styles.card, dynamicPadding]}
-      onPress={() => onPress(dua)}
-      accessibilityRole="button"
-      accessibilityLabel={`Dua: ${dua.arabic.substring(0, 50)}...`}
-      accessibilityHint="Tap to view full dua details"
-    >
-      <Text
-        style={[
-          compact ? styles.arabic : styles.arabicLarge,
-          {
-            fontFamily: 'Amiri-Regular',
-            fontWeight: 'normal', // Ensure no conflicting font weight
-          },
-        ]}
+    // Memoized Arabic text style
+    const arabicTextStyle = useMemo(
+      () => [
+        compact ? styles.arabic : styles.arabicLarge,
+        {
+          fontFamily: 'Amiri-Regular',
+          fontWeight: 'normal',
+        },
+      ],
+      [compact, styles.arabic, styles.arabicLarge]
+    );
+
+    // Memoized translation text style
+    const translationTextStyle = useMemo(
+      () => [styles.textSecondary, styles.globalStyles.spacingUtils.mt('sm')],
+      [styles.textSecondary, styles.globalStyles.spacingUtils]
+    );
+
+    // Memoized reference text style
+    const referenceTextStyle = useMemo(
+      () => [
+        styles.textMuted,
+        styles.globalStyles.spacingUtils.mt('sm'),
+        { fontStyle: 'italic' },
+      ],
+      [styles.textMuted, styles.globalStyles.spacingUtils]
+    );
+
+    return (
+      <TouchableOpacity
+        style={cardStyle}
+        onPress={handlePress}
+        accessibilityRole="button"
+        accessibilityLabel={`Dua: ${dua.arabic.substring(0, 50)}...`}
+        accessibilityHint="Tap to view full dua details"
       >
-        {dua.arabic}
-      </Text>
+        <Text style={arabicTextStyle}>{dua.arabic}</Text>
 
-      {translation && (
-        <Text
-          style={[
-            styles.textSecondary,
-            styles.globalStyles.spacingUtils.mt('sm'),
-          ]}
-        >
-          {translation}
-        </Text>
-      )}
+        {translation && <Text style={translationTextStyle}>{translation}</Text>}
 
-      {showReference && dua.reference && (
-        <Text
-          style={[
-            styles.textMuted,
-            styles.globalStyles.spacingUtils.mt('sm'),
-            { fontStyle: 'italic' },
-          ]}
-        >
-          {dua.reference}
-        </Text>
-      )}
-    </TouchableOpacity>
-  );
-};
+        {showReference && dua.reference && (
+          <Text style={referenceTextStyle}>{dua.reference}</Text>
+        )}
+      </TouchableOpacity>
+    );
+  }
+);
+
+DuaCard.displayName = 'DuaCard';
 
 export default DuaCard;

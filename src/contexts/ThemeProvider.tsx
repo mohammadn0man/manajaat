@@ -1,7 +1,8 @@
-import React, { createContext, useContext, ReactNode } from 'react';
+import React, { createContext, useContext, ReactNode, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import { useApp } from './AppContext';
 import { globalStyles } from '../styles/globalStyles';
+import { UI_CONSTANTS } from '../constants/ui';
 
 export interface ThemeColors {
   background: string;
@@ -72,6 +73,13 @@ export interface ThemeStyles {
     border: object;
     background: object;
 
+    // Additional component styles
+    errorContainer: object;
+    errorText: object;
+    headerActions: object;
+    translationText: object;
+    referenceText: object;
+
     // Global styles access
     globalStyles: typeof globalStyles;
   };
@@ -86,206 +94,262 @@ interface ThemeProviderProps {
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const { colorScheme, getFontSizeValue } = useApp();
 
-  const colors: ThemeColors = {
-    light: {
-      background: '#FFFFFF',
-      foreground: '#0F172A',
-      card: '#FFFFFF',
-      cardForeground: '#0F172A',
-      popover: '#FFFFFF',
-      popoverForeground: '#0F172A',
-      primary: '#2596be',
-      primaryForeground: '#FFFFFF',
-      secondary: '#E6F7FF',
-      secondaryForeground: '#0F172A',
-      muted: '#F1F5F9',
-      mutedForeground: '#64748B',
-      accent: '#E6F7FF',
-      accentForeground: '#0F172A',
-      destructive: '#EF4444',
-      destructiveForeground: '#FFFFFF',
-      border: '#E2E8F0',
-      input: '#E2E8F0',
-      ring: '#2596be',
-    },
-    dark: {
-      background: '#0A1628',
-      foreground: '#F8FAFC',
-      card: '#1E293B',
-      cardForeground: '#F8FAFC',
-      popover: '#1E293B',
-      popoverForeground: '#F8FAFC',
-      primary: '#4FC3F7',
-      primaryForeground: '#0A1628',
-      secondary: '#1E3A5F',
-      secondaryForeground: '#F8FAFC',
-      muted: '#1E293B',
-      mutedForeground: '#94A3B8',
-      accent: '#1E3A5F',
-      accentForeground: '#F8FAFC',
-      destructive: '#F87171',
-      destructiveForeground: '#0A1628',
-      border: '#1E293B',
-      input: '#1E293B',
-      ring: '#4FC3F7',
-    },
-  }[colorScheme];
+  // Memoize colors to prevent unnecessary recalculations
+  const colors: ThemeColors = useMemo(() => {
+    const colorSchemes = {
+      light: {
+        background: '#FFFFFF',
+        foreground: '#0F172A',
+        card: '#FFFFFF',
+        cardForeground: '#0F172A',
+        popover: '#FFFFFF',
+        popoverForeground: '#0F172A',
+        primary: '#2596be',
+        primaryForeground: '#FFFFFF',
+        secondary: '#E6F7FF',
+        secondaryForeground: '#0F172A',
+        muted: '#F1F5F9',
+        mutedForeground: '#64748B',
+        accent: '#E6F7FF',
+        accentForeground: '#0F172A',
+        destructive: '#EF4444',
+        destructiveForeground: '#FFFFFF',
+        border: '#E2E8F0',
+        input: '#E2E8F0',
+        ring: '#2596be',
+      },
+      dark: {
+        background: '#0A1628',
+        foreground: '#F8FAFC',
+        card: '#1E293B',
+        cardForeground: '#F8FAFC',
+        popover: '#1E293B',
+        popoverForeground: '#F8FAFC',
+        primary: '#4FC3F7',
+        primaryForeground: '#0A1628',
+        secondary: '#1E3A5F',
+        secondaryForeground: '#F8FAFC',
+        muted: '#1E293B',
+        mutedForeground: '#94A3B8',
+        accent: '#1E3A5F',
+        accentForeground: '#F8FAFC',
+        destructive: '#F87171',
+        destructiveForeground: '#0A1628',
+        border: '#1E293B',
+        input: '#1E293B',
+        ring: '#4FC3F7',
+      },
+    };
+    return colorSchemes[colorScheme];
+  }, [colorScheme]);
 
-  const styles = StyleSheet.create({
-    // Layout styles
-    container: {
-      ...globalStyles.layout.container,
-      backgroundColor: colors.background,
-    },
-    content: {
-      ...globalStyles.layout.content,
-    },
-    contentCompact: {
-      ...globalStyles.layout.contentCompact,
-    },
-    centerContent: {
-      ...globalStyles.layout.centerContent,
-    },
-    row: {
-      ...globalStyles.layout.row,
-    },
-    rowBetween: {
-      ...globalStyles.layout.rowBetween,
-    },
-    rowCenter: {
-      ...globalStyles.layout.rowCenter,
-    },
-    column: {
-      ...globalStyles.layout.column,
-    },
-    columnCenter: {
-      ...globalStyles.layout.columnCenter,
-    },
+  // Memoize styles to prevent unnecessary recalculations
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        // Layout styles
+        container: {
+          ...globalStyles.layout.container,
+          backgroundColor: colors.background,
+        },
+        content: {
+          ...globalStyles.layout.content,
+        },
+        contentCompact: {
+          ...globalStyles.layout.contentCompact,
+        },
+        centerContent: {
+          ...globalStyles.layout.centerContent,
+        },
+        row: {
+          ...globalStyles.layout.row,
+        },
+        rowBetween: {
+          ...globalStyles.layout.rowBetween,
+        },
+        rowCenter: {
+          ...globalStyles.layout.rowCenter,
+        },
+        column: {
+          ...globalStyles.layout.column,
+        },
+        columnCenter: {
+          ...globalStyles.layout.columnCenter,
+        },
 
-    // Component styles
-    card: {
-      ...globalStyles.components.card,
-      backgroundColor: colors.card,
-      borderColor: colors.border,
-      borderWidth: 1,
-    },
-    cardCompact: {
-      ...globalStyles.components.cardCompact,
-      backgroundColor: colors.card,
-      borderColor: colors.border,
-      borderWidth: 1,
-    },
-    button: {
-      ...globalStyles.components.button,
-      backgroundColor: colors.muted,
-    },
-    buttonSmall: {
-      ...globalStyles.components.buttonSmall,
-      backgroundColor: colors.muted,
-    },
-    input: {
-      ...globalStyles.components.input,
-      backgroundColor: colors.card,
-      borderColor: colors.border,
-      color: colors.foreground,
-    },
-    listItem: {
-      ...globalStyles.components.listItem,
-      borderBottomColor: colors.border,
-    },
-    section: {
-      ...globalStyles.components.section,
-    },
-    sectionHeader: {
-      ...globalStyles.components.sectionHeader,
-    },
+        // Component styles
+        card: {
+          ...globalStyles.components.card,
+          backgroundColor: colors.card,
+          borderColor: colors.border,
+          borderWidth: 1,
+        },
+        cardCompact: {
+          ...globalStyles.components.cardCompact,
+          backgroundColor: colors.card,
+          borderColor: colors.border,
+          borderWidth: 1,
+        },
+        button: {
+          ...globalStyles.components.button,
+          backgroundColor: colors.muted,
+        },
+        buttonSmall: {
+          ...globalStyles.components.buttonSmall,
+          backgroundColor: colors.muted,
+        },
+        input: {
+          ...globalStyles.components.input,
+          backgroundColor: colors.card,
+          borderColor: colors.border,
+          color: colors.foreground,
+        },
+        listItem: {
+          ...globalStyles.components.listItem,
+          borderBottomColor: colors.border,
+        },
+        section: {
+          ...globalStyles.components.section,
+        },
+        sectionHeader: {
+          ...globalStyles.components.sectionHeader,
+        },
 
-    // Text styles
-    text: {
-      ...globalStyles.typography.body,
-      color: colors.foreground,
-    },
-    textSecondary: {
-      ...globalStyles.typography.body,
-      color: colors.secondaryForeground,
-    },
-    textMuted: {
-      ...globalStyles.typography.caption,
-      color: colors.mutedForeground,
-    },
-    textPrimary: {
-      ...globalStyles.typography.body,
-      color: colors.primary,
-    },
-    textAccent: {
-      ...globalStyles.typography.body,
-      color: colors.accent,
-    },
+        // Text styles
+        text: {
+          ...globalStyles.typography.body,
+          color: colors.foreground,
+        },
+        textSecondary: {
+          ...globalStyles.typography.body,
+          color: colors.secondaryForeground,
+        },
+        textMuted: {
+          ...globalStyles.typography.caption,
+          color: colors.mutedForeground,
+        },
+        textPrimary: {
+          ...globalStyles.typography.body,
+          color: colors.primary,
+        },
+        textAccent: {
+          ...globalStyles.typography.body,
+          color: colors.accent,
+        },
 
-    // Typography styles
-    h1: {
-      ...globalStyles.typography.h1,
-      fontSize: Math.round(getFontSizeValue() * 1.6), // 32px for normal
-      color: colors.foreground,
-    },
-    h2: {
-      ...globalStyles.typography.h2,
-      fontSize: Math.round(getFontSizeValue() * 1.4), // 28px for normal
-      color: colors.foreground,
-    },
-    h3: {
-      ...globalStyles.typography.h3,
-      fontSize: Math.round(getFontSizeValue() * 1.2), // 24px for normal
-      color: colors.foreground,
-    },
-    h4: {
-      ...globalStyles.typography.h4,
-      fontSize: getFontSizeValue(), // 20px for normal
-      color: colors.foreground,
-    },
-    body: {
-      ...globalStyles.typography.body,
-      fontSize: Math.round(getFontSizeValue() * 0.8), // 16px for normal
-      color: colors.foreground,
-    },
-    bodyLarge: {
-      ...globalStyles.typography.bodyLarge,
-      fontSize: getFontSizeValue(), // 20px for normal
-      color: colors.foreground,
-    },
-    caption: {
-      ...globalStyles.typography.caption,
-      fontSize: Math.round(getFontSizeValue() * 0.7), // 14px for normal
-      color: colors.mutedForeground,
-    },
-    small: {
-      ...globalStyles.typography.small,
-      fontSize: Math.round(getFontSizeValue() * 0.6), // 12px for normal
-      color: colors.mutedForeground,
-    },
-    arabic: {
-      ...globalStyles.typography.arabic,
-      fontFamily: 'Amiri-Regular',
-      fontSize: getFontSizeValue(), // 20px for normal
-      lineHeight: Math.round(getFontSizeValue() * 2.2), // Increased line height for better Arabic spacing
-      color: colors.foreground,
-    },
-    arabicLarge: {
-      ...globalStyles.typography.arabicLarge,
-      fontFamily: 'Amiri-Regular',
-      fontSize: Math.round(getFontSizeValue() * 1.2), // 24px for normal
-      lineHeight: Math.round(getFontSizeValue() * 3.0), // Increased line height for better Arabic spacing
-      color: colors.foreground,
-    },
+        // Typography styles
+        h1: {
+          ...globalStyles.typography.h1,
+          fontSize: Math.round(
+            getFontSizeValue() * UI_CONSTANTS.FONT_SIZE_MULTIPLIERS.h1
+          ),
+          color: colors.foreground,
+        },
+        h2: {
+          ...globalStyles.typography.h2,
+          fontSize: Math.round(
+            getFontSizeValue() * UI_CONSTANTS.FONT_SIZE_MULTIPLIERS.h2
+          ),
+          color: colors.foreground,
+        },
+        h3: {
+          ...globalStyles.typography.h3,
+          fontSize: Math.round(
+            getFontSizeValue() * UI_CONSTANTS.FONT_SIZE_MULTIPLIERS.h3
+          ),
+          color: colors.foreground,
+        },
+        h4: {
+          ...globalStyles.typography.h4,
+          fontSize: getFontSizeValue(),
+          color: colors.foreground,
+        },
+        body: {
+          ...globalStyles.typography.body,
+          fontSize: Math.round(
+            getFontSizeValue() * UI_CONSTANTS.FONT_SIZE_MULTIPLIERS.body
+          ),
+          color: colors.foreground,
+        },
+        bodyLarge: {
+          ...globalStyles.typography.bodyLarge,
+          fontSize: getFontSizeValue(),
+          color: colors.foreground,
+        },
+        caption: {
+          ...globalStyles.typography.caption,
+          fontSize: Math.round(
+            getFontSizeValue() * UI_CONSTANTS.FONT_SIZE_MULTIPLIERS.caption
+          ),
+          color: colors.mutedForeground,
+        },
+        small: {
+          ...globalStyles.typography.small,
+          fontSize: Math.round(
+            getFontSizeValue() * UI_CONSTANTS.FONT_SIZE_MULTIPLIERS.small
+          ),
+          color: colors.mutedForeground,
+        },
+        arabic: {
+          ...globalStyles.typography.arabic,
+          fontFamily: 'Amiri-Regular',
+          fontSize: getFontSizeValue(),
+          lineHeight: Math.round(
+            getFontSizeValue() * UI_CONSTANTS.LINE_HEIGHT_MULTIPLIERS.arabic
+          ),
+          color: colors.foreground,
+        },
+        arabicLarge: {
+          ...globalStyles.typography.arabicLarge,
+          fontFamily: 'Amiri-Regular',
+          fontSize: Math.round(
+            getFontSizeValue() * UI_CONSTANTS.FONT_SIZE_MULTIPLIERS.h3
+          ),
+          lineHeight: Math.round(
+            getFontSizeValue() *
+              UI_CONSTANTS.LINE_HEIGHT_MULTIPLIERS.arabicLarge
+          ),
+          color: colors.foreground,
+        },
 
-    // Border and background
-    border: {
-      borderColor: colors.border,
-    },
-    background: {
-      backgroundColor: colors.background,
-    },
-  });
+        // Border and background
+        border: {
+          borderColor: colors.border,
+        },
+        background: {
+          backgroundColor: colors.background,
+        },
+
+        // Additional styles for specific components
+        errorContainer: {
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: 24,
+        },
+        errorText: {
+          ...globalStyles.typography.body,
+          color: colors.mutedForeground,
+          textAlign: 'center',
+        },
+        headerActions: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 8,
+        },
+        translationText: {
+          marginTop: 16,
+          lineHeight: Math.round(
+            getFontSizeValue() * UI_CONSTANTS.LINE_HEIGHT_MULTIPLIERS.arabic
+          ),
+        },
+        referenceText: {
+          marginTop: 12,
+          fontStyle: 'italic',
+        },
+      }),
+    [colors, getFontSizeValue]
+  );
 
   const themeStyles: ThemeStyles = {
     colors,

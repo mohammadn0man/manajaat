@@ -14,6 +14,7 @@ export interface Dua {
   translations: {
     en?: string;
     ur?: string;
+    ar?: string;
   };
   reference?: string;
 }

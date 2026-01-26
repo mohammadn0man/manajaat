@@ -1,30 +1,28 @@
-import { Dua, RawDuaData, DayOfWeek } from '../types/dua';
+import { Dua, RawDuaData } from '../types/dua';
+import { validateDuasData } from '../utils/validation';
+import { errorLogger } from '../utils/errorLogger';
 
 // Import the JSON data
 import duasData from '../../assets/data/duas.json';
 
 const rawData = duasData as RawDuaData;
 
-// Normalize the raw data into our typed format
+// Normalize the raw data into our typed format with validation
 export const normalizeDuasData = (): Dua[] => {
-  const normalizedDuas: Dua[] = [];
+  try {
+    // Validate the data structure
+    if (!rawData.days || !rawData.schema_version) {
+      throw new Error('Invalid duas data structure: missing required fields');
+    }
 
-  Object.entries(rawData.days).forEach(([day, duas]) => {
-    duas.forEach((dua, index) => {
-      normalizedDuas.push({
-        id: `${day}-${index}`,
-        day: day as DayOfWeek,
-        arabic: dua.arabic,
-        translations: {
-          en: dua.translations.en,
-          ur: dua.translations.ur,
-        },
-        reference: dua.reference,
-      });
+    return validateDuasData(rawData);
+  } catch (error) {
+    errorLogger.logCritical('Failed to normalize duas data', error, {
+      context: 'dataLoader.normalizeDuasData',
     });
-  });
-
-  return normalizedDuas;
+    // Return empty array as fallback to prevent app crash
+    return [];
+  }
 };
 
 // Cache the normalized data
@@ -32,7 +30,14 @@ let cachedDuas: Dua[] | null = null;
 
 export const getDuasData = (): Dua[] => {
   if (!cachedDuas) {
-    cachedDuas = normalizeDuasData();
+    try {
+      cachedDuas = normalizeDuasData();
+    } catch (error) {
+      errorLogger.logCritical('Failed to get duas data', error, {
+        context: 'dataLoader.getDuasData',
+      });
+      cachedDuas = [];
+    }
   }
   return cachedDuas;
 };
