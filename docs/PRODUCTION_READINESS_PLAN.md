@@ -1,7 +1,7 @@
-# Manajaat App - Production Readiness Plan
+# Munajaat App - Production Readiness Plan
 
 ## Overview
-This document outlines a comprehensive, phase-wise plan to make the Manajaat React Native app production-ready. Each phase includes specific tasks, testing instructions, and clear prompts for AI agents to implement the changes.
+This document outlines a comprehensive, phase-wise plan to make the Munajaat React Native app production-ready. Each phase includes specific tasks, testing instructions, and clear prompts for AI agents to implement the changes.
 
 **Current Status**: Development Ready (6.5/10)  
 **Target Status**: Production Ready (9/10)  

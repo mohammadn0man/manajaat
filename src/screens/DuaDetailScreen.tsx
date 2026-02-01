@@ -66,12 +66,12 @@ const DuaDetailScreen: React.FC<DuaDetailScreenProps> = ({ route }) => {
         ? dua.translations.ur
         : dua.translations.en || dua.translations.ur || '';
 
-    const shareText = `${dua.arabic}\n\n${translation}\n\n${dua.reference || ''}\n\n#ManajaatNomani`;
+    const shareText = `${dua.arabic}\n\n${translation}\n\n${dua.reference || ''}\n\n#MunajaatNomani`;
 
     try {
       await Share.share({
         message: shareText,
-        title: 'Dua from Manajaat Nomani',
+        title: 'Dua from Munajaat Nomani',
       });
     } catch {
       Alert.alert('Error', 'Failed to share dua');
