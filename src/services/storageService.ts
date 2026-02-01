@@ -6,16 +6,19 @@ const STORAGE_KEYS = {
   LANGUAGE: 'language',
   THEME: 'theme',
   FONT_SIZE: 'fontSize',
+  ARABIC_FONT: 'arabicFont',
 } as const;
 
 export type Language = 'en' | 'ur' | 'ar';
 export type Theme = 'system' | 'light' | 'dark';
 export type FontSize = 'small' | 'normal' | 'large';
+export type ArabicFont = 'amiri' | 'jameel' | 'almajeed' | 'indopak';
 
 export interface AppSettings {
   language: Language;
   theme: Theme;
   fontSize: FontSize;
+  arabicFont: ArabicFont;
 }
 
 class StorageService {
@@ -68,22 +71,25 @@ class StorageService {
   // Settings management
   async getSettings(): Promise<AppSettings> {
     try {
-      const [language, theme, fontSize] = await Promise.all([
+      const [language, theme, fontSize, arabicFont] = await Promise.all([
         AsyncStorage.getItem(STORAGE_KEYS.LANGUAGE),
         AsyncStorage.getItem(STORAGE_KEYS.THEME),
         AsyncStorage.getItem(STORAGE_KEYS.FONT_SIZE),
+        AsyncStorage.getItem(STORAGE_KEYS.ARABIC_FONT),
       ]);
 
       return {
         language: (language as Language) || 'en',
         theme: (theme as Theme) || 'system',
         fontSize: (fontSize as FontSize) || 'normal',
+        arabicFont: (arabicFont as ArabicFont) || 'indopak',
       };
     } catch {
       return {
         language: 'en',
         theme: 'system',
         fontSize: 'normal',
+        arabicFont: 'indopak',
       };
     }
   }
@@ -107,6 +113,14 @@ class StorageService {
   async setFontSize(fontSize: FontSize): Promise<void> {
     try {
       await AsyncStorage.setItem(STORAGE_KEYS.FONT_SIZE, fontSize);
+    } catch {
+      // Ignore errors
+    }
+  }
+
+  async setArabicFont(arabicFont: ArabicFont): Promise<void> {
+    try {
+      await AsyncStorage.setItem(STORAGE_KEYS.ARABIC_FONT, arabicFont);
     } catch {
       // Ignore errors
     }

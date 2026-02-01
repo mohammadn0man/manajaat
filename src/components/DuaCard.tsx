@@ -16,7 +16,7 @@ const DuaCard: React.FC<DuaCardProps> = ({
   compact = false,
 }) => {
   const { styles } = useTheme();
-  const { getFontSizeValue } = useApp();
+  const { getFontSizeValue, getArabicFontFamily } = useApp();
 
   const arabicFontSize = getFontSizeValue();
 
@@ -63,7 +63,7 @@ const DuaCard: React.FC<DuaCardProps> = ({
         style={[
           compact ? styles.arabic : styles.arabicLarge,
           {
-            fontFamily: 'Amiri-Regular',
+            fontFamily: getArabicFontFamily(),
             fontWeight: 'normal', // Ensure no conflicting font weight
           },
         ]}

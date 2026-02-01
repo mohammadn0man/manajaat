@@ -22,6 +22,10 @@ export default function App() {
     'Amiri-Regular': require('./assets/fonts/Amiri-Regular.ttf'),
     'Amiri-Bold': require('./assets/fonts/Amiri-Bold.ttf'),
     Amiri: require('./assets/fonts/Amiri-Regular.ttf'),
+    // Additional Arabic fonts
+    'JameelNooriNastaleeqKasheeda': require('./assets/fonts/Jameel-Noori-Nastaleeq-Kasheeda.ttf'),
+    'AlMajeedQuranicRegular': require('./assets/fonts/Al-Majeed-Quranic-Regular.ttf'),
+    'IndopakNastaleeq': require('./assets/fonts/Indopak-Nastaleeq.ttf'),
   });
 
   // Log font loading status

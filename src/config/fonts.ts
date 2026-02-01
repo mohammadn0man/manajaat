@@ -1,5 +1,5 @@
 import * as Font from 'expo-font';
-import { Platform } from 'react-native';
+import type { ArabicFont } from '../services/storageService';
 
 // Font configuration - custom fonts bundled with the app for consistency
 // Note: Using Amiri for both Arabic and Urdu (Amiri supports Urdu beautifully)
@@ -9,6 +9,12 @@ export const fontConfig = {
   'Amiri-Regular': require('../../assets/fonts/Amiri-Regular.ttf'),
   'Amiri-Bold': require('../../assets/fonts/Amiri-Bold.ttf'),
   Amiri: require('../../assets/fonts/Amiri-Regular.ttf'),
+  // Jameel Noori Nastaleeq - using simpler name for Android compatibility
+  'JameelNooriNastaleeqKasheeda': require('../../assets/fonts/Jameel-Noori-Nastaleeq-Kasheeda.ttf'),
+  // Al Majeed Quranic - using simpler name for Android compatibility
+  'AlMajeedQuranicRegular': require('../../assets/fonts/Al-Majeed-Quranic-Regular.ttf'),
+  // Indopak Nastaleeq (Quranic font from Tarteel) - using simpler name for Android compatibility
+  'IndopakNastaleeq': require('../../assets/fonts/Indopak-Nastaleeq.ttf'),
 };
 
 export const loadFonts = async (): Promise<void> => {
@@ -35,5 +41,16 @@ export const fontFamilies = {
   latinSemiBold: 'System',
   latinBold: 'System',
 } as const;
+
+// Helper function to get Arabic font family name by key
+export const getArabicFontFamily = (fontKey: ArabicFont): string => {
+  const fontMap: Record<ArabicFont, string> = {
+    amiri: 'Amiri-Regular',
+    jameel: 'JameelNooriNastaleeqKasheeda',
+    almajeed: 'AlMajeedQuranicRegular',
+    indopak: 'IndopakNastaleeq',
+  };
+  return fontMap[fontKey];
+};
 
 export type FontFamily = keyof typeof fontFamilies;
