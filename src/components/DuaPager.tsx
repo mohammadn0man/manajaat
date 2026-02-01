@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Dua } from '../types/dua';
 import { useTheme } from '../contexts/ThemeProvider';
 import { useApp } from '../contexts/AppContext';
@@ -37,6 +38,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
 }) => {
   const { styles, colors } = useTheme();
   const { isRTL } = useApp();
+  const insets = useSafeAreaInsets();
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -418,7 +420,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
             alignItems: 'center',
             paddingHorizontal: 24,
             paddingTop: 20,
-            paddingBottom: 95,
+            paddingBottom: 70 + Math.max(insets.bottom, 20) + 10,
             position: 'absolute',
             bottom: 0,
             left: 0,
@@ -506,7 +508,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
               shadowOffset: { width: 0, height: 4 },
               shadowOpacity: 0.15,
               shadowRadius: 8,
-              elevation: 5,
+              elevation: 10,
             }}
             onPress={isLast ? handleComplete : goToNext}
             disabled={isAnimating}
@@ -570,7 +572,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
           style={{
             paddingHorizontal: 24,
             paddingTop: 20,
-            paddingBottom: 110,
+            paddingBottom: 70 + Math.max(insets.bottom, 20) + 10,
             position: 'absolute',
             bottom: 0,
             left: 0,
@@ -585,7 +587,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
               shadowOffset: { width: 0, height: 4 },
               shadowOpacity: 0.15,
               shadowRadius: 8,
-              elevation: 5,
+              elevation: 10,
             }}
             onPress={handleComplete}
             disabled={isAnimating}
