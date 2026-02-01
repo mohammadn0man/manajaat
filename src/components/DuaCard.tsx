@@ -1,5 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { Dua } from '../types/dua';
 import { useTheme } from '../contexts/ThemeProvider';
 import { useApp } from '../contexts/AppContext';
@@ -8,25 +9,36 @@ interface DuaCardProps {
   dua: Dua;
   onPress?: (dua: Dua) => void;
   compact?: boolean;
+  showActions?: boolean;
+  onFavoritePress?: () => void;
+  onSpeakerPress?: () => void;
+  isFavorite?: boolean;
 }
 
 const DuaCard: React.FC<DuaCardProps> = ({
   dua,
   onPress,
   compact = false,
+  showActions = false,
+  onFavoritePress,
+  onSpeakerPress,
+  isFavorite = false,
 }) => {
-  const { styles } = useTheme();
+  const { styles, colors } = useTheme();
   const { getFontSizeValue, getArabicFontFamily } = useApp();
 
   const arabicFontSize = getFontSizeValue();
 
   // Add extra padding for large font sizes to prevent text cutting
   const getDynamicPadding = () => {
+    // Extra top padding when action buttons are shown to prevent overlap
+    const topPaddingOffset = showActions ? 10 : 0;
+    
     if (arabicFontSize >= 24) {
       // Large font size
       return {
         paddingHorizontal: 20,
-        paddingTop: 20, // Increased for Arabic characters
+        paddingTop: 20 + topPaddingOffset, // Increased for Arabic characters + buttons
         paddingBottom: 20, // 25% less than top
         marginHorizontal: 4,
         marginVertical: 4,
@@ -35,14 +47,14 @@ const DuaCard: React.FC<DuaCardProps> = ({
       // Normal font size
       return {
         paddingHorizontal: 16,
-        paddingTop: 24, // Increased for Arabic characters
+        paddingTop: 24 + topPaddingOffset, // Increased for Arabic characters + buttons
         paddingBottom: 18, // 25% less than top
         marginHorizontal: 2,
         marginVertical: 2,
       };
     }
     return {
-      paddingTop: 16, // Add some padding even for small font size
+      paddingTop: 16 + topPaddingOffset, // Add some padding even for small font size + buttons
       paddingBottom: 12, // 25% less than top
     };
   };
@@ -59,6 +71,53 @@ const DuaCard: React.FC<DuaCardProps> = ({
       accessibilityLabel={`Dua: ${dua.arabic.substring(0, 50)}...`}
       accessibilityHint={onPress ? 'Tap to view full dua details' : undefined}
     >
+      {/* Action Buttons */}
+      {showActions && (
+        <>
+          {/* Speaker Button - Top Left */}
+          <TouchableOpacity
+            onPress={onSpeakerPress}
+            style={{
+              position: 'absolute',
+              top: 12,
+              left: 12,
+              zIndex: 10,
+              padding: 4,
+            }}
+            accessibilityRole="button"
+            accessibilityLabel="Play audio recitation"
+            accessibilityHint="Tap to hear the dua recited"
+          >
+            <Ionicons
+              name="volume-high-outline"
+              size={20}
+              color={colors.primary}
+            />
+          </TouchableOpacity>
+
+          {/* Favorite Button - Top Right */}
+          <TouchableOpacity
+            onPress={onFavoritePress}
+            style={{
+              position: 'absolute',
+              top: 12,
+              right: 12,
+              zIndex: 10,
+              padding: 4,
+            }}
+            accessibilityRole="button"
+            accessibilityLabel={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+            accessibilityHint="Toggle favorite status for this dua"
+          >
+            <Ionicons
+              name={isFavorite ? 'heart' : 'heart-outline'}
+              size={20}
+              color={isFavorite ? '#EF4444' : colors.primary}
+            />
+          </TouchableOpacity>
+        </>
+      )}
+
       <Text
         style={[
           compact ? styles.arabic : styles.arabicLarge,

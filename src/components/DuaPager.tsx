@@ -38,13 +38,15 @@ const DuaPager: React.FC<DuaPagerProps> = ({
   onDuaPress,
 }) => {
   const { styles, colors } = useTheme();
-  const { isRTL } = useApp();
+  const { isRTL, isFavorite, toggleFavorite } = useApp();
   const insets = useSafeAreaInsets();
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [sessionStartTime] = useState<number>(Date.now());
   const [duaStartTime, setDuaStartTime] = useState<number>(Date.now());
+  const [showToast, setShowToast] = useState(false);
+  const toastOpacity = useRef(new Animated.Value(0)).current;
 
   const progressAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(0)).current;
@@ -408,6 +410,26 @@ const DuaPager: React.FC<DuaPagerProps> = ({
               dua={currentDua}
               onPress={onDuaPress}
               compact={false}
+              showActions={true}
+              onFavoritePress={() => toggleFavorite(currentDua.id)}
+              onSpeakerPress={() => {
+                // Show toast
+                setShowToast(true);
+                Animated.sequence([
+                  Animated.timing(toastOpacity, {
+                    toValue: 1,
+                    duration: 300,
+                    useNativeDriver: true,
+                  }),
+                  Animated.delay(2000),
+                  Animated.timing(toastOpacity, {
+                    toValue: 0,
+                    duration: 300,
+                    useNativeDriver: true,
+                  }),
+                ]).start(() => setShowToast(false));
+              }}
+              isFavorite={isFavorite(currentDua.id)}
             />
 
             {/* Translation */}
@@ -679,6 +701,34 @@ const DuaPager: React.FC<DuaPagerProps> = ({
             </BlurView>
           </TouchableOpacity>
         </View>
+      )}
+
+      {/* Toast Message */}
+      {showToast && (
+        <Animated.View
+          style={{
+            position: 'absolute',
+            bottom: 100 + Math.max(insets.bottom, 20),
+            left: 20,
+            right: 20,
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            borderRadius: 12,
+            paddingVertical: 12,
+            paddingHorizontal: 16,
+            alignItems: 'center',
+            opacity: toastOpacity,
+          }}
+        >
+          <Text
+            style={{
+              color: '#FFFFFF',
+              fontSize: 14,
+              fontWeight: '500',
+            }}
+          >
+            Coming Soon: Audio recitation
+          </Text>
+        </Animated.View>
       )}
     </View>
   );
