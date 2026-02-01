@@ -3,62 +3,22 @@ import { TouchableOpacity, Text } from 'react-native';
 import { Dua } from '../types/dua';
 import { useTheme } from '../contexts/ThemeProvider';
 import { useApp } from '../contexts/AppContext';
-import { fontFamilies } from '../config/fonts';
 
 interface DuaCardProps {
   dua: Dua;
   onPress?: (dua: Dua) => void;
-  showReference?: boolean;
   compact?: boolean;
 }
 
 const DuaCard: React.FC<DuaCardProps> = ({
   dua,
   onPress,
-  showReference = true,
   compact = false,
 }) => {
   const { styles } = useTheme();
-  const { language, getFontSizeValue } = useApp();
+  const { getFontSizeValue } = useApp();
 
-  // Get the appropriate translation based on current language
-  const getTranslation = () => {
-    switch (language) {
-      case 'en':
-        return dua.translations.en;
-      case 'ur':
-        return dua.translations.ur;
-      default:
-        return dua.translations.en;
-    }
-  };
-
-  const translation = getTranslation();
   const arabicFontSize = getFontSizeValue();
-
-  // Calculate translation font size (proportionally smaller than Arabic)
-  // Arabic sizes: small=16, normal=20, large=24
-  // Urdu should be 95% (closer to Arabic size), English 85%
-  const getTranslationFontSize = () => {
-    if (language === 'ur') {
-      return arabicFontSize * 0.95;
-    }
-    return arabicFontSize * 0.85;
-  };
-
-  // Calculate reference font size (smaller than translation)
-  const getReferenceFontSize = () => {
-    return arabicFontSize * 0.75;
-  };
-
-  // Get translation font family based on language
-  const getTranslationFontFamily = () => {
-    if (language === 'ur') {
-      return fontFamilies.urdu;
-    }
-    // Return undefined for system fonts (let React Native handle it)
-    return fontFamilies.latin === 'System' ? undefined : fontFamilies.latin;
-  };
 
   // Add extra padding for large font sizes to prevent text cutting
   const getDynamicPadding = () => {
@@ -95,9 +55,9 @@ const DuaCard: React.FC<DuaCardProps> = ({
       onPress={() => onPress?.(dua)}
       disabled={!onPress}
       activeOpacity={onPress ? 0.7 : 1}
-      accessibilityRole={onPress ? "button" : "text"}
+      accessibilityRole={onPress ? 'button' : 'text'}
       accessibilityLabel={`Dua: ${dua.arabic.substring(0, 50)}...`}
-      accessibilityHint={onPress ? "Tap to view full dua details" : undefined}
+      accessibilityHint={onPress ? 'Tap to view full dua details' : undefined}
     >
       <Text
         style={[
@@ -110,38 +70,6 @@ const DuaCard: React.FC<DuaCardProps> = ({
       >
         {dua.arabic}
       </Text>
-
-      {translation && (
-        <Text
-          style={[
-            styles.textSecondary,
-            styles.globalStyles.spacingUtils.mt('sm'),
-            { 
-              fontFamily: getTranslationFontFamily(),
-              fontSize: getTranslationFontSize(),
-              lineHeight: language === 'ur' ? getTranslationFontSize() * 1.8 : undefined,
-            },
-          ]}
-        >
-          {translation}
-        </Text>
-      )}
-
-      {showReference && dua.reference && (
-        <Text
-          style={[
-            styles.textMuted,
-            styles.globalStyles.spacingUtils.mt('sm'),
-            { 
-              fontFamily: fontFamilies.latin === 'System' ? undefined : fontFamilies.latin,
-              fontStyle: 'italic',
-              fontSize: getReferenceFontSize(),
-            },
-          ]}
-        >
-          {dua.reference}
-        </Text>
-      )}
     </TouchableOpacity>
   );
 };

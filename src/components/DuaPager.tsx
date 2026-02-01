@@ -21,6 +21,7 @@ import DuaCard from './DuaCard';
 import { storageService } from '../services/storageService';
 import { analyticsService } from '../services/analyticsService';
 import { dateKeyForToday } from '../utils/dateUtils';
+import { fontFamilies } from '../config/fonts';
 
 interface DuaPagerProps {
   duas: Dua[];
@@ -393,7 +394,8 @@ const DuaPager: React.FC<DuaPagerProps> = ({
               flexGrow: 1,
               justifyContent: 'center',
               paddingTop: 20,
-              paddingBottom: 140,
+              paddingBottom: 220,
+              paddingHorizontal: 16,
             }}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
@@ -401,12 +403,62 @@ const DuaPager: React.FC<DuaPagerProps> = ({
             scrollEnabled={true}
             scrollEventThrottle={16}
           >
+            {/* Arabic Card */}
             <DuaCard
               dua={currentDua}
               onPress={onDuaPress}
-              showReference={true}
               compact={false}
             />
+
+            {/* Translation */}
+            {currentDua.translations && (
+              <View
+                style={{
+                  marginTop: 24,
+                  paddingHorizontal: 8,
+                }}
+              >
+                <Text
+                  style={[
+                    styles.body,
+                    {
+                      color: colors.foreground,
+                      fontFamily: isRTL 
+                        ? fontFamilies.urdu 
+                        : (fontFamilies.latin === 'System' ? undefined : fontFamilies.latin),
+                      fontSize: 16,
+                      lineHeight: isRTL ? 28 : 24,
+                      textAlign: isRTL ? 'right' : 'left',
+                    },
+                  ]}
+                >
+                  {isRTL ? currentDua.translations.ur : currentDua.translations.en}
+                </Text>
+              </View>
+            )}
+
+            {/* Reference */}
+            {currentDua.reference && (
+              <View
+                style={{
+                  marginTop: 16,
+                  paddingHorizontal: 8,
+                }}
+              >
+                <Text
+                  style={[
+                    styles.textMuted,
+                    {
+                      fontSize: 14,
+                      fontStyle: 'italic',
+                      textAlign: isRTL ? 'right' : 'left',
+                    },
+                  ]}
+                >
+                  {currentDua.reference}
+                </Text>
+              </View>
+            )}
           </ScrollView>
         </Animated.View>
       </View>
