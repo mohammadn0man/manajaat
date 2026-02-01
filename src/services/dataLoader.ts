@@ -8,7 +8,7 @@ const rawData = duasData as RawDuaData;
 // Normalize the raw data into our typed format
 export const normalizeDuasData = (): Dua[] => {
   const normalizedDuas: Dua[] = [];
-  
+
   Object.entries(rawData.days).forEach(([day, duas]) => {
     duas.forEach((dua, index) => {
       normalizedDuas.push({
@@ -16,13 +16,14 @@ export const normalizeDuasData = (): Dua[] => {
         day: day as DayOfWeek,
         arabic: dua.arabic,
         translations: {
-          ur: dua.translation, // The JSON has Urdu translations
+          en: dua.translations.en,
+          ur: dua.translations.ur,
         },
         reference: dua.reference,
       });
     });
   });
-  
+
   return normalizedDuas;
 };
 
@@ -34,4 +35,9 @@ export const getDuasData = (): Dua[] => {
     cachedDuas = normalizeDuasData();
   }
   return cachedDuas;
+};
+
+// Get raw data structure for accessing by days
+export const getRawDuasData = (): RawDuaData => {
+  return rawData;
 };

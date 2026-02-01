@@ -1,4 +1,11 @@
-export type DayOfWeek = 'friday' | 'saturday' | 'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday';
+export type DayOfWeek =
+  | 'friday'
+  | 'saturday'
+  | 'sunday'
+  | 'monday'
+  | 'tuesday'
+  | 'wednesday'
+  | 'thursday';
 
 export interface Dua {
   id: string;
@@ -14,10 +21,13 @@ export interface Dua {
 export interface RawDuaData {
   schema_version: string;
   days: {
-    [K in DayOfWeek]: Array<{
+    [K in DayOfWeek]: {
       arabic: string;
-      translation: string;
+      translations: {
+        en: string;
+        ur: string;
+      };
       reference: string;
-    }>;
+    }[];
   };
 }

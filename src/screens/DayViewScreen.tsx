@@ -1,36 +1,16 @@
 import React from 'react';
 import { View, Text, FlatList } from 'react-native';
-import { RouteProp } from '@react-navigation/native';
-import { Dua, DayOfWeek } from '../types/dua';
+import {
+  RouteProp,
+  useNavigation,
+  NavigationProp,
+} from '@react-navigation/native';
+import { Dua } from '../types/dua';
 import { getDuasByDay, getDayDisplayName } from '../services/duaService';
-
-interface DuaItemProps {
-  dua: Dua;
-}
-
-const DuaItem: React.FC<DuaItemProps> = ({ dua }) => {
-  return (
-    <View className="bg-white rounded-lg p-4 mb-3 shadow-sm border border-gray-100">
-      <Text className="text-xl font-bold text-gray-900 mb-2 text-right" style={{ fontFamily: 'System' }}>
-        {dua.arabic}
-      </Text>
-      {dua.translations.ur && (
-        <Text className="text-base text-gray-700 mb-2">
-          {dua.translations.ur}
-        </Text>
-      )}
-      {dua.reference && (
-        <Text className="text-sm text-gray-500 italic">
-          {dua.reference}
-        </Text>
-      )}
-    </View>
-  );
-};
-
-type RootStackParamList = {
-  DayView: { day: DayOfWeek };
-};
+import TopBar from '../components/TopBar';
+import DuaCard from '../components/DuaCard';
+import { RootStackParamList } from '../navigation/types';
+import { useTheme } from '../contexts/ThemeProvider';
 
 type DayViewScreenRouteProp = RouteProp<RootStackParamList, 'DayView'>;
 
@@ -39,35 +19,43 @@ interface DayViewScreenProps {
 }
 
 const DayViewScreen: React.FC<DayViewScreenProps> = ({ route }) => {
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const { styles } = useTheme();
   const { day } = route.params;
   const dayDuas = getDuasByDay(day);
   const dayDisplayName = getDayDisplayName(day);
 
-  return (
-    <View className="flex-1 bg-gray-50">
-      {/* Header */}
-      <View className="bg-indigo-600 pt-12 pb-6 px-6">
-        <Text className="text-2xl font-bold text-white mb-2">
-          {dayDisplayName} Duas
-        </Text>
-        <Text className="text-indigo-200 text-base">
-          {dayDuas.length} duas available
-        </Text>
-      </View>
+  const handleDuaPress = (dua: Dua) => {
+    navigation.navigate('DuaDetail', { duaId: dua.id });
+  };
 
-      {/* Content */}
-      <View className="flex-1 px-6 pt-6">
+  return (
+    <View style={styles.container}>
+      <TopBar
+        showBackButton
+        onBackPress={() => navigation.goBack()}
+        title={`${dayDisplayName} Duas`}
+        subtitle={`${dayDuas.length} duas available`}
+      />
+
+      <View style={styles.content}>
         {dayDuas.length > 0 ? (
           <FlatList
             data={dayDuas}
             keyExtractor={(item) => item.id}
-            renderItem={({ item }) => <DuaItem dua={item} />}
+            renderItem={({ item }) => (
+              <DuaCard
+                dua={item}
+                onPress={handleDuaPress}
+                showReference={true}
+              />
+            )}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 20 }}
+            contentContainerStyle={styles.globalStyles.spacingUtils.py('lg')}
           />
         ) : (
-          <View className="flex-1 justify-center items-center">
-            <Text className="text-gray-500 text-lg">
+          <View style={styles.centerContent}>
+            <Text style={styles.textMuted}>
               No duas available for {dayDisplayName}
             </Text>
           </View>

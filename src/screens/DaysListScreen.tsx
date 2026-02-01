@@ -1,16 +1,24 @@
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { DayOfWeek } from '../types/dua';
-import { getAllDays, getDayDisplayName, getDuasByDay } from '../services/duaService';
+import {
+  getAllDays,
+  getDayDisplayName,
+  getDuasByDay,
+} from '../services/duaService';
+import TopBar from '../components/TopBar';
+import { RootStackParamList } from '../navigation/types';
+import { useTheme } from '../contexts/ThemeProvider';
 
 interface DayItemProps {
   day: DayOfWeek;
 }
 
 const DayItem: React.FC<DayItemProps> = ({ day }) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const { styles } = useTheme();
   const dayDuas = getDuasByDay(day);
   const dayDisplayName = getDayDisplayName(day);
 
@@ -20,15 +28,21 @@ const DayItem: React.FC<DayItemProps> = ({ day }) => {
 
   return (
     <TouchableOpacity
+      style={styles.card}
       onPress={handlePress}
-      className="bg-white rounded-lg p-4 mb-3 shadow-sm border border-gray-100"
+      accessibilityRole="button"
+      accessibilityLabel={`${dayDisplayName}, ${dayDuas.length} duas available`}
+      accessibilityHint="View duas for this day"
     >
-      <View className="flex-row justify-between items-center">
-        <View className="flex-1">
-          <Text className="text-lg font-semibold text-gray-900 mb-1">
-            {dayDisplayName}
-          </Text>
-          <Text className="text-sm text-gray-500">
+      <View style={styles.rowBetween}>
+        <View style={styles.column}>
+          <Text style={styles.h4}>{dayDisplayName}</Text>
+          <Text
+            style={[
+              styles.textMuted,
+              styles.globalStyles.spacingUtils.mt('xs'),
+            ]}
+          >
             {dayDuas.length} duas available
           </Text>
         </View>
@@ -39,28 +53,23 @@ const DayItem: React.FC<DayItemProps> = ({ day }) => {
 };
 
 const DaysListScreen: React.FC = () => {
+  const { styles } = useTheme();
   const allDays = getAllDays();
 
   return (
-    <View className="flex-1 bg-gray-50">
-      {/* Header */}
-      <View className="bg-indigo-600 pt-12 pb-6 px-6">
-        <Text className="text-2xl font-bold text-white mb-2">
-          All Days
-        </Text>
-        <Text className="text-indigo-200 text-base">
-          Browse duas by day of the week
-        </Text>
-      </View>
+    <View style={styles.container}>
+      <TopBar title="All Days" subtitle="Browse duas by day of the week" />
 
-      {/* Content */}
-      <View className="flex-1 px-6 pt-6">
+      <View style={styles.content}>
         <FlatList
           data={allDays}
           keyExtractor={(item) => item}
           renderItem={({ item }) => <DayItem day={item} />}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 20 }}
+          contentContainerStyle={[
+            styles.globalStyles.spacingUtils.py('lg'),
+            { paddingBottom: 110 },
+          ]}
         />
       </View>
     </View>
