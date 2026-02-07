@@ -9,6 +9,7 @@ interface TopBarProps {
   subtitle?: string;
   onBackPress?: () => void;
   showBackButton?: boolean;
+  leftComponent?: React.ReactNode;
   rightComponent?: React.ReactNode;
 }
 
@@ -17,6 +18,7 @@ const TopBar: React.FC<TopBarProps> = ({
   subtitle,
   onBackPress,
   showBackButton = false,
+  leftComponent,
   rightComponent,
 }) => {
   const { colors, styles } = useTheme();
@@ -49,7 +51,7 @@ const TopBar: React.FC<TopBarProps> = ({
         {/* Content */}
         <View style={[styles.rowBetween, localStyles.contentContainer]}>
           <View style={{ width: 40, alignItems: 'flex-start' }}>
-            {showBackButton && (
+            {leftComponent || (showBackButton && (
               <TouchableOpacity
                 style={localStyles.iconButton}
                 onPress={onBackPress}
@@ -63,7 +65,7 @@ const TopBar: React.FC<TopBarProps> = ({
                   color={colors.primaryForeground}
                 />
               </TouchableOpacity>
-            )}
+            ))}
           </View>
 
           <View style={styles.columnCenter}>
