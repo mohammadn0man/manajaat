@@ -227,41 +227,57 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       ...globalStyles.typography.h1,
       fontSize: Math.round(getFontSizeValue() * 1.6), // 32px for normal
       color: colors.foreground,
+      fontFamily: 'Lato', // Lato Sans-serif for English
+      fontWeight: '700', // Bold weight
     },
     h2: {
       ...globalStyles.typography.h2,
       fontSize: Math.round(getFontSizeValue() * 1.4), // 28px for normal
       color: colors.foreground,
+      fontFamily: 'Lato', // Lato Sans-serif for English
+      fontWeight: '700', // Bold weight
     },
     h3: {
       ...globalStyles.typography.h3,
       fontSize: Math.round(getFontSizeValue() * 1.2), // 24px for normal
       color: colors.foreground,
+      fontFamily: 'Lato', // Lato Sans-serif for English
+      fontWeight: '700', // Bold weight
     },
     h4: {
       ...globalStyles.typography.h4,
       fontSize: getFontSizeValue(), // 20px for normal
       color: colors.foreground,
+      fontFamily: 'Lato', // Lato Sans-serif for English
+      fontWeight: '700', // Bold weight
     },
     body: {
       ...globalStyles.typography.body,
       fontSize: Math.round(getFontSizeValue() * 0.8), // 16px for normal
       color: colors.foreground,
+      fontFamily: 'Lato', // Lato Sans-serif for English
+      fontWeight: '400', // Regular weight
     },
     bodyLarge: {
       ...globalStyles.typography.bodyLarge,
       fontSize: getFontSizeValue(), // 20px for normal
       color: colors.foreground,
+      fontFamily: 'Lato', // Lato Sans-serif for English
+      fontWeight: '400', // Regular weight
     },
     caption: {
       ...globalStyles.typography.caption,
       fontSize: Math.round(getFontSizeValue() * 0.7), // 14px for normal
       color: colors.mutedForeground,
+      fontFamily: 'Lato', // Lato Sans-serif for English
+      fontWeight: '400', // Regular weight
     },
     small: {
       ...globalStyles.typography.small,
       fontSize: Math.round(getFontSizeValue() * 0.6), // 12px for normal
       color: colors.mutedForeground,
+      fontFamily: 'Lato', // Lato Sans-serif for English
+      fontWeight: '400', // Regular weight
     },
     arabic: {
       ...globalStyles.typography.arabic,

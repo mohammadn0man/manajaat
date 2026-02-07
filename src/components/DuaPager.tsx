@@ -457,7 +457,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
                         color: colors.foreground,
                         fontFamily: isTranslationRTL 
                           ? fontFamilies.urdu 
-                          : (fontFamilies.latin === 'System' ? undefined : fontFamilies.latin),
+                          : fontFamilies.latin,
                         fontSize: 16,
                         lineHeight: isTranslationRTL ? 28 : 24,
                         textAlign: isTranslationRTL ? 'right' : 'left',

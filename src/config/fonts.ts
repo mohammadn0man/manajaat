@@ -1,9 +1,13 @@
 import * as Font from 'expo-font';
 import type { ArabicFont } from '../services/storageService';
+import {
+  Lato_400Regular,
+  Lato_700Bold,
+} from '@expo-google-fonts/lato';
 
 // Font configuration - custom fonts bundled with the app for consistency
 // Note: Using Amiri for both Arabic and Urdu (Amiri supports Urdu beautifully)
-// System fonts used for English until we can troubleshoot Inter fonts
+// Using Lato from @expo-google-fonts/lato for English (Sans-serif from Google Fonts)
 export const fontConfig = {
   // Arabic/Urdu fonts (Amiri)
   'Amiri-Regular': require('../../assets/fonts/Amiri-Regular.ttf'),
@@ -15,6 +19,9 @@ export const fontConfig = {
   'AlMajeedQuranicRegular': require('../../assets/fonts/Al-Majeed-Quranic-Regular.ttf'),
   // Indopak Nastaleeq (Quranic font from Tarteel) - using simpler name for Android compatibility
   'IndopakNastaleeq': require('../../assets/fonts/Indopak-Nastaleeq.ttf'),
+  // English/Latin fonts (Lato - Sans-serif from Google Fonts via @expo-google-fonts/lato)
+  'Lato_400Regular': Lato_400Regular,
+  'Lato_700Bold': Lato_700Bold,
 };
 
 export const loadFonts = async (): Promise<void> => {
@@ -28,18 +35,20 @@ export const loadFonts = async (): Promise<void> => {
   }
 };
 
-// Font families - using Amiri for Arabic/Urdu, System fonts for English
+// Font families - using Amiri for Arabic/Urdu, Lato for English
 // Note: Using Amiri for Urdu as it supports Urdu script beautifully
-// Using System fonts for English until we can troubleshoot Inter fonts
+// Using Lato (Sans-serif from Google Fonts) for English text
+// Font family names must match the keys used in useFonts() in App.tsx
+// Try "Lato" first (registered as alias), fallback to exact variant names if needed
 export const fontFamilies = {
   arabic: 'Amiri-Regular',
   arabicBold: 'Amiri-Bold',
   urdu: 'Amiri-Regular', // Amiri works great for Urdu
   urduBold: 'Amiri-Bold',
-  latin: 'System', // System font for now
-  latinMedium: 'System',
-  latinSemiBold: 'System',
-  latinBold: 'System',
+  latin: 'Lato', // Lato Sans-serif for English (try base name first)
+  latinMedium: 'Lato', // Lato doesn't have Medium, use Regular weight
+  latinSemiBold: 'Lato', // Lato doesn't have SemiBold, use Regular weight
+  latinBold: 'Lato', // Lato - use fontWeight: '700' for bold
 } as const;
 
 // Helper function to get Arabic font family name by key
