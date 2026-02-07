@@ -1,4 +1,4 @@
-# Manajaat Nomani 🤲
+# Munajaat Nomani 🤲
 
 A beautiful React Native mobile application for daily Islamic supplications (duas) organized by days of the week. Built with Expo and TypeScript, featuring a clean and intuitive interface for spiritual reflection and prayer.
 
@@ -61,8 +61,8 @@ Before running this project, make sure you have:
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/your-username/manajaat.git
-cd manajaat
+git clone https://github.com/your-username/munajaat.git
+cd munajaat
 ```
 
 ### 2. Install dependencies
@@ -101,7 +101,7 @@ npm run web
 ## 📁 Project Structure
 
 ```
-manajaat/
+munajaat/
 ├── assets/
 │   ├── data/
 │   │   └── duas.json          # Islamic supplications data
@@ -284,7 +284,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If you have any questions or need support, please:
 
-1. Check the [Issues](https://github.com/your-username/manajaat/issues) page
+1. Check the [Issues](https://github.com/your-username/munajaat/issues) page
 2. Create a new issue if your problem isn't already addressed
 3. Contact the maintainers
 

@@ -84,7 +84,7 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const { colorScheme, getFontSizeValue } = useApp();
+  const { colorScheme, getFontSizeValue, getArabicFontFamily } = useApp();
 
   const colors: ThemeColors = {
     light: {
@@ -265,14 +265,14 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     },
     arabic: {
       ...globalStyles.typography.arabic,
-      fontFamily: 'Amiri-Regular',
+      fontFamily: getArabicFontFamily(),
       fontSize: getFontSizeValue(), // 20px for normal
       lineHeight: Math.round(getFontSizeValue() * 2.2), // Increased line height for better Arabic spacing
       color: colors.foreground,
     },
     arabicLarge: {
       ...globalStyles.typography.arabicLarge,
-      fontFamily: 'Amiri-Regular',
+      fontFamily: getArabicFontFamily(),
       fontSize: Math.round(getFontSizeValue() * 1.2), // 24px for normal
       lineHeight: Math.round(getFontSizeValue() * 3.0), // Increased line height for better Arabic spacing
       color: colors.foreground,

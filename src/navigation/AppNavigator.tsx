@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { Platform, StyleSheet } from 'react-native';
 import { BlurView } from 'expo-blur';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import HomeScreen from '../screens/HomeScreen';
 import DayViewScreen from '../screens/DayViewScreen';
@@ -18,6 +19,8 @@ const Stack = createStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
 const MainTabs: React.FC = () => {
+  const insets = useSafeAreaInsets();
+  
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -51,7 +54,7 @@ const MainTabs: React.FC = () => {
           paddingTop: 8,
           borderRadius: 30,
           marginHorizontal: 20,
-          marginBottom: 20,
+          marginBottom: Math.max(insets.bottom, 20),
           shadowColor: '#000',
           shadowOffset: { width: 0, height: 10 },
           shadowOpacity: 0.12,

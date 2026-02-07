@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "Manajaat Nomani",
+    "name": "Munajaat Nomani",
     "slug": "manajaat",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/munajaat-nomani.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
@@ -14,22 +14,23 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.nomani.manajaat",
+      "bundleIdentifier": "com.nomani.munajaat",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
+      "icon": "./assets/images/munajaat-nomani.png",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/munajaat-nomani.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.nomani.manajaat"
+      "package": "com.nomani.munajaat"
     },
     "web": {
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/munajaat-nomani.ico"
     },
     "plugins": [
       "expo-font"

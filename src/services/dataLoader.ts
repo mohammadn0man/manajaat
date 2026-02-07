@@ -18,6 +18,7 @@ export const normalizeDuasData = (): Dua[] => {
         translations: {
           en: dua.translations.en,
           ur: dua.translations.ur,
+          'rom-ur': dua.translations['rom-ur'],
         },
         reference: dua.reference,
       });

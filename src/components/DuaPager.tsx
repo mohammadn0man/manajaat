@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Dua } from '../types/dua';
 import { useTheme } from '../contexts/ThemeProvider';
 import { useApp } from '../contexts/AppContext';
@@ -20,6 +21,8 @@ import DuaCard from './DuaCard';
 import { storageService } from '../services/storageService';
 import { analyticsService } from '../services/analyticsService';
 import { dateKeyForToday } from '../utils/dateUtils';
+import { fontFamilies } from '../config/fonts';
+import { getTranslation, isLanguageRTL } from '../utils/translationUtils';
 
 interface DuaPagerProps {
   duas: Dua[];
@@ -36,12 +39,15 @@ const DuaPager: React.FC<DuaPagerProps> = ({
   onDuaPress,
 }) => {
   const { styles, colors } = useTheme();
-  const { isRTL } = useApp();
+  const { isRTL, isFavorite, toggleFavorite, language } = useApp();
+  const insets = useSafeAreaInsets();
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [sessionStartTime] = useState<number>(Date.now());
   const [duaStartTime, setDuaStartTime] = useState<number>(Date.now());
+  const [showToast, setShowToast] = useState(false);
+  const toastOpacity = useRef(new Animated.Value(0)).current;
 
   const progressAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(0)).current;
@@ -391,7 +397,8 @@ const DuaPager: React.FC<DuaPagerProps> = ({
               flexGrow: 1,
               justifyContent: 'center',
               paddingTop: 20,
-              paddingBottom: 140,
+              paddingBottom: 220,
+              paddingHorizontal: 16,
             }}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
@@ -399,12 +406,92 @@ const DuaPager: React.FC<DuaPagerProps> = ({
             scrollEnabled={true}
             scrollEventThrottle={16}
           >
+            {/* Arabic Card */}
             <DuaCard
               dua={currentDua}
               onPress={onDuaPress}
-              showReference={true}
               compact={false}
+              showActions={true}
+              onFavoritePress={() => toggleFavorite(currentDua.id)}
+              onSpeakerPress={() => {
+                // Show toast
+                setShowToast(true);
+                Animated.sequence([
+                  Animated.timing(toastOpacity, {
+                    toValue: 1,
+                    duration: 300,
+                    useNativeDriver: true,
+                  }),
+                  Animated.delay(2000),
+                  Animated.timing(toastOpacity, {
+                    toValue: 0,
+                    duration: 300,
+                    useNativeDriver: true,
+                  }),
+                ]).start(() => setShowToast(false));
+              }}
+              isFavorite={isFavorite(currentDua.id)}
+              index={currentIndex}
             />
+
+            {/* Translation */}
+            {(() => {
+              const translation = getTranslation(currentDua, language);
+              const isTranslationRTL = isLanguageRTL(language);
+              
+              if (!translation) {
+                return null;
+              }
+
+              return (
+                <View
+                  style={{
+                    marginTop: 24,
+                    paddingHorizontal: 8,
+                  }}
+                >
+                  <Text
+                    style={[
+                      styles.body,
+                      {
+                        color: colors.foreground,
+                        fontFamily: isTranslationRTL 
+                          ? fontFamilies.urdu 
+                          : (fontFamilies.latin === 'System' ? undefined : fontFamilies.latin),
+                        fontSize: 16,
+                        lineHeight: isTranslationRTL ? 28 : 24,
+                        textAlign: isTranslationRTL ? 'right' : 'left',
+                      },
+                    ]}
+                  >
+                    {translation}
+                  </Text>
+                </View>
+              );
+            })()}
+
+            {/* Reference */}
+            {currentDua.reference && (
+              <View
+                style={{
+                  marginTop: 16,
+                  paddingHorizontal: 8,
+                }}
+              >
+                <Text
+                  style={[
+                    styles.textMuted,
+                    {
+                      fontSize: 14,
+                      fontStyle: 'italic',
+                      textAlign: isRTL ? 'right' : 'left',
+                    },
+                  ]}
+                >
+                  {currentDua.reference}
+                </Text>
+              </View>
+            )}
           </ScrollView>
         </Animated.View>
       </View>
@@ -418,7 +505,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
             alignItems: 'center',
             paddingHorizontal: 24,
             paddingTop: 20,
-            paddingBottom: 95,
+            paddingBottom: 70 + Math.max(insets.bottom, 20) + 10,
             position: 'absolute',
             bottom: 0,
             left: 0,
@@ -506,7 +593,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
               shadowOffset: { width: 0, height: 4 },
               shadowOpacity: 0.15,
               shadowRadius: 8,
-              elevation: 5,
+              elevation: 10,
             }}
             onPress={isLast ? handleComplete : goToNext}
             disabled={isAnimating}
@@ -570,7 +657,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
           style={{
             paddingHorizontal: 24,
             paddingTop: 20,
-            paddingBottom: 110,
+            paddingBottom: 70 + Math.max(insets.bottom, 20) + 10,
             position: 'absolute',
             bottom: 0,
             left: 0,
@@ -585,7 +672,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
               shadowOffset: { width: 0, height: 4 },
               shadowOpacity: 0.15,
               shadowRadius: 8,
-              elevation: 5,
+              elevation: 10,
             }}
             onPress={handleComplete}
             disabled={isAnimating}
@@ -625,6 +712,34 @@ const DuaPager: React.FC<DuaPagerProps> = ({
             </BlurView>
           </TouchableOpacity>
         </View>
+      )}
+
+      {/* Toast Message */}
+      {showToast && (
+        <Animated.View
+          style={{
+            position: 'absolute',
+            bottom: 100 + Math.max(insets.bottom, 20),
+            left: 20,
+            right: 20,
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            borderRadius: 12,
+            paddingVertical: 12,
+            paddingHorizontal: 16,
+            alignItems: 'center',
+            opacity: toastOpacity,
+          }}
+        >
+          <Text
+            style={{
+              color: '#FFFFFF',
+              fontSize: 14,
+              fontWeight: '500',
+            }}
+          >
+            Coming Soon: Audio recitation
+          </Text>
+        </Animated.View>
       )}
     </View>
   );

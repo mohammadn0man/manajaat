@@ -11,25 +11,30 @@ import {
   Language,
   Theme,
   FontSize,
+  ArabicFont,
 } from '../services/storageService';
+import { getArabicFontFamily as getArabicFontFamilyHelper } from '../config/fonts';
 
 export interface AppContextType {
   // State
   language: Language;
   theme: Theme;
   fontSize: FontSize;
+  arabicFont: ArabicFont;
   favorites: string[];
 
   // Actions
   setLanguage: (language: Language) => Promise<void>;
   setTheme: (theme: Theme) => Promise<void>;
   setFontSize: (fontSize: FontSize) => Promise<void>;
+  setArabicFont: (font: ArabicFont) => Promise<void>;
   toggleFavorite: (duaId: string) => Promise<boolean>;
   clearFavorites: () => Promise<void>;
 
   // Computed values
   isFavorite: (duaId: string) => boolean;
   getFontSizeValue: () => number;
+  getArabicFontFamily: () => string;
   isRTL: boolean;
   isDarkMode: boolean;
   colorScheme: 'light' | 'dark';
@@ -43,9 +48,10 @@ interface AppProviderProps {
 
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const systemColorScheme = useColorScheme();
-  const [language, setLanguageState] = useState<Language>('en');
+  const [language, setLanguageState] = useState<Language>('rom-ur');
   const [theme, setThemeState] = useState<Theme>('system');
   const [fontSize, setFontSizeState] = useState<FontSize>('normal');
+  const [arabicFont, setArabicFontState] = useState<ArabicFont>('indopak');
   const [favorites, setFavorites] = useState<string[]>([]);
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
 
@@ -61,6 +67,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         setLanguageState(settings.language);
         setThemeState(settings.theme);
         setFontSizeState(settings.fontSize);
+        setArabicFontState(settings.arabicFont);
         setFavorites(savedFavorites);
 
         // Mark initial load as complete
@@ -97,6 +104,11 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     await storageService.setFontSize(newFontSize);
   };
 
+  const setArabicFont = async (newFont: ArabicFont) => {
+    setArabicFontState(newFont);
+    await storageService.setArabicFont(newFont);
+  };
+
   const toggleFavorite = async (duaId: string) => {
     const wasAdded = await storageService.toggleFavorite(duaId);
     const newFavorites = await storageService.getFavorites();
@@ -125,18 +137,25 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     }
   };
 
+  const getArabicFontFamily = (): string => {
+    return getArabicFontFamilyHelper(arabicFont);
+  };
+
   const value: AppContextType = {
     language,
     theme,
     fontSize,
+    arabicFont,
     favorites,
     setLanguage,
     setTheme,
     setFontSize,
+    setArabicFont,
     toggleFavorite,
     clearFavorites,
     isFavorite,
     getFontSizeValue,
+    getArabicFontFamily,
     isRTL,
     isDarkMode,
     colorScheme,

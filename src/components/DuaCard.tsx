@@ -1,72 +1,46 @@
 import React from 'react';
 import { TouchableOpacity, Text } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { Dua } from '../types/dua';
 import { useTheme } from '../contexts/ThemeProvider';
 import { useApp } from '../contexts/AppContext';
-import { fontFamilies } from '../config/fonts';
 
 interface DuaCardProps {
   dua: Dua;
   onPress?: (dua: Dua) => void;
-  showReference?: boolean;
   compact?: boolean;
+  showActions?: boolean;
+  onFavoritePress?: () => void;
+  onSpeakerPress?: () => void;
+  isFavorite?: boolean;
+  index?: number;
 }
 
 const DuaCard: React.FC<DuaCardProps> = ({
   dua,
   onPress,
-  showReference = true,
   compact = false,
+  showActions = false,
+  onFavoritePress,
+  onSpeakerPress,
+  isFavorite = false,
+  index,
 }) => {
-  const { styles } = useTheme();
-  const { language, getFontSizeValue } = useApp();
+  const { styles, colors } = useTheme();
+  const { getFontSizeValue, getArabicFontFamily } = useApp();
 
-  // Get the appropriate translation based on current language
-  const getTranslation = () => {
-    switch (language) {
-      case 'en':
-        return dua.translations.en;
-      case 'ur':
-        return dua.translations.ur;
-      default:
-        return dua.translations.en;
-    }
-  };
-
-  const translation = getTranslation();
   const arabicFontSize = getFontSizeValue();
-
-  // Calculate translation font size (proportionally smaller than Arabic)
-  // Arabic sizes: small=16, normal=20, large=24
-  // Urdu should be 95% (closer to Arabic size), English 85%
-  const getTranslationFontSize = () => {
-    if (language === 'ur') {
-      return arabicFontSize * 0.95;
-    }
-    return arabicFontSize * 0.85;
-  };
-
-  // Calculate reference font size (smaller than translation)
-  const getReferenceFontSize = () => {
-    return arabicFontSize * 0.75;
-  };
-
-  // Get translation font family based on language
-  const getTranslationFontFamily = () => {
-    if (language === 'ur') {
-      return fontFamilies.urdu;
-    }
-    // Return undefined for system fonts (let React Native handle it)
-    return fontFamilies.latin === 'System' ? undefined : fontFamilies.latin;
-  };
 
   // Add extra padding for large font sizes to prevent text cutting
   const getDynamicPadding = () => {
+    // Extra top padding when action buttons are shown to prevent overlap
+    const topPaddingOffset = showActions ? 10 : 0;
+    
     if (arabicFontSize >= 24) {
       // Large font size
       return {
         paddingHorizontal: 20,
-        paddingTop: 20, // Increased for Arabic characters
+        paddingTop: 20 + topPaddingOffset, // Increased for Arabic characters + buttons
         paddingBottom: 20, // 25% less than top
         marginHorizontal: 4,
         marginVertical: 4,
@@ -75,14 +49,14 @@ const DuaCard: React.FC<DuaCardProps> = ({
       // Normal font size
       return {
         paddingHorizontal: 16,
-        paddingTop: 24, // Increased for Arabic characters
+        paddingTop: 24 + topPaddingOffset, // Increased for Arabic characters + buttons
         paddingBottom: 18, // 25% less than top
         marginHorizontal: 2,
         marginVertical: 2,
       };
     }
     return {
-      paddingTop: 16, // Add some padding even for small font size
+      paddingTop: 16 + topPaddingOffset, // Add some padding even for small font size + buttons
       paddingBottom: 12, // 25% less than top
     };
   };
@@ -95,53 +69,88 @@ const DuaCard: React.FC<DuaCardProps> = ({
       onPress={() => onPress?.(dua)}
       disabled={!onPress}
       activeOpacity={onPress ? 0.7 : 1}
-      accessibilityRole={onPress ? "button" : "text"}
+      accessibilityRole={onPress ? 'button' : 'text'}
       accessibilityLabel={`Dua: ${dua.arabic.substring(0, 50)}...`}
-      accessibilityHint={onPress ? "Tap to view full dua details" : undefined}
+      accessibilityHint={onPress ? 'Tap to view full dua details' : undefined}
     >
+      {/* Action Buttons */}
+      {showActions && (
+        <>
+          {/* Speaker Button - Top Left */}
+          <TouchableOpacity
+            onPress={onSpeakerPress}
+            style={{
+              position: 'absolute',
+              top: 12,
+              left: 12,
+              zIndex: 10,
+              padding: 4,
+            }}
+            accessibilityRole="button"
+            accessibilityLabel="Play audio recitation"
+            accessibilityHint="Tap to hear the dua recited"
+          >
+            <Ionicons
+              name="volume-high-outline"
+              size={20}
+              color={colors.primary}
+            />
+          </TouchableOpacity>
+
+          {/* Favorite Button - Top Right */}
+          <TouchableOpacity
+            onPress={onFavoritePress}
+            style={{
+              position: 'absolute',
+              top: 12,
+              right: 12,
+              zIndex: 10,
+              padding: 4,
+            }}
+            accessibilityRole="button"
+            accessibilityLabel={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+            accessibilityHint="Toggle favorite status for this dua"
+          >
+            <Ionicons
+              name={isFavorite ? 'heart' : 'heart-outline'}
+              size={20}
+              color={isFavorite ? '#EF4444' : colors.primary}
+            />
+          </TouchableOpacity>
+        </>
+      )}
+
+      {/* Index Badge */}
+      {index !== undefined && (
+        <Text
+          style={{
+            position: 'absolute',
+            bottom: 12,
+            left: 12,
+            backgroundColor: colors.primary,
+            color: '#FFFFFF',
+            paddingHorizontal: 8,
+            paddingVertical: 4,
+            borderRadius: 12,
+            fontSize: 12,
+            fontWeight: '600',
+          }}
+        >
+          #{index + 1}
+        </Text>
+      )}
+
       <Text
         style={[
           compact ? styles.arabic : styles.arabicLarge,
           {
-            fontFamily: 'Amiri-Regular',
+            fontFamily: getArabicFontFamily(),
             fontWeight: 'normal', // Ensure no conflicting font weight
           },
         ]}
       >
         {dua.arabic}
       </Text>
-
-      {translation && (
-        <Text
-          style={[
-            styles.textSecondary,
-            styles.globalStyles.spacingUtils.mt('sm'),
-            { 
-              fontFamily: getTranslationFontFamily(),
-              fontSize: getTranslationFontSize(),
-              lineHeight: language === 'ur' ? getTranslationFontSize() * 1.8 : undefined,
-            },
-          ]}
-        >
-          {translation}
-        </Text>
-      )}
-
-      {showReference && dua.reference && (
-        <Text
-          style={[
-            styles.textMuted,
-            styles.globalStyles.spacingUtils.mt('sm'),
-            { 
-              fontFamily: fontFamilies.latin === 'System' ? undefined : fontFamilies.latin,
-              fontStyle: 'italic',
-              fontSize: getReferenceFontSize(),
-            },
-          ]}
-        >
-          {dua.reference}
-        </Text>
-      )}
     </TouchableOpacity>
   );
 };
