@@ -1,9 +1,21 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text, TextInput } from 'react-native';
 import AppNavigator from './src/navigation/AppNavigator';
 import { AppProvider, useApp } from './src/contexts/AppContext';
 import { ThemeProvider } from './src/contexts/ThemeProvider';
 import { useFonts } from 'expo-font';
+import {
+  Lato_400Regular,
+  Lato_700Bold,
+} from '@expo-google-fonts/lato';
+
+// Disable device font scaling globally - app will use static font sizes
+// controlled only by the app's font size settings
+(Text as any).defaultProps = (Text as any).defaultProps || {};
+(Text as any).defaultProps.allowFontScaling = false;
+
+(TextInput as any).defaultProps = (TextInput as any).defaultProps || {};
+(TextInput as any).defaultProps.allowFontScaling = false;
 
 function AppContent() {
   const { colorScheme } = useApp();
@@ -26,6 +38,11 @@ export default function App() {
     'JameelNooriNastaleeqKasheeda': require('./assets/fonts/Jameel-Noori-Nastaleeq-Kasheeda.ttf'),
     'AlMajeedQuranicRegular': require('./assets/fonts/Al-Majeed-Quranic-Regular.ttf'),
     'IndopakNastaleeq': require('./assets/fonts/Indopak-Nastaleeq.ttf'),
+    // English/Latin fonts (Lato - Sans-serif from Google Fonts via @expo-google-fonts/lato)
+    // Register both the variant names and the base name "Lato"
+    'Lato_400Regular': Lato_400Regular,
+    'Lato_700Bold': Lato_700Bold,
+    'Lato': Lato_400Regular, // Base name alias for easier usage
   });
 
   // Log font loading status
