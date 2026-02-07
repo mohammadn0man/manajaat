@@ -14,6 +14,7 @@ export interface Dua {
   translations: {
     en?: string;
     ur?: string;
+    'rom-ur'?: string;
   };
   reference?: string;
 }
@@ -26,6 +27,7 @@ export interface RawDuaData {
       translations: {
         en: string;
         ur: string;
+        'rom-ur'?: string;
       };
       reference: string;
     }[];

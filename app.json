@@ -20,8 +20,9 @@
       }
     },
     "android": {
+      "icon": "./assets/images/munajaat-nomani.png",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/munajaat-nomani.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,

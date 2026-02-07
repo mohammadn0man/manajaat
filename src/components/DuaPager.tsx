@@ -22,6 +22,7 @@ import { storageService } from '../services/storageService';
 import { analyticsService } from '../services/analyticsService';
 import { dateKeyForToday } from '../utils/dateUtils';
 import { fontFamilies } from '../config/fonts';
+import { getTranslation, isLanguageRTL } from '../utils/translationUtils';
 
 interface DuaPagerProps {
   duas: Dua[];
@@ -38,7 +39,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
   onDuaPress,
 }) => {
   const { styles, colors } = useTheme();
-  const { isRTL, isFavorite, toggleFavorite } = useApp();
+  const { isRTL, isFavorite, toggleFavorite, language } = useApp();
   const insets = useSafeAreaInsets();
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -430,34 +431,44 @@ const DuaPager: React.FC<DuaPagerProps> = ({
                 ]).start(() => setShowToast(false));
               }}
               isFavorite={isFavorite(currentDua.id)}
+              index={currentIndex}
             />
 
             {/* Translation */}
-            {currentDua.translations && (
-              <View
-                style={{
-                  marginTop: 24,
-                  paddingHorizontal: 8,
-                }}
-              >
-                <Text
-                  style={[
-                    styles.body,
-                    {
-                      color: colors.foreground,
-                      fontFamily: isRTL 
-                        ? fontFamilies.urdu 
-                        : (fontFamilies.latin === 'System' ? undefined : fontFamilies.latin),
-                      fontSize: 16,
-                      lineHeight: isRTL ? 28 : 24,
-                      textAlign: isRTL ? 'right' : 'left',
-                    },
-                  ]}
+            {(() => {
+              const translation = getTranslation(currentDua, language);
+              const isTranslationRTL = isLanguageRTL(language);
+              
+              if (!translation) {
+                return null;
+              }
+
+              return (
+                <View
+                  style={{
+                    marginTop: 24,
+                    paddingHorizontal: 8,
+                  }}
                 >
-                  {isRTL ? currentDua.translations.ur : currentDua.translations.en}
-                </Text>
-              </View>
-            )}
+                  <Text
+                    style={[
+                      styles.body,
+                      {
+                        color: colors.foreground,
+                        fontFamily: isTranslationRTL 
+                          ? fontFamilies.urdu 
+                          : (fontFamilies.latin === 'System' ? undefined : fontFamilies.latin),
+                        fontSize: 16,
+                        lineHeight: isTranslationRTL ? 28 : 24,
+                        textAlign: isTranslationRTL ? 'right' : 'left',
+                      },
+                    ]}
+                  >
+                    {translation}
+                  </Text>
+                </View>
+              );
+            })()}
 
             {/* Reference */}
             {currentDua.reference && (

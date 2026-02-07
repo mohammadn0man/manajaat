@@ -11,6 +11,7 @@ import { getDuasData } from '../services/dataLoader';
 import { RootStackParamList } from '../navigation/types';
 import { useApp } from '../contexts/AppContext';
 import { useTheme } from '../contexts/ThemeProvider';
+import { getTranslation } from '../utils/translationUtils';
 
 type DuaDetailScreenRouteProp = RouteProp<RootStackParamList, 'DuaDetail'>;
 
@@ -43,11 +44,7 @@ const DuaDetailScreen: React.FC<DuaDetailScreenProps> = ({ route }) => {
   const handleCopy = async () => {
     if (!dua) return;
 
-    const translation =
-      language === 'ur'
-        ? dua.translations.ur
-        : dua.translations.en || dua.translations.ur || '';
-
+    const translation = getTranslation(dua, language);
     const textToCopy = `${dua.arabic}\n\n${translation}\n\n${dua.reference || ''}`;
 
     try {
@@ -61,11 +58,7 @@ const DuaDetailScreen: React.FC<DuaDetailScreenProps> = ({ route }) => {
   const handleShare = async () => {
     if (!dua) return;
 
-    const translation =
-      language === 'ur'
-        ? dua.translations.ur
-        : dua.translations.en || dua.translations.ur || '';
-
+    const translation = getTranslation(dua, language);
     const shareText = `${dua.arabic}\n\n${translation}\n\n${dua.reference || ''}\n\n#MunajaatNomani`;
 
     try {
@@ -141,13 +134,12 @@ const DuaDetailScreen: React.FC<DuaDetailScreenProps> = ({ route }) => {
           </Typography>
 
           {(() => {
-            const translation =
-              language === 'ur'
-                ? dua.translations.ur
-                : language === 'ar'
-                  ? dua.translations.ar
-                  : dua.translations.en || dua.translations.ur;
-            return translation ? (
+            const translation = getTranslation(dua, language);
+            if (!translation) {
+              return null;
+            }
+
+            return (
               <Typography
                 variant="body"
                 color="secondary"
@@ -155,7 +147,7 @@ const DuaDetailScreen: React.FC<DuaDetailScreenProps> = ({ route }) => {
               >
                 {translation}
               </Typography>
-            ) : null;
+            );
           })()}
 
           {dua.reference && (

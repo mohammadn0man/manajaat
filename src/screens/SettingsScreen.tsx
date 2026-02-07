@@ -27,6 +27,7 @@ const SettingsScreen: React.FC = () => {
   const languageOptions: { value: Language; label: string }[] = [
     { value: 'en', label: 'English' },
     { value: 'ur', label: 'اردو (Urdu)' },
+    { value: 'rom-ur', label: 'Roman Urdu' },
   ];
 
   const themeOptions: { value: Theme; label: string }[] = [

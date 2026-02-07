@@ -48,7 +48,7 @@ interface AppProviderProps {
 
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const systemColorScheme = useColorScheme();
-  const [language, setLanguageState] = useState<Language>('en');
+  const [language, setLanguageState] = useState<Language>('rom-ur');
   const [theme, setThemeState] = useState<Theme>('system');
   const [fontSize, setFontSizeState] = useState<FontSize>('normal');
   const [arabicFont, setArabicFontState] = useState<ArabicFont>('indopak');

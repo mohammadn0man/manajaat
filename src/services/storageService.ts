@@ -9,7 +9,7 @@ const STORAGE_KEYS = {
   ARABIC_FONT: 'arabicFont',
 } as const;
 
-export type Language = 'en' | 'ur' | 'ar';
+export type Language = 'en' | 'ur' | 'ar' | 'rom-ur';
 export type Theme = 'system' | 'light' | 'dark';
 export type FontSize = 'small' | 'normal' | 'large';
 export type ArabicFont = 'amiri' | 'jameel' | 'almajeed' | 'indopak';
@@ -79,14 +79,14 @@ class StorageService {
       ]);
 
       return {
-        language: (language as Language) || 'en',
+        language: (language as Language) || 'rom-ur',
         theme: (theme as Theme) || 'system',
         fontSize: (fontSize as FontSize) || 'normal',
         arabicFont: (arabicFont as ArabicFont) || 'indopak',
       };
     } catch {
       return {
-        language: 'en',
+        language: 'rom-ur',
         theme: 'system',
         fontSize: 'normal',
         arabicFont: 'indopak',

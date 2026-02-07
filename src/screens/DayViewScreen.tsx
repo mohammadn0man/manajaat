@@ -43,11 +43,12 @@ const DayViewScreen: React.FC<DayViewScreenProps> = ({ route }) => {
           <FlatList
             data={dayDuas}
             keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
+            renderItem={({ item, index }) => (
               <DuaCard
                 dua={item}
                 onPress={handleDuaPress}
                 showReference={true}
+                index={index}
               />
             )}
             showsVerticalScrollIndicator={false}
