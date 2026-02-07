@@ -146,7 +146,7 @@ const DuaCard: React.FC<DuaCardProps> = ({
           {
             fontFamily: getArabicFontFamily(),
             fontWeight: 'normal', // Ensure no conflicting font weight
-            paddingTop: 8, // Add a little padding before Arabic text
+            paddingTop: 10, // Add a little padding before Arabic text
           },
         ]}
       >
