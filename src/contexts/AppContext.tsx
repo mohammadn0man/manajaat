@@ -5,7 +5,7 @@ import React, {
   useState,
   ReactNode,
 } from 'react';
-import { I18nManager, useColorScheme, Alert } from 'react-native';
+import { useColorScheme } from 'react-native';
 import {
   storageService,
   Language,
@@ -21,6 +21,7 @@ export interface AppContextType {
   theme: Theme;
   fontSize: FontSize;
   arabicFont: ArabicFont;
+  notificationsEnabled: boolean;
   favorites: string[];
 
   // Actions
@@ -28,6 +29,7 @@ export interface AppContextType {
   setTheme: (theme: Theme) => Promise<void>;
   setFontSize: (fontSize: FontSize) => Promise<void>;
   setArabicFont: (font: ArabicFont) => Promise<void>;
+  setNotificationsEnabled: (enabled: boolean) => Promise<void>;
   toggleFavorite: (duaId: string) => Promise<boolean>;
   clearFavorites: () => Promise<void>;
 
@@ -52,6 +54,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [theme, setThemeState] = useState<Theme>('system');
   const [fontSize, setFontSizeState] = useState<FontSize>('normal');
   const [arabicFont, setArabicFontState] = useState<ArabicFont>('indopak');
+  const [notificationsEnabled, setNotificationsEnabledState] = useState<boolean>(false);
   const [favorites, setFavorites] = useState<string[]>([]);
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
 
@@ -68,6 +71,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         setThemeState(settings.theme);
         setFontSizeState(settings.fontSize);
         setArabicFontState(settings.arabicFont);
+        setNotificationsEnabledState(settings.notificationsEnabled);
         setFavorites(savedFavorites);
 
         // Mark initial load as complete
@@ -109,6 +113,11 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     await storageService.setArabicFont(newFont);
   };
 
+  const setNotificationsEnabled = async (enabled: boolean) => {
+    setNotificationsEnabledState(enabled);
+    await storageService.setNotificationsEnabled(enabled);
+  };
+
   const toggleFavorite = async (duaId: string) => {
     const wasAdded = await storageService.toggleFavorite(duaId);
     const newFavorites = await storageService.getFavorites();
@@ -146,11 +155,13 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     theme,
     fontSize,
     arabicFont,
+    notificationsEnabled,
     favorites,
     setLanguage,
     setTheme,
     setFontSize,
     setArabicFont,
+    setNotificationsEnabled,
     toggleFavorite,
     clearFavorites,
     isFavorite,

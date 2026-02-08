@@ -7,6 +7,10 @@ import { useApp } from '../contexts/AppContext';
 import { Language, Theme, FontSize, ArabicFont } from '../services/storageService';
 import TopBar from '../components/TopBar';
 import { useTheme } from '../contexts/ThemeProvider';
+import {
+  scheduleNotifications,
+  cancelAllNotifications,
+} from '../services/notificationService';
 
 const SettingsScreen: React.FC = () => {
   const [expandedDropdown, setExpandedDropdown] = useState<string | null>(null);
@@ -15,11 +19,13 @@ const SettingsScreen: React.FC = () => {
     theme,
     fontSize,
     arabicFont,
+    notificationsEnabled,
     favorites,
     setLanguage,
     setTheme,
     setFontSize,
     setArabicFont,
+    setNotificationsEnabled,
     clearFavorites,
   } = useApp();
   const { styles, colors } = useTheme();
@@ -67,6 +73,35 @@ const SettingsScreen: React.FC = () => {
         },
       ]
     );
+  };
+
+  const handleNotificationToggle = async (enabled: boolean) => {
+    try {
+      if (enabled) {
+        // Enable notifications - request permissions and schedule
+        const success = await scheduleNotifications();
+        if (success) {
+          await setNotificationsEnabled(true);
+        } else {
+          Alert.alert(
+            'Permission Required',
+            'To enable notifications, please grant notification and location permissions in your device settings.',
+            [{ text: 'OK' }]
+          );
+        }
+      } else {
+        // Disable notifications - cancel all scheduled notifications
+        await cancelAllNotifications();
+        await setNotificationsEnabled(false);
+      }
+    } catch (error) {
+      console.error('Error toggling notifications:', error);
+      Alert.alert(
+        'Error',
+        'Failed to update notification settings. Please try again.',
+        [{ text: 'OK' }]
+      );
+    }
   };
 
   const renderDropdownSelector = <T extends string>(
@@ -269,6 +304,84 @@ const SettingsScreen: React.FC = () => {
           setArabicFont,
           'text-outline'
         )}
+
+        <View style={styles.section}>
+          <View style={[styles.row, styles.globalStyles.spacingUtils.mb('md')]}>
+            <Ionicons name="notifications" size={22} color={colors.primary} />
+            <Text
+              style={[styles.h4, styles.globalStyles.spacingUtils.ml('sm')]}
+            >
+              Notifications
+            </Text>
+          </View>
+          <TouchableOpacity
+            style={{
+              borderRadius: 20,
+              overflow: 'hidden',
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.08,
+              shadowRadius: 4,
+              elevation: 3,
+            }}
+            onPress={() => handleNotificationToggle(!notificationsEnabled)}
+            accessibilityRole="switch"
+            accessibilityState={{ checked: notificationsEnabled }}
+            accessibilityLabel={notificationsEnabled ? 'Disable notifications' : 'Enable notifications'}
+            accessibilityHint="Toggle daily dua reminder notifications"
+          >
+            <BlurView
+              intensity={Platform.OS === 'ios' ? 80 : 0}
+              tint="light"
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingVertical: 16,
+                paddingHorizontal: 20,
+                backgroundColor: Platform.OS === 'android' ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
+              }}
+            >
+              {Platform.OS === 'ios' && (
+                <View
+                  style={{
+                    ...StyleSheet.absoluteFillObject,
+                    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+                  }}
+                />
+              )}
+              <View style={{ flex: 1 }}>
+                <Text
+                  style={[
+                    styles.body,
+                    {
+                      color: colors.foreground,
+                      fontWeight: '600',
+                    },
+                  ]}
+                >
+                  Daily Reminders
+                </Text>
+                <Text
+                  style={[
+                    styles.caption,
+                    {
+                      color: colors.mutedForeground,
+                      marginTop: 4,
+                    },
+                  ]}
+                >
+                  Get notified 10 min before sunrise and 20 min after sunset
+                </Text>
+              </View>
+              <Ionicons
+                name={notificationsEnabled ? 'toggle' : 'toggle-outline'}
+                size={32}
+                color={notificationsEnabled ? colors.primary : colors.mutedForeground}
+              />
+            </BlurView>
+          </TouchableOpacity>
+        </View>
 
         <View style={styles.section}>
           <View style={[styles.row, styles.globalStyles.spacingUtils.mb('md')]}>
