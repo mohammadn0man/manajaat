@@ -39,7 +39,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
   onDuaPress,
 }) => {
   const { styles, colors } = useTheme();
-  const { isRTL, isFavorite, toggleFavorite, language } = useApp();
+  const { isRTL, isFavorite, toggleFavorite, language, getFontSizeValue } = useApp();
   const insets = useSafeAreaInsets();
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -458,7 +458,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
                         fontFamily: isTranslationRTL 
                           ? fontFamilies.urdu 
                           : fontFamilies.latin,
-                        fontSize: 16,
+                        // fontSize is already set in styles.body (dynamic based on font size setting)
                         lineHeight: isTranslationRTL ? 28 : 24,
                         textAlign: isTranslationRTL ? 'right' : 'left',
                       },
@@ -482,7 +482,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
                   style={[
                     styles.textMuted,
                     {
-                      fontSize: 14,
+                      fontSize: Math.round(getFontSizeValue() * 0.7), // Dynamic font size (14px for normal)
                       fontStyle: 'italic',
                       textAlign: isRTL ? 'right' : 'left',
                     },
