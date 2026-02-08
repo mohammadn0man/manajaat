@@ -40,6 +40,7 @@ const SettingsScreen: React.FC = () => {
     { value: 'small', label: 'Small' },
     { value: 'normal', label: 'Normal' },
     { value: 'large', label: 'Large' },
+    { value: 'extra-large', label: 'Extra Large' },
   ];
 
   const arabicFontOptions: { value: ArabicFont; label: string }[] = [
