@@ -7,6 +7,7 @@ const STORAGE_KEYS = {
   THEME: 'theme',
   FONT_SIZE: 'fontSize',
   ARABIC_FONT: 'arabicFont',
+  NOTIFICATIONS_ENABLED: 'notificationsEnabled',
 } as const;
 
 export type Language = 'en' | 'ur' | 'ar' | 'rom-ur';
@@ -19,6 +20,7 @@ export interface AppSettings {
   theme: Theme;
   fontSize: FontSize;
   arabicFont: ArabicFont;
+  notificationsEnabled: boolean;
 }
 
 class StorageService {
@@ -71,11 +73,12 @@ class StorageService {
   // Settings management
   async getSettings(): Promise<AppSettings> {
     try {
-      const [language, theme, fontSize, arabicFont] = await Promise.all([
+      const [language, theme, fontSize, arabicFont, notificationsEnabled] = await Promise.all([
         AsyncStorage.getItem(STORAGE_KEYS.LANGUAGE),
         AsyncStorage.getItem(STORAGE_KEYS.THEME),
         AsyncStorage.getItem(STORAGE_KEYS.FONT_SIZE),
         AsyncStorage.getItem(STORAGE_KEYS.ARABIC_FONT),
+        AsyncStorage.getItem(STORAGE_KEYS.NOTIFICATIONS_ENABLED),
       ]);
 
       return {
@@ -83,6 +86,7 @@ class StorageService {
         theme: (theme as Theme) || 'system',
         fontSize: (fontSize as FontSize) || 'normal',
         arabicFont: (arabicFont as ArabicFont) || 'indopak',
+        notificationsEnabled: notificationsEnabled === 'true',
       };
     } catch {
       return {
@@ -90,6 +94,7 @@ class StorageService {
         theme: 'system',
         fontSize: 'normal',
         arabicFont: 'indopak',
+        notificationsEnabled: false,
       };
     }
   }
@@ -121,6 +126,23 @@ class StorageService {
   async setArabicFont(arabicFont: ArabicFont): Promise<void> {
     try {
       await AsyncStorage.setItem(STORAGE_KEYS.ARABIC_FONT, arabicFont);
+    } catch {
+      // Ignore errors
+    }
+  }
+
+  async getNotificationsEnabled(): Promise<boolean> {
+    try {
+      const value = await AsyncStorage.getItem(STORAGE_KEYS.NOTIFICATIONS_ENABLED);
+      return value === 'true';
+    } catch {
+      return false;
+    }
+  }
+
+  async setNotificationsEnabled(enabled: boolean): Promise<void> {
+    try {
+      await AsyncStorage.setItem(STORAGE_KEYS.NOTIFICATIONS_ENABLED, enabled.toString());
     } catch {
       // Ignore errors
     }

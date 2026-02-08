@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Text, TextInput } from 'react-native';
+import { useEffect } from 'react';
 import AppNavigator from './src/navigation/AppNavigator';
 import { AppProvider, useApp } from './src/contexts/AppContext';
 import { ThemeProvider } from './src/contexts/ThemeProvider';
@@ -8,6 +9,7 @@ import {
   Lato_400Regular,
   Lato_700Bold,
 } from '@expo-google-fonts/lato';
+import { scheduleNotifications } from './src/services/notificationService';
 
 // Disable device font scaling globally - app will use static font sizes
 // controlled only by the app's font size settings
@@ -18,7 +20,24 @@ import {
 (TextInput as any).defaultProps.allowFontScaling = false;
 
 function AppContent() {
-  const { colorScheme } = useApp();
+  const { colorScheme, notificationsEnabled } = useApp();
+
+  // Initialize notifications on app start if enabled
+  useEffect(() => {
+    const initializeNotifications = async () => {
+      if (notificationsEnabled) {
+        try {
+          // Reschedule notifications daily on app start
+          await scheduleNotifications();
+          console.log('Notifications initialized and scheduled');
+        } catch (error) {
+          console.error('Error initializing notifications:', error);
+        }
+      }
+    };
+
+    initializeNotifications();
+  }, [notificationsEnabled]);
 
   return (
     <View style={styles.container}>

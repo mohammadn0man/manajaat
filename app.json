@@ -17,6 +17,9 @@
       "bundleIdentifier": "com.nomani.munajaat",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
+      },
+      "config": {
+        "usesNonExemptEncryption": false
       }
     },
     "android": {
@@ -27,13 +30,31 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.nomani.munajaat"
+      "package": "com.nomani.munajaat",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ]
     },
     "web": {
       "favicon": "./assets/images/munajaat-nomani.ico"
     },
     "plugins": [
-      "expo-font"
+      "expo-font",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/munajaat-nomani.png",
+          "color": "#2596be",
+          "sounds": []
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Munajaat Nomani needs access to your location to calculate accurate sunrise and sunset times for daily dua reminders."
+        }
+      ]
     ],
     "extra": {
       "eas": {
