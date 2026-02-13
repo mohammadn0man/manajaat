@@ -43,17 +43,17 @@ const SessionCompleteModal: React.FC<SessionCompleteModalProps> = ({
         }}
       >
         <View
-          style={[
-            styles.card,
-            {
-              width: width - 48,
-              maxWidth: 400,
-              backgroundColor: colors.card,
-              borderRadius: 16,
-              padding: 24,
-              alignItems: 'center',
-            },
-          ]}
+            style={[
+              styles.card,
+              {
+                width: width - 48,
+                maxWidth: 400,
+                backgroundColor: colors.card,
+                borderRadius: 20,
+                padding: 24,
+                alignItems: 'center',
+              },
+            ]}
         >
           {/* Success Icon */}
           <View
@@ -101,16 +101,16 @@ const SessionCompleteModal: React.FC<SessionCompleteModalProps> = ({
           </Text>
 
           {/* Action Buttons */}
-          <View style={{ width: '100%', gap: 12 }}>
+          <View style={{ width: '100%', marginTop: 12 }}>
             <TouchableOpacity
               style={[
                 styles.button,
                 {
                   backgroundColor: 'transparent',
-                  borderWidth: 1,
-                  borderColor: colors.border,
+                  borderWidth: 2,
+                  borderColor: colors.primary,
                   paddingVertical: 16,
-                  borderRadius: 12,
+                  borderRadius: 999,
                 },
               ]}
               onPress={handleBackToHome}
@@ -122,8 +122,9 @@ const SessionCompleteModal: React.FC<SessionCompleteModalProps> = ({
                 style={[
                   styles.body,
                   {
-                    color: colors.foreground,
+                    color: colors.primary,
                     textAlign: 'center',
+                    fontWeight: '600',
                   },
                 ]}
               >

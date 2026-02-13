@@ -2,6 +2,7 @@ import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { DayOfWeek } from '../types/dua';
 import { getDayDisplayName } from '../services/duaService';
+import { useTheme } from '../contexts/ThemeProvider';
 
 interface DayPillProps {
   day: DayOfWeek;
@@ -17,20 +18,43 @@ const DayPill: React.FC<DayPillProps> = ({
   count,
 }) => {
   const dayName = getDayDisplayName(day);
+  const { colors } = useTheme();
 
   return (
     <TouchableOpacity
-      style={[styles.container, isSelected && styles.selectedContainer]}
+      style={[
+        styles.container,
+        {
+          borderColor: colors.border,
+          backgroundColor: colors.card,
+        },
+        isSelected && {
+          backgroundColor: colors.primary,
+          borderColor: colors.primary,
+        },
+      ]}
       onPress={() => onPress(day)}
       accessibilityRole="button"
       accessibilityLabel={`${dayName}${count ? `, ${count} duas` : ''}`}
       accessibilityHint={`View duas for ${dayName}`}
     >
-      <Text style={[styles.text, isSelected && styles.selectedText]}>
+      <Text
+        style={[
+          styles.text,
+          { color: colors.foreground },
+          isSelected && { color: colors.primaryForeground },
+        ]}
+      >
         {dayName}
       </Text>
       {count !== undefined && (
-        <Text style={[styles.count, isSelected && styles.selectedCount]}>
+        <Text
+          style={[
+            styles.count,
+            { color: colors.mutedForeground },
+            isSelected && { color: 'rgba(255,255,255,0.9)' },
+          ]}
+        >
           {count}
         </Text>
       )}
@@ -40,35 +64,21 @@ const DayPill: React.FC<DayPillProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
     marginHorizontal: 4,
     marginVertical: 4,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
     alignItems: 'center',
-  },
-  selectedContainer: {
-    backgroundColor: '#4F46E5',
-    borderColor: '#4F46E5',
   },
   text: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#374151',
-  },
-  selectedText: {
-    color: 'white',
   },
   count: {
     fontSize: 12,
-    color: '#6b7280',
     marginTop: 2,
-  },
-  selectedCount: {
-    color: '#c7d2fe',
   },
 });
 

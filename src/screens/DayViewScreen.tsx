@@ -1,14 +1,16 @@
 import React from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, FlatList } from 'react-native';
 import {
   RouteProp,
   useNavigation,
   NavigationProp,
 } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 import { Dua } from '../types/dua';
 import { getDuasByDay, getDayDisplayName } from '../services/duaService';
 import TopBar from '../components/TopBar';
 import DuaCard from '../components/DuaCard';
+import EmptyState from '../components/common/EmptyState';
 import { RootStackParamList } from '../navigation/types';
 import { useTheme } from '../contexts/ThemeProvider';
 
@@ -20,7 +22,7 @@ interface DayViewScreenProps {
 
 const DayViewScreen: React.FC<DayViewScreenProps> = ({ route }) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const { styles } = useTheme();
+  const { styles, colors } = useTheme();
   const { day } = route.params;
   const dayDuas = getDuasByDay(day);
   const dayDisplayName = getDayDisplayName(day);
@@ -47,19 +49,28 @@ const DayViewScreen: React.FC<DayViewScreenProps> = ({ route }) => {
               <DuaCard
                 dua={item}
                 onPress={handleDuaPress}
-                showReference={true}
+                showReference
                 index={index}
               />
             )}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.globalStyles.spacingUtils.py('lg')}
+            contentContainerStyle={[
+              styles.globalStyles.spacingUtils.py('lg'),
+              { paddingBottom: 110 },
+            ]}
           />
         ) : (
-          <View style={styles.centerContent}>
-            <Text style={styles.textMuted}>
-              No duas available for {dayDisplayName}
-            </Text>
-          </View>
+          <EmptyState
+            icon={
+              <Ionicons
+                name="book-outline"
+                size={64}
+                color={colors.mutedForeground}
+              />
+            }
+            title={`No duas for ${dayDisplayName}`}
+            description="There are no duas available for this day."
+          />
         )}
       </View>
     </View>

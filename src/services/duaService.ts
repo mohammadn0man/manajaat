@@ -60,3 +60,16 @@ export const getDayDisplayName = (day: DayOfWeek): string => {
   };
   return dayNames[day];
 };
+
+export const getDayDisplayNameUrdu = (day: DayOfWeek): string => {
+  const dayNamesUrdu: Record<DayOfWeek, string> = {
+    friday: 'جمعہ',
+    saturday: 'سنیچر',
+    sunday: 'اتوار',
+    monday: 'دوشنبہ',
+    tuesday: 'منگل',
+    wednesday: 'بدھ',
+    thursday: 'جمعرات',
+  };
+  return dayNamesUrdu[day];
+};

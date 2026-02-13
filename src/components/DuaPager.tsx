@@ -11,13 +11,14 @@ import {
   StyleSheet,
   Platform,
 } from 'react-native';
-import { BlurView } from 'expo-blur';
 import { Ionicons } from '@expo/vector-icons';
+import * as Haptics from 'expo-haptics';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Dua } from '../types/dua';
 import { useTheme } from '../contexts/ThemeProvider';
 import { useApp } from '../contexts/AppContext';
 import DuaCard from './DuaCard';
+import EmptyState from './common/EmptyState';
 import { storageService } from '../services/storageService';
 import { analyticsService } from '../services/analyticsService';
 import { dateKeyForToday } from '../utils/dateUtils';
@@ -161,6 +162,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
   ).current;
 
   const goToPrevious = async () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     const currentIdx = currentIndexRef.current;
     const rtl = isRTLRef.current;
     if (currentIdx > 0 && !isAnimating) {
@@ -219,6 +221,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
   };
 
   const goToNext = async () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     const currentIdx = currentIndexRef.current;
     const rtl = isRTLRef.current;
     if (currentIdx < duas.length - 1 && !isAnimating) {
@@ -278,6 +281,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
 
   const handleComplete = async () => {
     if (isAnimating) return;
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 
     // Log session completion
     const totalDuration = (Date.now() - sessionStartTime) / 1000;
@@ -296,23 +300,18 @@ const DuaPager: React.FC<DuaPagerProps> = ({
 
   if (duas.length === 0) {
     return (
-      <View style={styles.centerContent}>
-        <Ionicons
-          name="book-outline"
-          size={64}
-          color={colors.mutedForeground}
+      <View style={styles.container}>
+        <EmptyState
+          icon={
+            <Ionicons
+              name="book-outline"
+              size={64}
+              color={colors.mutedForeground}
+            />
+          }
+          title="No duas available for today"
+          description="Check back tomorrow or browse other days from the calendar."
         />
-        <Text
-          style={[
-            styles.h3,
-            { color: colors.foreground, marginTop: 16, textAlign: 'center' },
-          ]}
-        >
-          No duas available for today
-        </Text>
-        <Text style={[styles.textMuted, { textAlign: 'center', marginTop: 8 }]}>
-          Check back tomorrow or browse other days
-        </Text>
       </View>
     );
   }
@@ -354,9 +353,9 @@ const DuaPager: React.FC<DuaPagerProps> = ({
         {/* Progress Bar */}
         <View
           style={{
-            height: 4,
+            height: 6,
             backgroundColor: colors.muted,
-            borderRadius: 2,
+            borderRadius: 3,
             marginTop: 8,
             overflow: 'hidden',
             flexDirection: isRTL ? 'row-reverse' : 'row',
@@ -365,8 +364,8 @@ const DuaPager: React.FC<DuaPagerProps> = ({
           <Animated.View
             style={{
               height: '100%',
-              backgroundColor: colors.primary,
-              borderRadius: 2,
+              backgroundColor: colors.accent,
+              borderRadius: 3,
               width: progressAnim.interpolate({
                 inputRange: [0, 1],
                 outputRange: ['0%', '100%'],
@@ -459,14 +458,18 @@ const DuaPager: React.FC<DuaPagerProps> = ({
                           ? fontFamilies.urdu 
                           : fontFamilies.latin,
                         fontSize: Math.round(getFontSizeValue() * 0.95), // Dynamic font size for content
-                        // Increased line height for Urdu to match Arabic spacing
+                        // Line height: generous for Urdu; increased for English/Roman Urdu to reduce clutter
                         lineHeight: isTranslationRTL 
                           ? Math.round(getFontSizeValue() * 0.95 * 1.8) 
-                          : 24,
+                          : Math.round(getFontSizeValue() * 0.95 * 1.65),
                         textAlign: isTranslationRTL ? 'right' : 'left',
-                        // Add generous padding for Urdu text to prevent trimming (similar to Arabic)
-                        paddingTop: isTranslationRTL ? Math.max(8, Math.round(getFontSizeValue() * 0.25)) : 0,
-                        paddingBottom: isTranslationRTL ? Math.max(8, Math.round(getFontSizeValue() * 0.25)) : 0,
+                        // Padding: Urdu keeps existing; English/Roman Urdu get spacing so text isn't cluttered
+                        paddingTop: isTranslationRTL 
+                          ? Math.max(8, Math.round(getFontSizeValue() * 0.25)) 
+                          : Math.round(getFontSizeValue() * 0.2),
+                        paddingBottom: isTranslationRTL 
+                          ? Math.max(8, Math.round(getFontSizeValue() * 0.25)) 
+                          : Math.round(getFontSizeValue() * 0.2),
                       },
                     ]}
                   >
@@ -486,9 +489,10 @@ const DuaPager: React.FC<DuaPagerProps> = ({
               >
                 <Text
                   style={[
-                    styles.textMuted,
+                    styles.caption,
                     {
-                      fontSize: Math.round(getFontSizeValue() * 0.7), // Dynamic font size (14px for normal)
+                      color: colors.accent,
+                      fontSize: Math.round(getFontSizeValue() * 0.7),
                       fontStyle: 'italic',
                       textAlign: isRTL ? 'right' : 'left',
                     },
@@ -518,20 +522,23 @@ const DuaPager: React.FC<DuaPagerProps> = ({
             right: 0,
           }}
         >
-          {/* Previous Button */}
+          {/* Previous Button - Outlined when active */}
           <TouchableOpacity
             style={{
               flex: 1,
-              borderRadius: 20,
-              overflow: 'hidden',
-              opacity: isFirst ? 0.5 : 1,
-              shadowColor: '#000',
-              shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: 0.15,
-              shadowRadius: 8,
-              elevation: 5,
+              minWidth: 140,
+              borderRadius: 999,
+              borderWidth: 2,
+              borderColor: isFirst ? colors.border : colors.primary,
+              backgroundColor: isFirst ? colors.muted : 'transparent',
+              flexDirection: isRTL ? 'row-reverse' : 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingVertical: 14,
+              paddingHorizontal: 32,
               marginRight: isRTL ? 0 : 12,
               marginLeft: isRTL ? 12 : 0,
+              opacity: isFirst ? 0.6 : 1,
             }}
             onPress={goToPrevious}
             disabled={isFirst || isAnimating}
@@ -539,67 +546,38 @@ const DuaPager: React.FC<DuaPagerProps> = ({
             accessibilityLabel="Previous dua"
             accessibilityHint="Go to previous dua"
           >
-            <BlurView
-              intensity={Platform.OS === 'ios' ? 100 : 0}
-              tint="light"
-              style={{
-                flexDirection: isRTL ? 'row-reverse' : 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                paddingHorizontal: 20,
-                paddingVertical: 12,
-                backgroundColor: Platform.OS === 'android' 
-                  ? (isFirst ? colors.muted : colors.primary)
-                  : 'transparent',
-              }}
+            <Ionicons
+              name={isRTL ? 'chevron-forward' : 'chevron-back'}
+              size={20}
+              color={isFirst ? colors.mutedForeground : colors.primary}
+            />
+            <Text
+              style={[
+                styles.body,
+                {
+                  color: isFirst ? colors.mutedForeground : colors.primary,
+                  marginLeft: isRTL ? 0 : 8,
+                  marginRight: isRTL ? 8 : 0,
+                  fontWeight: '600',
+                },
+              ]}
             >
-              {Platform.OS === 'ios' && (
-                <View
-                  style={{
-                    ...StyleSheet.absoluteFillObject,
-                    backgroundColor: isFirst
-                      ? `${colors.muted}55`
-                      : `${colors.primary}66`,
-                    borderRadius: 20,
-                  }}
-                />
-              )}
-              <Ionicons
-                name={isRTL ? 'chevron-forward' : 'chevron-back'}
-                size={20}
-                color={
-                  isFirst ? colors.mutedForeground : colors.primaryForeground
-                }
-              />
-              <Text
-                style={[
-                  styles.body,
-                  {
-                    color: isFirst
-                      ? colors.mutedForeground
-                      : colors.primaryForeground,
-                    marginLeft: isRTL ? 0 : 8,
-                    marginRight: isRTL ? 8 : 0,
-                    fontWeight: '600',
-                  },
-                ]}
-              >
-                Previous
-              </Text>
-            </BlurView>
+              Prev
+            </Text>
           </TouchableOpacity>
 
-          {/* Next/Complete Button */}
+          {/* Next/Complete Button - Filled teal */}
           <TouchableOpacity
             style={{
               flex: 1,
-              borderRadius: 20,
-              overflow: 'hidden',
-              shadowColor: '#000',
-              shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: 0.15,
-              shadowRadius: 8,
-              elevation: 10,
+              minWidth: 140,
+              borderRadius: 999,
+              backgroundColor: isLast ? '#10B981' : colors.primary,
+              flexDirection: isRTL ? 'row-reverse' : 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingVertical: 14,
+              paddingHorizontal: 32,
             }}
             onPress={isLast ? handleComplete : goToNext}
             disabled={isAnimating}
@@ -609,50 +587,26 @@ const DuaPager: React.FC<DuaPagerProps> = ({
               isLast ? "Complete today's session" : 'Go to next dua'
             }
           >
-            <BlurView
-              intensity={Platform.OS === 'ios' ? 100 : 0}
-              tint="light"
-              style={{
-                flexDirection: isRTL ? 'row-reverse' : 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                paddingHorizontal: 20,
-                paddingVertical: 12,
-                backgroundColor: Platform.OS === 'android' 
-                  ? (isLast ? '#10B981' : colors.primary)
-                  : 'transparent',
-              }}
+            <Text
+              style={[
+                styles.body,
+                {
+                  color: '#FFFFFF',
+                  marginLeft: isRTL ? 0 : 8,
+                  marginRight: isRTL ? 8 : 0,
+                  fontWeight: '600',
+                },
+              ]}
             >
-              {Platform.OS === 'ios' && (
-                <View
-                  style={{
-                    ...StyleSheet.absoluteFillObject,
-                    backgroundColor: isLast ? '#10B98166' : `${colors.primary}66`,
-                    borderRadius: 20,
-                  }}
-                />
-              )}
-              <Text
-                style={[
-                  styles.body,
-                  {
-                    color: 'white',
-                    marginLeft: isRTL ? 0 : 8,
-                    marginRight: isRTL ? 8 : 0,
-                    fontWeight: '600',
-                  },
-                ]}
-              >
-                {isLast ? "I'm done" : 'Next'}
-              </Text>
-              {!isLast && (
-                <Ionicons
-                  name={isRTL ? 'chevron-back' : 'chevron-forward'}
-                  size={20}
-                  color="white"
-                />
-              )}
-            </BlurView>
+              {isLast ? "I'm done" : 'Next'}
+            </Text>
+            {!isLast && (
+              <Ionicons
+                name={isRTL ? 'chevron-back' : 'chevron-forward'}
+                size={20}
+                color="#FFFFFF"
+              />
+            )}
           </TouchableOpacity>
         </View>
       )}
@@ -672,13 +626,11 @@ const DuaPager: React.FC<DuaPagerProps> = ({
         >
           <TouchableOpacity
             style={{
-              borderRadius: 20,
-              overflow: 'hidden',
-              shadowColor: '#000',
-              shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: 0.15,
-              shadowRadius: 8,
-              elevation: 10,
+              borderRadius: 999,
+              backgroundColor: '#10B981',
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingVertical: 16,
             }}
             onPress={handleComplete}
             disabled={isAnimating}
@@ -686,36 +638,17 @@ const DuaPager: React.FC<DuaPagerProps> = ({
             accessibilityLabel="I am done"
             accessibilityHint="Complete today's session"
           >
-            <BlurView
-              intensity={Platform.OS === 'ios' ? 100 : 0}
-              tint="light"
-              style={{
-                alignItems: 'center',
-                paddingVertical: 16,
-                backgroundColor: Platform.OS === 'android' ? '#10B981' : 'transparent',
-              }}
+            <Text
+              style={[
+                styles.body,
+                {
+                  color: '#FFFFFF',
+                  fontWeight: '600',
+                },
+              ]}
             >
-              {Platform.OS === 'ios' && (
-                <View
-                  style={{
-                    ...StyleSheet.absoluteFillObject,
-                    backgroundColor: '#10B98166',
-                    borderRadius: 20,
-                  }}
-                />
-              )}
-              <Text
-                style={[
-                  styles.body,
-                  {
-                    color: 'white',
-                    fontWeight: '600',
-                  },
-                ]}
-              >
-                I'm done
-              </Text>
-            </BlurView>
+              I'm done
+            </Text>
           </TouchableOpacity>
         </View>
       )}

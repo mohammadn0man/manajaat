@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Platform, useWindowDimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '../contexts/ThemeProvider';
-import { BlurView } from 'expo-blur';
+import IslamicPattern from './common/IslamicPattern';
 
 interface TopBarProps {
   title: string;
@@ -11,6 +12,8 @@ interface TopBarProps {
   showBackButton?: boolean;
   leftComponent?: React.ReactNode;
   rightComponent?: React.ReactNode;
+  /** When true, use taller header (e.g. Home "Today's Duas") */
+  hero?: boolean;
 }
 
 const TopBar: React.FC<TopBarProps> = ({
@@ -20,38 +23,28 @@ const TopBar: React.FC<TopBarProps> = ({
   showBackButton = false,
   leftComponent,
   rightComponent,
+  hero = false,
 }) => {
   const { colors, styles } = useTheme();
+  const { width } = useWindowDimensions();
+  const headerHeight = hero ? 200 : 120;
 
   return (
-    <View style={localStyles.container}>
-      {/* Glassmorphism Background */}
-      <BlurView
-        intensity={Platform.OS === 'ios' ? 80 : 0}
-        tint="systemChromeMaterialLight"
-        style={[
-          localStyles.blurContainer,
-          Platform.OS === 'android' && {
-            backgroundColor: colors.primary,
-          },
-        ]}
-      >
-        {/* Tinted Overlay */}
-        {Platform.OS === 'ios' && (
-          <View
-            style={[
-              localStyles.glassOverlay,
-              {
-                backgroundColor: `${colors.primary}CC`, // 80% opacity
-              },
-            ]}
-          />
-        )}
-        
-        {/* Content */}
-        <View style={[styles.rowBetween, localStyles.contentContainer]}>
-          <View style={{ width: 40, alignItems: 'flex-start' }}>
-            {leftComponent || (showBackButton && (
+    <View style={[localStyles.container, { height: headerHeight }]}>
+      <LinearGradient
+        colors={[colors.primary, colors.secondary]}
+        style={[StyleSheet.absoluteFill, localStyles.gradient]}
+      />
+      <IslamicPattern
+        width={width}
+        height={headerHeight}
+        color="#C9A961"
+        opacity={0.3}
+      />
+      <View style={[styles.rowBetween, localStyles.contentContainer]}>
+        <View style={{ width: 40, alignItems: 'flex-start' }}>
+          {leftComponent ||
+            (showBackButton && (
               <TouchableOpacity
                 style={localStyles.iconButton}
                 onPress={onBackPress}
@@ -66,53 +59,42 @@ const TopBar: React.FC<TopBarProps> = ({
                 />
               </TouchableOpacity>
             ))}
-          </View>
+        </View>
 
-          <View style={styles.columnCenter}>
+        <View style={styles.columnCenter}>
+          <Text
+            style={[
+              hero ? styles.h1 : styles.h3,
+              {
+                color: colors.primaryForeground,
+                textAlign: 'center',
+                fontWeight: '600',
+              },
+            ]}
+          >
+            {title}
+          </Text>
+          {subtitle && (
             <Text
               style={[
-                styles.h3,
+                styles.body,
                 {
                   color: colors.primaryForeground,
                   textAlign: 'center',
-                  fontWeight: '600',
+                  marginTop: 4,
+                  opacity: 0.9,
                 },
               ]}
             >
-              {title}
+              {subtitle}
             </Text>
-            {subtitle && (
-              <Text
-                style={[
-                  styles.body,
-                  {
-                    color: colors.primaryForeground,
-                    textAlign: 'center',
-                    marginTop: 4,
-                    opacity: 0.9,
-                  },
-                ]}
-              >
-                {subtitle}
-              </Text>
-            )}
-          </View>
-
-          <View style={{ width: 40, alignItems: 'flex-end' }}>
-            {rightComponent}
-          </View>
+          )}
         </View>
-      </BlurView>
-      
-      {/* Bottom Border Highlight */}
-      <View
-        style={[
-          localStyles.borderHighlight,
-          {
-            backgroundColor: `${colors.primaryForeground}33`,
-          },
-        ]}
-      />
+
+        <View style={{ width: 40, alignItems: 'flex-end' }}>{rightComponent}</View>
+      </View>
+
+      <View style={[localStyles.borderHighlight, { backgroundColor: colors.accent }]} />
     </View>
   );
 };
@@ -121,18 +103,13 @@ const localStyles = StyleSheet.create({
   container: {
     position: 'relative',
     overflow: 'hidden',
-  },
-  blurContainer: {
-    overflow: 'hidden',
-    borderBottomLeftRadius: 24,
-    borderBottomRightRadius: 24,
-    paddingTop: 48,
+    paddingTop: Platform.OS === 'ios' ? 48 : 40,
     paddingBottom: 24,
+    justifyContent: 'flex-end',
   },
-  glassOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    borderBottomLeftRadius: 24,
-    borderBottomRightRadius: 24,
+  gradient: {
+    borderBottomLeftRadius: 28,
+    borderBottomRightRadius: 28,
   },
   contentContainer: {
     paddingHorizontal: 24,
@@ -140,14 +117,16 @@ const localStyles = StyleSheet.create({
   iconButton: {
     padding: 4,
     borderRadius: 12,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
   },
   borderHighlight: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    height: 1,
+    height: 2,
+    borderBottomLeftRadius: 28,
+    borderBottomRightRadius: 28,
   },
 });
 
