@@ -13,7 +13,6 @@ interface DuaCardProps {
   onFavoritePress?: () => void;
   onSpeakerPress?: () => void;
   isFavorite?: boolean;
-  index?: number;
 }
 
 const DuaCard: React.FC<DuaCardProps> = ({
@@ -24,7 +23,6 @@ const DuaCard: React.FC<DuaCardProps> = ({
   onFavoritePress,
   onSpeakerPress,
   isFavorite = false,
-  index,
 }) => {
   const { styles, colors } = useTheme();
   const { getFontSizeValue, getArabicFontFamily } = useApp();
@@ -120,33 +118,13 @@ const DuaCard: React.FC<DuaCardProps> = ({
         </>
       )}
 
-      {/* Index Badge */}
-      {index !== undefined && (
-        <Text
-          style={{
-            position: 'absolute',
-            bottom: 12,
-            left: 12,
-            backgroundColor: colors.primary,
-            color: '#FFFFFF',
-            paddingHorizontal: 8,
-            paddingVertical: 4,
-            borderRadius: 12,
-            fontSize: 12,
-            fontWeight: '600',
-          }}
-        >
-          #{index + 1}
-        </Text>
-      )}
-
       <Text
         style={[
           compact ? styles.arabic : styles.arabicLarge,
           {
             fontFamily: getArabicFontFamily(),
             fontWeight: 'normal', // Ensure no conflicting font weight
-            paddingTop: 10, // Add a little padding before Arabic text
+            paddingTop: 12, // Add a little padding before Arabic text
           },
         ]}
       >

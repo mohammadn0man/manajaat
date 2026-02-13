@@ -39,7 +39,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
   onDuaPress,
 }) => {
   const { styles, colors } = useTheme();
-  const { isRTL, isFavorite, toggleFavorite, language } = useApp();
+  const { isRTL, isFavorite, toggleFavorite, language, getFontSizeValue } = useApp();
   const insets = useSafeAreaInsets();
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -458,9 +458,15 @@ const DuaPager: React.FC<DuaPagerProps> = ({
                         fontFamily: isTranslationRTL 
                           ? fontFamilies.urdu 
                           : fontFamilies.latin,
-                        fontSize: 16,
-                        lineHeight: isTranslationRTL ? 28 : 24,
+                        fontSize: Math.round(getFontSizeValue() * 0.95), // Dynamic font size for content
+                        // Increased line height for Urdu to match Arabic spacing
+                        lineHeight: isTranslationRTL 
+                          ? Math.round(getFontSizeValue() * 0.95 * 1.8) 
+                          : 24,
                         textAlign: isTranslationRTL ? 'right' : 'left',
+                        // Add generous padding for Urdu text to prevent trimming (similar to Arabic)
+                        paddingTop: isTranslationRTL ? Math.max(8, Math.round(getFontSizeValue() * 0.25)) : 0,
+                        paddingBottom: isTranslationRTL ? Math.max(8, Math.round(getFontSizeValue() * 0.25)) : 0,
                       },
                     ]}
                   >
@@ -482,7 +488,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
                   style={[
                     styles.textMuted,
                     {
-                      fontSize: 14,
+                      fontSize: Math.round(getFontSizeValue() * 0.7), // Dynamic font size (14px for normal)
                       fontStyle: 'italic',
                       textAlign: isRTL ? 'right' : 'left',
                     },

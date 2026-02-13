@@ -11,7 +11,7 @@ const STORAGE_KEYS = {
 
 export type Language = 'en' | 'ur' | 'ar' | 'rom-ur';
 export type Theme = 'system' | 'light' | 'dark';
-export type FontSize = 'small' | 'normal' | 'large';
+export type FontSize = 'small' | 'normal' | 'large' | 'extra-large';
 export type ArabicFont = 'amiri' | 'jameel' | 'almajeed' | 'indopak';
 
 export interface AppSettings {

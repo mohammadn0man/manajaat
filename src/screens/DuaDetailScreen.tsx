@@ -5,13 +5,14 @@ import * as Clipboard from 'expo-clipboard';
 
 import TopBar from '../components/TopBar';
 import IconButton from '../components/IconButton';
-import Typography from '../components/Typography';
+import DuaCard from '../components/DuaCard';
 import { Dua } from '../types/dua';
 import { getDuasData } from '../services/dataLoader';
 import { RootStackParamList } from '../navigation/types';
 import { useApp } from '../contexts/AppContext';
 import { useTheme } from '../contexts/ThemeProvider';
-import { getTranslation } from '../utils/translationUtils';
+import { getTranslation, isLanguageRTL } from '../utils/translationUtils';
+import { fontFamilies } from '../config/fonts';
 
 type DuaDetailScreenRouteProp = RouteProp<RootStackParamList, 'DuaDetail'>;
 
@@ -28,6 +29,7 @@ const DuaDetailScreen: React.FC<DuaDetailScreenProps> = ({ route }) => {
     toggleFavorite,
     language,
     getFontSizeValue,
+    isRTL,
   } = useApp();
   const { styles, colors } = useTheme();
 
@@ -75,8 +77,8 @@ const DuaDetailScreen: React.FC<DuaDetailScreenProps> = ({ route }) => {
     return (
       <View style={styles.container}>
         <TopBar title="Dua Not Found" showBackButton />
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>Dua not found</Text>
+        <View style={[styles.centerContent, { flex: 1, padding: 20 }]}>
+          <Text style={styles.textMuted}>Dua not found</Text>
         </View>
       </View>
     );
@@ -88,78 +90,96 @@ const DuaDetailScreen: React.FC<DuaDetailScreenProps> = ({ route }) => {
         title="Dua Details"
         showBackButton
         onBackPress={() => navigation.goBack()}
-        rightComponent={
-          <View style={styles.headerActions}>
-            <IconButton
-              iconName={isDuaFavorite(duaId) ? 'heart' : 'heart-outline'}
-              onPress={handleFavoriteToggle}
-              color={isDuaFavorite(duaId) ? '#ef4444' : 'white'}
-              accessibilityLabel={
-                isDuaFavorite(duaId)
-                  ? 'Remove from favorites'
-                  : 'Add to favorites'
-              }
-              accessibilityHint="Toggle favorite status for this dua"
-            />
-          </View>
-        }
       />
 
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        <View
-          style={[
-            styles.card,
-            // Add extra padding for large font sizes
-            getFontSizeValue() >= 24
-              ? {
-                  paddingHorizontal: 24,
-                  paddingVertical: 40, // Increased for Arabic characters
-                  marginHorizontal: 8,
-                  marginVertical: 8,
-                }
-              : getFontSizeValue() >= 20
-                ? {
-                    paddingHorizontal: 20,
-                    paddingVertical: 28, // Increased for Arabic characters
-                    marginHorizontal: 4,
-                    marginVertical: 4,
-                  }
-                : {
-                    paddingVertical: 20, // Add some padding even for small font size
+      <ScrollView
+        style={styles.content}
+        contentContainerStyle={{
+          paddingBottom: 120,
+          paddingHorizontal: 16,
+        }}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        bounces={true}
+        scrollEnabled={true}
+      >
+        {/* Arabic Card */}
+        <DuaCard
+          dua={dua}
+          compact={false}
+          showActions={true}
+          onFavoritePress={handleFavoriteToggle}
+          onSpeakerPress={() => {
+            // Show alert for now (can be replaced with toast later)
+            Alert.alert('Coming Soon', 'Audio recitation feature coming soon');
+          }}
+          isFavorite={isDuaFavorite(duaId)}
+        />
+
+        {/* Translation */}
+        {(() => {
+          const translation = getTranslation(dua, language);
+          const isTranslationRTL = isLanguageRTL(language);
+          
+          if (!translation) {
+            return null;
+          }
+
+          return (
+            <View
+              style={{
+                marginTop: 24,
+                paddingHorizontal: 8,
+              }}
+            >
+              <Text
+                style={[
+                  styles.body,
+                  {
+                    color: colors.foreground,
+                    fontFamily: isTranslationRTL 
+                      ? fontFamilies.urdu 
+                      : fontFamilies.latin,
+                    fontSize: Math.round(getFontSizeValue() * 0.95), // Dynamic font size for content
+                    // Increased line height for Urdu to match Arabic spacing
+                    lineHeight: isTranslationRTL 
+                      ? Math.round(getFontSizeValue() * 0.95 * 1.8) 
+                      : 24,
+                    textAlign: isTranslationRTL ? 'right' : 'left',
+                    // Add generous padding for Urdu text to prevent trimming (similar to Arabic)
+                    paddingTop: isTranslationRTL ? Math.max(8, Math.round(getFontSizeValue() * 0.25)) : 0,
+                    paddingBottom: isTranslationRTL ? Math.max(8, Math.round(getFontSizeValue() * 0.25)) : 0,
                   },
-          ]}
-        >
-          <Typography variant="arabic" color="primary">
-            {dua.arabic}
-          </Typography>
-
-          {(() => {
-            const translation = getTranslation(dua, language);
-            if (!translation) {
-              return null;
-            }
-
-            return (
-              <Typography
-                variant="body"
-                color="secondary"
-                style={styles.translationText}
+                ]}
               >
                 {translation}
-              </Typography>
-            );
-          })()}
+              </Text>
+            </View>
+          );
+        })()}
 
-          {dua.reference && (
-            <Typography
-              variant="caption"
-              color="muted"
-              style={styles.referenceText}
+        {/* Reference */}
+        {dua.reference && (
+          <View
+            style={{
+              marginTop: 16,
+              paddingHorizontal: 8,
+            }}
+          >
+            <Text
+              style={[
+                styles.textMuted,
+                {
+                  fontSize: Math.round(getFontSizeValue() * 0.7), // Dynamic font size (14px for normal)
+                  fontStyle: 'italic',
+                  textAlign: isRTL ? 'right' : 'left',
+                },
+              ]}
             >
               {dua.reference}
-            </Typography>
-          )}
-        </View>
+            </Text>
+          </View>
+        )}
       </ScrollView>
 
       <View

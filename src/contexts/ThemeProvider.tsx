@@ -85,6 +85,9 @@ interface ThemeProviderProps {
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const { colorScheme, getFontSizeValue, getArabicFontFamily } = useApp();
+  
+  // Static base font size for application UI (always uses "normal" size = 20px)
+  const STATIC_BASE_FONT_SIZE = 20;
 
   const colors: ThemeColors = {
     light: {
@@ -222,59 +225,59 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       color: colors.accent,
     },
 
-    // Typography styles
+    // Typography styles - STATIC sizes for application UI (not affected by font size setting)
     h1: {
       ...globalStyles.typography.h1,
-      fontSize: Math.round(getFontSizeValue() * 1.6), // 32px for normal
+      fontSize: Math.round(STATIC_BASE_FONT_SIZE * 1.6), // Static 32px
       color: colors.foreground,
       fontFamily: 'Lato', // Lato Sans-serif for English
       fontWeight: '700', // Bold weight
     },
     h2: {
       ...globalStyles.typography.h2,
-      fontSize: Math.round(getFontSizeValue() * 1.4), // 28px for normal
+      fontSize: Math.round(STATIC_BASE_FONT_SIZE * 1.4), // Static 28px
       color: colors.foreground,
       fontFamily: 'Lato', // Lato Sans-serif for English
       fontWeight: '700', // Bold weight
     },
     h3: {
       ...globalStyles.typography.h3,
-      fontSize: Math.round(getFontSizeValue() * 1.2), // 24px for normal
+      fontSize: Math.round(STATIC_BASE_FONT_SIZE * 1.2), // Static 24px
       color: colors.foreground,
       fontFamily: 'Lato', // Lato Sans-serif for English
       fontWeight: '700', // Bold weight
     },
     h4: {
       ...globalStyles.typography.h4,
-      fontSize: getFontSizeValue(), // 20px for normal
+      fontSize: STATIC_BASE_FONT_SIZE, // Static 20px
       color: colors.foreground,
       fontFamily: 'Lato', // Lato Sans-serif for English
       fontWeight: '700', // Bold weight
     },
     body: {
       ...globalStyles.typography.body,
-      fontSize: Math.round(getFontSizeValue() * 0.8), // 16px for normal
+      fontSize: Math.round(STATIC_BASE_FONT_SIZE * 0.8), // Static 16px for UI
       color: colors.foreground,
       fontFamily: 'Lato', // Lato Sans-serif for English
       fontWeight: '400', // Regular weight
     },
     bodyLarge: {
       ...globalStyles.typography.bodyLarge,
-      fontSize: getFontSizeValue(), // 20px for normal
+      fontSize: STATIC_BASE_FONT_SIZE, // Static 20px
       color: colors.foreground,
       fontFamily: 'Lato', // Lato Sans-serif for English
       fontWeight: '400', // Regular weight
     },
     caption: {
       ...globalStyles.typography.caption,
-      fontSize: Math.round(getFontSizeValue() * 0.7), // 14px for normal
+      fontSize: Math.round(STATIC_BASE_FONT_SIZE * 0.7), // Static 14px
       color: colors.mutedForeground,
       fontFamily: 'Lato', // Lato Sans-serif for English
       fontWeight: '400', // Regular weight
     },
     small: {
       ...globalStyles.typography.small,
-      fontSize: Math.round(getFontSizeValue() * 0.6), // 12px for normal
+      fontSize: Math.round(STATIC_BASE_FONT_SIZE * 0.6), // Static 12px
       color: colors.mutedForeground,
       fontFamily: 'Lato', // Lato Sans-serif for English
       fontWeight: '400', // Regular weight
@@ -290,7 +293,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       ...globalStyles.typography.arabicLarge,
       fontFamily: getArabicFontFamily(),
       fontSize: Math.round(getFontSizeValue() * 1.2), // 24px for normal
-      lineHeight: Math.round(getFontSizeValue() * 3.0), // Increased line height for better Arabic spacing
+      lineHeight: Math.round(getFontSizeValue() * 2.5), // Increased line height for better Arabic spacing
       color: colors.foreground,
     },
 

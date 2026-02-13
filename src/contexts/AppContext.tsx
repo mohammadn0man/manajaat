@@ -129,9 +129,12 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     switch (fontSize) {
       case 'small':
         return 16;
+      case 'normal':
+        return 20;
       case 'large':
         return 24;
-      case 'normal':
+      case 'extra-large':
+        return 28;
       default:
         return 20;
     }

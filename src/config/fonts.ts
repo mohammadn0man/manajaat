@@ -6,7 +6,7 @@ import {
 } from '@expo-google-fonts/lato';
 
 // Font configuration - custom fonts bundled with the app for consistency
-// Note: Using Amiri for both Arabic and Urdu (Amiri supports Urdu beautifully)
+// Note: Using Amiri for Arabic, Jameel Noori Nastaleeq for Urdu (always)
 // Using Lato from @expo-google-fonts/lato for English (Sans-serif from Google Fonts)
 export const fontConfig = {
   // Arabic/Urdu fonts (Amiri)
@@ -35,16 +35,16 @@ export const loadFonts = async (): Promise<void> => {
   }
 };
 
-// Font families - using Amiri for Arabic/Urdu, Lato for English
-// Note: Using Amiri for Urdu as it supports Urdu script beautifully
+// Font families - using Amiri for Arabic, Jameel Noori Nastaleeq for Urdu, Lato for English
+// Note: Using JameelNooriNastaleeqKasheeda for Urdu text (always)
 // Using Lato (Sans-serif from Google Fonts) for English text
 // Font family names must match the keys used in useFonts() in App.tsx
 // Try "Lato" first (registered as alias), fallback to exact variant names if needed
 export const fontFamilies = {
   arabic: 'Amiri-Regular',
   arabicBold: 'Amiri-Bold',
-  urdu: 'Amiri-Regular', // Amiri works great for Urdu
-  urduBold: 'Amiri-Bold',
+  urdu: 'JameelNooriNastaleeqKasheeda', // Always use Jameel Noori Nastaleeq for Urdu
+  urduBold: 'JameelNooriNastaleeqKasheeda', // Jameel doesn't have bold variant, use regular
   latin: 'Lato', // Lato Sans-serif for English (try base name first)
   latinMedium: 'Lato', // Lato doesn't have Medium, use Regular weight
   latinSemiBold: 'Lato', // Lato doesn't have SemiBold, use Regular weight
