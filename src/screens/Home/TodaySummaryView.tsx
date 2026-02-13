@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   View,
   Text,
@@ -6,12 +6,23 @@ import {
   TouchableOpacity,
   Animated,
   StyleSheet,
+  Platform,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 
 import { Dua } from '../../types/dua';
 import { useTheme } from '../../contexts/ThemeProvider';
+import { useApp } from '../../contexts/AppContext';
 import { globalStyles } from '../../styles/globalStyles';
+import { getStartData, getStartLangKey } from '../../services/dataLoader';
+import { fontFamilies } from '../../config/fonts';
+import Svg, { Circle } from 'react-native-svg';
+
+const PROGRESS_RING_SIZE = 96;
+const PROGRESS_RING_STROKE = 8;
+const PROGRESS_RING_RADIUS = PROGRESS_RING_SIZE / 2 - PROGRESS_RING_STROKE / 2;
+const PROGRESS_RING_CIRCUMFERENCE = 2 * Math.PI * PROGRESS_RING_RADIUS;
 
 interface TodaySummaryViewProps {
   todayDisplayName: string;
@@ -35,13 +46,32 @@ const TodaySummaryView: React.FC<TodaySummaryViewProps> = ({
   onQuickAccessFavorites,
 }) => {
   const { styles, colors } = useTheme();
+  const { language, getArabicFontFamily, getFontSizeValue } = useApp();
+  const startContent = useMemo(() => {
+    const data = getStartData();
+    const langKey = getStartLangKey(language);
+    return {
+      title: data.title[langKey],
+      body: data.start[langKey],
+      duas: data.duas,
+      langKey,
+    };
+  }, [language]);
+  const isUrdu = language === 'ur';
+  const arabicFont = getArabicFontFamily();
+  const fontScale = getFontSizeValue();
+  const insets = useSafeAreaInsets();
+  const tabBarHeight = 72;
+  const tabBarMarginBottom = Math.max(insets.bottom, 20);
+  const floatingButtonBottom = tabBarHeight + tabBarMarginBottom + 16;
 
   return (
-    <ScrollView
-      style={{ flex: 1 }}
-      contentContainerStyle={localStyles.summaryScroll}
-      showsVerticalScrollIndicator={false}
-    >
+    <View style={localStyles.wrapper}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={localStyles.summaryScroll}
+        showsVerticalScrollIndicator={false}
+      >
       <Animated.View
         style={[
           localStyles.featuredCard,
@@ -59,43 +89,64 @@ const TodaySummaryView: React.FC<TodaySummaryViewProps> = ({
           },
         ]}
       >
-        <TouchableOpacity
-          activeOpacity={0.9}
-          onPress={onStartReading}
-          style={localStyles.featuredCardInner}
-        >
-          <Text style={[styles.h4, { color: colors.primary, marginBottom: 4 }]}>
-            {todayDisplayName} – Dua for the day
+        <View style={localStyles.featuredCardInner}>
+          <Text
+            style={[
+              styles.h4,
+              {
+                color: colors.primary,
+                marginBottom: 4,
+                textAlign: 'center',
+                ...(isUrdu && {
+                  fontFamily: fontFamilies.urdu,
+                  fontWeight: Platform.OS === 'android' ? '400' : undefined,
+                  fontSize: Math.round(fontScale * 0.95),
+                  lineHeight: Math.round(fontScale * 0.95 * 1.8),
+                }),
+              },
+            ]}
+          >
+            {startContent.title}
           </Text>
-          {firstDua && (
-            <Text
-              numberOfLines={2}
-              style={[
-                styles.caption,
-                {
-                  color: colors.mutedForeground,
-                  marginBottom: 20,
-                  textAlign: 'right',
-                },
-              ]}
-            >
-              {firstDua.arabic}
-            </Text>
-          )}
-          <View style={localStyles.playRow}>
-            <TouchableOpacity
-              onPress={onStartReading}
-              style={[localStyles.playButton, { backgroundColor: colors.accent }]}
-              accessibilityRole="button"
-              accessibilityLabel="Start reading today's duas"
-            >
-              <Ionicons name="play" size={36} color="#FFFFFF" />
-            </TouchableOpacity>
+          <Text
+            style={[
+              styles.caption,
+              {
+                color: colors.mutedForeground,
+                marginBottom: 16,
+                textAlign: isUrdu ? 'right' : 'left',
+                ...(isUrdu && {
+                  fontFamily: fontFamilies.urdu,
+                  fontWeight: Platform.OS === 'android' ? '400' : undefined,
+                  fontSize: Math.round(fontScale * 0.95),
+                  lineHeight: Math.round(fontScale * 0.95 * 1.8),
+                }),
+              },
+            ]}
+          >
+            {startContent.body}
+          </Text>
+          <View style={localStyles.startDuasList}>
+            {startContent.duas.map((dua) => (
+              <View key={dua.id} style={localStyles.startDuaItem}>
+                <Text
+                  style={[
+                    styles.caption,
+                    {
+                      color: colors.foreground,
+                      textAlign: 'right',
+                      fontFamily: arabicFont,
+                      fontSize: fontScale,
+                      lineHeight: Math.round(fontScale * 1.6),
+                    },
+                  ]}
+                >
+                  {dua.arabic}
+                </Text>
+              </View>
+            ))}
           </View>
-          <Text style={[styles.caption, { color: colors.primary, marginTop: 12 }]}>
-            {completedCount}/{totalCount} Completed
-          </Text>
-        </TouchableOpacity>
+        </View>
       </Animated.View>
 
       <Animated.View
@@ -134,15 +185,97 @@ const TodaySummaryView: React.FC<TodaySummaryViewProps> = ({
           <Ionicons name="chevron-forward" size={20} color={colors.mutedForeground} />
         </TouchableOpacity>
       </Animated.View>
-    </ScrollView>
+      </ScrollView>
+
+      <View
+        style={[
+          localStyles.floatingPlayContainer,
+          { bottom: floatingButtonBottom },
+        ]}
+        pointerEvents="box-none"
+      >
+        <TouchableOpacity
+          onPress={onStartReading}
+          style={localStyles.playButtonWrapper}
+          activeOpacity={0.9}
+          accessibilityRole="button"
+          accessibilityLabel="Start reading today's duas"
+        >
+          <View style={localStyles.playButtonInner}>
+            <View style={localStyles.progressRingContainer}>
+              <Svg
+                width={PROGRESS_RING_SIZE}
+                height={PROGRESS_RING_SIZE}
+                style={localStyles.progressRingSvg}
+              >
+                <Circle
+                  cx={PROGRESS_RING_SIZE / 2}
+                  cy={PROGRESS_RING_SIZE / 2}
+                  r={PROGRESS_RING_RADIUS}
+                  stroke={colors.secondary}
+                  strokeWidth={PROGRESS_RING_STROKE}
+                  fill="transparent"
+                />
+                <Circle
+                  cx={PROGRESS_RING_SIZE / 2}
+                  cy={PROGRESS_RING_SIZE / 2}
+                  r={PROGRESS_RING_RADIUS}
+                  stroke={colors.primary}
+                  strokeWidth={PROGRESS_RING_STROKE}
+                  fill="transparent"
+                  strokeDasharray={`${PROGRESS_RING_CIRCUMFERENCE * (totalCount > 0 ? completedCount / totalCount : 0)} ${PROGRESS_RING_CIRCUMFERENCE}`}
+                  strokeLinecap="round"
+                  transform={`rotate(-90 ${PROGRESS_RING_SIZE / 2} ${PROGRESS_RING_SIZE / 2})`}
+                />
+              </Svg>
+            </View>
+            <View
+              style={[
+                localStyles.playButton,
+                { backgroundColor: colors.accent },
+              ]}
+            >
+              <Ionicons name="play" size={28} color="#FFFFFF" />
+              <Text
+                style={[
+                  styles.caption,
+                  {
+                    color: '#FFFFFF',
+                    marginTop: 2,
+                    fontSize: 11,
+                    fontWeight: '600',
+                  },
+                ]}
+              >
+                Start
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 };
 
 const localStyles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+  },
   summaryScroll: {
     paddingHorizontal: globalStyles.spacing.xs,
     paddingTop: globalStyles.spacing.xs,
-    paddingBottom: 120,
+    paddingBottom: 240,
+  },
+  floatingPlayContainer: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 10,
+    ...globalStyles.shadows.lg,
+    elevation: 8,
   },
   featuredCard: {
     marginTop: 0,
@@ -152,11 +285,32 @@ const localStyles = StyleSheet.create({
     ...globalStyles.shadows.lg,
   },
   featuredCardInner: {
-    alignItems: 'center',
+    alignItems: 'stretch',
   },
-  playRow: {
+  startDuasList: {
+    width: '100%',
+    marginBottom: 20,
+  },
+  startDuaItem: {
+    marginBottom: 16,
+  },
+  playButtonWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  playButtonInner: {
+    width: PROGRESS_RING_SIZE,
+    height: PROGRESS_RING_SIZE,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  progressRingContainer: {
+    position: 'absolute',
+    width: PROGRESS_RING_SIZE,
+    height: PROGRESS_RING_SIZE,
+  },
+  progressRingSvg: {
+    position: 'absolute',
   },
   playButton: {
     width: 80,
