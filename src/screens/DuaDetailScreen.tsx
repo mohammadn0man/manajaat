@@ -141,14 +141,18 @@ const DuaDetailScreen: React.FC<DuaDetailScreenProps> = ({ route }) => {
                       ? fontFamilies.urdu 
                       : fontFamilies.latin,
                     fontSize: Math.round(getFontSizeValue() * 0.95), // Dynamic font size for content
-                    // Increased line height for Urdu to match Arabic spacing
+                    // Line height: generous for Urdu; increased for English/Roman Urdu to reduce clutter
                     lineHeight: isTranslationRTL 
                       ? Math.round(getFontSizeValue() * 0.95 * 1.8) 
-                      : 24,
+                      : Math.round(getFontSizeValue() * 0.95 * 1.65),
                     textAlign: isTranslationRTL ? 'right' : 'left',
-                    // Add generous padding for Urdu text to prevent trimming (similar to Arabic)
-                    paddingTop: isTranslationRTL ? Math.max(8, Math.round(getFontSizeValue() * 0.25)) : 0,
-                    paddingBottom: isTranslationRTL ? Math.max(8, Math.round(getFontSizeValue() * 0.25)) : 0,
+                    // Padding: Urdu keeps existing; English/Roman Urdu get spacing so text isn't cluttered
+                    paddingTop: isTranslationRTL 
+                      ? Math.max(8, Math.round(getFontSizeValue() * 0.25)) 
+                      : Math.round(getFontSizeValue() * 0.2),
+                    paddingBottom: isTranslationRTL 
+                      ? Math.max(8, Math.round(getFontSizeValue() * 0.25)) 
+                      : Math.round(getFontSizeValue() * 0.2),
                   },
                 ]}
               >
@@ -168,9 +172,10 @@ const DuaDetailScreen: React.FC<DuaDetailScreenProps> = ({ route }) => {
           >
             <Text
               style={[
-                styles.textMuted,
+                styles.caption,
                 {
-                  fontSize: Math.round(getFontSizeValue() * 0.7), // Dynamic font size (14px for normal)
+                  color: colors.accent,
+                  fontSize: Math.round(getFontSizeValue() * 0.7),
                   fontStyle: 'italic',
                   textAlign: isRTL ? 'right' : 'left',
                 },

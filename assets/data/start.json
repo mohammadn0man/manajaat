@@ -1,0 +1,33 @@
+{
+    "schema_version": "1.0",
+    "title": {
+        "en": "Before you begin",
+        "ur": "شروع کرنے سے پہلے",
+        "rom-ur": "Shuru karne se pehle"
+    },
+    "start": {
+        "en": "The etiquette of duas is that before reciting the duas, the Hamd (praise) of Allah and the Prophet Muhammad ﷺ is to be done, and the following duas are recited before.",
+        "ur": "دعا کا ادب یہ ہے کہ دعا مانگنے سے پہلے اللہ کی تعریف اور رسول اللہ ﷺ پر درود شریف بھیجا جائے۔ روزانہ دعا سے پہلے حمد خداوندی اور صلاۃ و درود کے یہ کلمات پڑھ لیے جائیں۔",
+        "rom-ur": "Dua ka adab yeh hai ke dua mangne se pehle Allah ki tareef aur Rasool Allah ﷺ par darood shirif bheja jaye. Rozaan dua se pehle hamd Khudawandi aur salaat wa darood ke yeh kalamat padh liye jaye."
+    },
+    "duas": [
+        {
+            "id": 1,
+            "arabic": "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ عَدَدَ خَلْقِهِ، وَرِضَا نَفْسِهِ، وَزِنَةَ عَرْشِهِ، وَمِدَادَ كَلِمَاتِهِ",
+            "translations": {
+                "en": "O Allah, make us among those who remember You.",
+                "ur": "اے اللہ! ہمیں یاد کرنے والوں میں شامل فرما۔",
+                "rom-ur": "O Allah, make us among those who remember You."
+            }
+        },
+        {
+            "id": 2,
+            "arabic": "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ إِنَّكَ حَمِيدٌ مَجِيدٌ وَبَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ كَمَا بَارَكْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ إِنَّكَ حَمِيدٌ مَجِيدٌ",
+            "translations": {
+                "en": "O Allah, have mercy on our deceased.",
+                "ur": "اے اللہ! ہمارے مرحومین پر رحم فرما۔",
+                "rom-ur": "O Allah, have mercy on our deceased."
+            }
+        }
+    ]
+}

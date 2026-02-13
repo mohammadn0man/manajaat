@@ -1,12 +1,22 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Alert, ScrollView, StyleSheet, Platform } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Switch,
+  Linking,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
+import * as Haptics from 'expo-haptics';
 
 import { useApp } from '../contexts/AppContext';
 import { Language, Theme, FontSize, ArabicFont } from '../services/storageService';
 import TopBar from '../components/TopBar';
 import { useTheme } from '../contexts/ThemeProvider';
+import { globalStyles } from '../styles/globalStyles';
 
 const SettingsScreen: React.FC = () => {
   const [expandedDropdown, setExpandedDropdown] = useState<string | null>(null);
@@ -28,12 +38,6 @@ const SettingsScreen: React.FC = () => {
     { value: 'en', label: 'English' },
     { value: 'ur', label: 'اردو (Urdu)' },
     { value: 'rom-ur', label: 'Roman Urdu' },
-  ];
-
-  const themeOptions: { value: Theme; label: string }[] = [
-    { value: 'system', label: 'System' },
-    { value: 'light', label: 'Light' },
-    { value: 'dark', label: 'Dark' },
   ];
 
   const fontSizeOptions: { value: FontSize; label: string }[] = [
@@ -70,6 +74,14 @@ const SettingsScreen: React.FC = () => {
     );
   };
 
+  const settingCard = {
+    backgroundColor: colors.card,
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 8,
+    ...globalStyles.shadows.sm,
+  };
+
   const renderDropdownSelector = <T extends string>(
     id: string,
     title: string,
@@ -79,7 +91,7 @@ const SettingsScreen: React.FC = () => {
     icon: keyof typeof Ionicons.glyphMap
   ) => {
     const isExpanded = expandedDropdown === id;
-    const currentLabel = options.find(opt => opt.value === currentValue)?.label || '';
+    const currentLabel = options.find((opt) => opt.value === currentValue)?.label || '';
 
     return (
       <View style={styles.section}>
@@ -89,134 +101,63 @@ const SettingsScreen: React.FC = () => {
             {title}
           </Text>
         </View>
-        
-        {/* Dropdown Button */}
         <TouchableOpacity
-          style={{
-            borderRadius: 20,
-            overflow: 'hidden',
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.08,
-            shadowRadius: 4,
-            elevation: 3,
-            marginBottom: isExpanded ? 8 : 0,
+          style={[settingCard, { marginBottom: isExpanded ? 8 : 0 }]}
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+            setExpandedDropdown(isExpanded ? null : id);
           }}
-          onPress={() => setExpandedDropdown(isExpanded ? null : id)}
           accessibilityRole="button"
           accessibilityLabel={`${title}: ${currentLabel}`}
-          accessibilityHint="Tap to select an option"
         >
-          <BlurView
-            intensity={Platform.OS === 'ios' ? 80 : 0}
-            tint="light"
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              paddingVertical: 16,
-              paddingHorizontal: 20,
-              backgroundColor: Platform.OS === 'android' ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
-            }}
-          >
-            {Platform.OS === 'ios' && (
-              <View
-                style={{
-                  ...StyleSheet.absoluteFillObject,
-                  backgroundColor: 'rgba(255, 255, 255, 0.3)',
-                }}
-              />
-            )}
-            <Text
-              style={[
-                styles.body,
-                {
-                  color: colors.primary,
-                  fontWeight: '600',
-                  flex: 1,
-                },
-              ]}
-            >
+          <View style={styles.rowBetween}>
+            <Text style={[styles.body, { color: colors.primary, fontWeight: '600' }]}>
               {currentLabel}
             </Text>
             <Ionicons
-              name={isExpanded ? 'chevron-up' : 'chevron-down'}
+              name={isExpanded ? 'chevron-up' : 'chevron-forward'}
               size={20}
-              color={colors.primary}
+              color={colors.mutedForeground}
             />
-          </BlurView>
+          </View>
         </TouchableOpacity>
-
-        {/* Dropdown Options */}
         {isExpanded && (
-          <View
-            style={{
-              borderRadius: 20,
-              overflow: 'hidden',
-              shadowColor: '#000',
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.08,
-              shadowRadius: 4,
-              elevation: 3,
-            }}
-          >
-            <BlurView
-              intensity={Platform.OS === 'ios' ? 80 : 0}
-              tint="light"
-              style={{
-                overflow: 'hidden',
-                backgroundColor: Platform.OS === 'android' ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
-              }}
-            >
-              {Platform.OS === 'ios' && (
-                <View
-                  style={{
-                    ...StyleSheet.absoluteFillObject,
-                    backgroundColor: 'rgba(255, 255, 255, 0.3)',
-                  }}
-                />
-              )}
-              <View
-                style={{
-                  backgroundColor: Platform.OS === 'android' ? 'transparent' : 'rgba(255, 255, 255, 0.3)',
+          <View style={settingCard}>
+            {options.map((option, index) => (
+              <TouchableOpacity
+                key={option.value}
+                style={[
+                  styles.listItem,
+                  index !== options.length - 1 && {
+                    borderBottomWidth: 1,
+                    borderBottomColor: colors.border,
+                  },
+                ]}
+                onPress={async () => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  await onSelect(option.value);
+                  setExpandedDropdown(null);
                 }}
+                accessibilityRole="radio"
+                accessibilityState={{ checked: currentValue === option.value }}
+                accessibilityLabel={option.label}
               >
-                {options.map((option, index) => (
-                  <TouchableOpacity
-                    key={option.value}
-                    style={[
-                      styles.listItem,
-                      index !== options.length - 1 && {
-                        borderBottomWidth: 1,
-                        borderBottomColor: 'rgba(0, 0, 0, 0.05)',
-                      },
-                    ]}
-                    onPress={async () => {
-                      await onSelect(option.value);
-                      setExpandedDropdown(null);
-                    }}
-                    accessibilityRole="radio"
-                    accessibilityState={{ checked: currentValue === option.value }}
-                    accessibilityLabel={option.label}
-                  >
-                    <Text
-                      style={[
-                        styles.body,
-                        {
-                          color: currentValue === option.value ? colors.primary : '#1F2937',
-                          fontWeight: currentValue === option.value ? '600' : '400',
-                        },
-                      ]}
-                    >
-                      {option.label}
-                    </Text>
-                    {currentValue === option.value && (
-                      <Ionicons name="checkmark-circle" size={22} color={colors.primary} />
-                    )}
-                  </TouchableOpacity>
-                ))}
-              </View>
-            </BlurView>
+                <Text
+                  style={[
+                    styles.body,
+                    {
+                      color: currentValue === option.value ? colors.primary : colors.foreground,
+                      fontWeight: currentValue === option.value ? '600' : '400',
+                    },
+                  ]}
+                >
+                  {option.label}
+                </Text>
+                {currentValue === option.value && (
+                  <Ionicons name="checkmark-circle" size={22} color={colors.primary} />
+                )}
+              </TouchableOpacity>
+            ))}
           </View>
         )}
       </View>
@@ -231,36 +172,55 @@ const SettingsScreen: React.FC = () => {
         style={styles.content}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[
-          styles.globalStyles.spacingUtils.py('lg'),
-          { paddingBottom: 110 },
+          styles.globalStyles.spacingUtils.pt('lg'),
         ]}
       >
-        {renderDropdownSelector(
-          'language',
-          'Translation Language',
-          languageOptions,
-          language,
-          setLanguage,
-          'language'
-        )}
-
-        {renderDropdownSelector(
-          'theme',
-          'Theme',
-          themeOptions,
-          theme,
-          setTheme,
-          'color-palette'
-        )}
-
-        {renderDropdownSelector(
-          'fontSize',
-          'Font Size',
-          fontSizeOptions,
-          fontSize,
-          setFontSize,
-          'text'
-        )}
+        {/* Font Size - Segmented control */}
+        <View style={styles.section}>
+          <View style={[styles.row, styles.globalStyles.spacingUtils.mb('md')]}>
+            <Ionicons name="text" size={22} color={colors.primary} />
+            <Text style={[styles.h4, styles.globalStyles.spacingUtils.ml('sm')]}>
+              Font Size
+            </Text>
+          </View>
+          <View style={localStyles.segmentedRow}>
+            {fontSizeOptions.map((opt) => {
+              const isSelected = fontSize === opt.value;
+              return (
+                <TouchableOpacity
+                  key={opt.value}
+                  style={[
+                    localStyles.segmentButton,
+                    {
+                      backgroundColor: isSelected ? colors.primary : colors.card,
+                      borderWidth: isSelected ? 0 : 1,
+                      borderColor: colors.border,
+                    },
+                  ]}
+                  onPress={async () => {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                    await setFontSize(opt.value);
+                  }}
+                  accessibilityRole="radio"
+                  accessibilityState={{ checked: isSelected }}
+                  accessibilityLabel={opt.label}
+                >
+                  <Text
+                    style={[
+                      styles.caption,
+                      {
+                        fontWeight: '600',
+                        color: isSelected ? '#FFFFFF' : colors.foreground,
+                      },
+                    ]}
+                  >
+                    {opt.label}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </View>
 
         {renderDropdownSelector(
           'arabicFont',
@@ -271,121 +231,154 @@ const SettingsScreen: React.FC = () => {
           'text-outline'
         )}
 
+        {renderDropdownSelector(
+          'language',
+          'Translation Language',
+          languageOptions,
+          language,
+          setLanguage,
+          'language'
+        )}
+
+        {/* Theme - Toggle / dropdown */}
         <View style={styles.section}>
           <View style={[styles.row, styles.globalStyles.spacingUtils.mb('md')]}>
-            <Ionicons name="heart" size={22} color="#EF4444" />
-            <Text
-              style={[styles.h4, styles.globalStyles.spacingUtils.ml('sm')]}
-            >
-              Favorites
+            <Ionicons name="color-palette" size={22} color={colors.primary} />
+            <Text style={[styles.h4, styles.globalStyles.spacingUtils.ml('sm')]}>
+              Theme
             </Text>
           </View>
-          <TouchableOpacity
-            style={{
-              borderRadius: 20,
-              overflow: 'hidden',
-              opacity: favorites.length === 0 ? 0.5 : 1,
-              shadowColor: '#000',
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.08,
-              shadowRadius: 4,
-              elevation: 3,
-            }}
-            onPress={handleClearFavorites}
-            disabled={favorites.length === 0}
-            accessibilityRole="button"
-            accessibilityLabel="Clear all favorites"
-            accessibilityHint="Removes all duas from your favorites list"
-          >
-            <BlurView
-              intensity={Platform.OS === 'ios' ? 80 : 0}
-              tint="light"
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingVertical: 16,
-                paddingHorizontal: 20,
-                backgroundColor: Platform.OS === 'android' ? '#EF444420' : 'transparent',
+          <View style={[settingCard, styles.rowBetween]}>
+            <Text style={styles.body}>Dark mode</Text>
+            <Switch
+              value={theme === 'dark'}
+              onValueChange={async (value) => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                await setTheme(value ? 'dark' : 'light');
               }}
-            >
-              {Platform.OS === 'ios' && (
-                <View
-                  style={{
-                    ...StyleSheet.absoluteFillObject,
-                    backgroundColor: '#EF444433',
-                  }}
-                />
-              )}
-              <Ionicons name="trash" size={22} color="#EF4444" />
-              <Text
-                style={[
-                  styles.body,
-                  {
-                    color: '#EF4444',
-                    marginLeft: styles.globalStyles.spacing.sm,
-                    fontWeight: '600',
-                  },
-                ]}
-              >
-                Clear All Favorites ({favorites.length})
-              </Text>
-            </BlurView>
-          </TouchableOpacity>
+              trackColor={{ false: colors.border, true: colors.primary }}
+              thumbColor="#FFFFFF"
+            />
+          </View>
         </View>
 
         <View style={styles.section}>
           <View style={[styles.row, styles.globalStyles.spacingUtils.mb('md')]}>
-            <Ionicons name="information-circle" size={22} color={colors.primary} />
+            <Ionicons name="heart" size={22} color={colors.destructive} />
+            <Text style={[styles.h4, styles.globalStyles.spacingUtils.ml('sm')]}>
+              Favorites
+            </Text>
+          </View>
+          <TouchableOpacity
+            style={[
+              settingCard,
+              {
+                flexDirection: 'row',
+                alignItems: 'center',
+                opacity: favorites.length === 0 ? 0.5 : 1,
+                borderWidth: 1,
+                borderColor: colors.destructive,
+              },
+            ]}
+            onPress={handleClearFavorites}
+            disabled={favorites.length === 0}
+            accessibilityRole="button"
+            accessibilityLabel="Clear all favorites"
+          >
+            <Ionicons name="trash" size={22} color={colors.destructive} />
             <Text
-              style={[styles.h4, styles.globalStyles.spacingUtils.ml('sm')]}
+              style={[
+                styles.body,
+                {
+                  color: colors.destructive,
+                  marginLeft: styles.globalStyles.spacing.sm,
+                  fontWeight: '600',
+                },
+              ]}
             >
+              Clear All Favorites ({favorites.length})
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={[styles.section, { marginBottom: 0 }]}>
+          <View style={[styles.row]}>
+            <Ionicons name="information-circle" size={22} color={colors.primary} />
+            <Text style={[styles.h4, styles.globalStyles.spacingUtils.ml('sm')]}>
               About
             </Text>
           </View>
           <View
-            style={{
-              borderRadius: 20,
-              overflow: 'hidden',
-              shadowColor: '#000',
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.08,
-              shadowRadius: 4,
-              elevation: 3,
-            }}
+            style={[
+              settingCard,
+              { backgroundColor: colors.muted },
+            ]}
           >
-            <BlurView
-              intensity={Platform.OS === 'ios' ? 80 : 0}
-              tint="light"
-              style={{
-                padding: 20,
-                backgroundColor: Platform.OS === 'android' ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
-              }}
+            <Text style={[styles.h4, { fontWeight: '600' }]}>
+              Munajaat Nomani v1.0.0
+            </Text>
+            <Text
+              style={[
+                styles.textMuted,
+                styles.globalStyles.spacingUtils.mt('xs'),
+              ]}
             >
-              {Platform.OS === 'ios' && (
-                <View
-                  style={{
-                    ...StyleSheet.absoluteFillObject,
-                    backgroundColor: 'rgba(255, 255, 255, 0.3)',
-                  }}
-                />
-              )}
-              <Text style={[styles.h4, { fontWeight: '600' }]}>
-                Munajaat Nomani v1.0.0
-              </Text>
-              <Text
-                style={[
-                  styles.textMuted,
-                  styles.globalStyles.spacingUtils.mt('xs'),
-                ]}
-              >
-                A beautiful app for daily Islamic supplications
-              </Text>
-            </BlurView>
+              A beautiful app for daily Islamic supplications
+            </Text>
           </View>
+        </View>
+
+        <View style={localStyles.contributeSection}>
+          <TouchableOpacity
+            style={localStyles.contributeButton}
+            onPress={() =>
+              Linking.openURL('https://github.com/mohammadn0man/manajaat')
+            }
+            activeOpacity={0.7}
+            accessibilityRole="link"
+            accessibilityLabel="Contribute on GitHub"
+          >
+            <Ionicons name="logo-github" size={28} color={colors.foreground} />
+            <Text
+              style={[
+                styles.caption,
+                {
+                  color: colors.mutedForeground,
+                  marginTop: 6,
+                },
+              ]}
+            >
+              Contribute on GitHub
+            </Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </View>
   );
 };
+
+const localStyles = StyleSheet.create({
+  segmentedRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginHorizontal: -4,
+  },
+  segmentButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    minWidth: 72,
+    alignItems: 'center',
+    margin: 4,
+  },
+  contributeSection: {
+    alignItems: 'center',
+    paddingBottom: 140,
+  },
+  contributeButton: {
+    alignItems: 'center',
+    padding: 12,
+  },
+});
 
 export default SettingsScreen;

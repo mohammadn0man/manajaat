@@ -63,19 +63,19 @@ const CompletionState: React.FC<CompletionStateProps> = ({
 
       {/* Start Again Button */}
       <TouchableOpacity
-        style={[
-          styles.button,
-          {
-            backgroundColor: colors.primary,
-            paddingVertical: 16,
-            paddingHorizontal: 32,
-            borderRadius: 12,
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            minWidth: 200,
-          },
-        ]}
+          style={[
+            styles.button,
+            {
+              backgroundColor: colors.primary,
+              paddingVertical: 16,
+              paddingHorizontal: 32,
+              borderRadius: 999,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              minWidth: 200,
+            },
+          ]}
         onPress={onStartAgain}
         accessibilityRole="button"
         accessibilityLabel="Start again"

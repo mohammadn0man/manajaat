@@ -16,36 +16,36 @@ export const spacing = {
 
 // Global border radius system
 export const borderRadius = {
-  sm: 4,
-  md: 8,
-  lg: 12,
-  xl: 16,
+  sm: 8,
+  md: 12,
+  lg: 16,
+  xl: 20,
   '2xl': 20,
   full: 9999,
 } as const;
 
-// Global shadow system
+// Global shadow system (soft shadows with design-system color)
 export const shadows = {
   sm: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
+    shadowColor: '#2C3E50',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
     elevation: 2,
   },
   md: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowColor: '#2C3E50',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 4,
   },
   lg: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    elevation: 5,
+    shadowColor: '#2C3E50',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.12,
+    shadowRadius: 16,
+    elevation: 8,
   },
 } as const;
 
@@ -150,17 +150,17 @@ export const layout = {
   },
 } as const;
 
-// Global component styles
+// Global component styles (cardPadding: 20 per design system)
 export const components = {
   card: {
-    borderRadius: borderRadius.lg,
-    padding: spacing['2xl'],
+    borderRadius: borderRadius.xl,
+    padding: spacing.xl,
     marginBottom: spacing.md,
     ...shadows.md,
   },
   cardCompact: {
-    borderRadius: borderRadius.md,
-    padding: spacing.lg,
+    borderRadius: borderRadius.lg,
+    padding: spacing.xl,
     marginBottom: spacing.sm,
     ...shadows.sm,
   },
