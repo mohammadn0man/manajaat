@@ -1,8 +1,16 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Platform, useWindowDimensions } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Platform,
+  useWindowDimensions,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '../contexts/ThemeProvider';
+import { useApp } from '../contexts/AppContext';
 import IslamicPattern from './common/IslamicPattern';
 
 interface TopBarProps {
@@ -29,20 +37,30 @@ const TopBar: React.FC<TopBarProps> = ({
   hero = false,
 }) => {
   const { colors, styles } = useTheme();
+  const { colorScheme } = useApp();
   const { width } = useWindowDimensions();
   const headerHeight = hero ? 200 : 120;
+  const textColor =
+    colorScheme === 'light' ? colors.foreground : colors.primaryForeground;
 
   return (
-    <View style={[localStyles.container, { height: headerHeight }]}>
+    <View
+      style={[localStyles.container, { height: headerHeight }]}
+      pointerEvents="box-none"
+    >
       <LinearGradient
         colors={[colors.primary, colors.secondary]}
-        style={[StyleSheet.absoluteFill, localStyles.gradient]}
+        style={[
+          StyleSheet.absoluteFill,
+          localStyles.gradient,
+          { opacity: 0 },
+        ]}
       />
       <IslamicPattern
         width={width}
         height={headerHeight}
         color="#C9A961"
-        opacity={0.6}
+        opacity={1}
       />
       <View style={[styles.rowBetween, localStyles.contentContainer]}>
         <View style={{ width: 40, alignItems: 'flex-start' }}>
@@ -58,7 +76,7 @@ const TopBar: React.FC<TopBarProps> = ({
                 <Ionicons
                   name="arrow-back"
                   size={24}
-                  color={colors.primaryForeground}
+                  color={textColor}
                 />
               </TouchableOpacity>
             ))}
@@ -72,7 +90,7 @@ const TopBar: React.FC<TopBarProps> = ({
             style={[
               hero ? styles.h1 : styles.h3,
               {
-                color: colors.primaryForeground,
+                color: textColor,
                 textAlign: 'center',
                 fontWeight: '600',
               },
@@ -85,7 +103,7 @@ const TopBar: React.FC<TopBarProps> = ({
               style={[
                 styles.body,
                 {
-                  color: colors.primaryForeground,
+                  color: textColor,
                   textAlign: 'center',
                   marginTop: 4,
                   opacity: 0.9,
@@ -97,10 +115,10 @@ const TopBar: React.FC<TopBarProps> = ({
           )}
         </View>
 
-        <View style={{ width: 40, alignItems: 'flex-end' }}>{rightComponent}</View>
+        <View style={{ width: 40, alignItems: 'flex-end' }}>
+          {rightComponent}
+        </View>
       </View>
-
-      <View style={[localStyles.borderHighlight, { backgroundColor: colors.accent }]} />
     </View>
   );
 };
@@ -112,6 +130,10 @@ const localStyles = StyleSheet.create({
     paddingTop: Platform.OS === 'ios' ? 48 : 40,
     paddingBottom: 24,
     justifyContent: 'flex-end',
+  },
+  gradient: {
+    borderBottomLeftRadius: 28,
+    borderBottomRightRadius: 28,
   },
   contentContainer: {
     paddingHorizontal: 24,
@@ -126,15 +148,10 @@ const localStyles = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
   },
-  borderHighlight: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 2,
-    borderBottomLeftRadius: 28,
-    borderBottomRightRadius: 28,
-  },
 });
+
+/** Header height when hero is true (e.g. Today's Duas summary). Use for scroll padding. */
+export const TOP_BAR_HERO_HEIGHT = 200;
+export const TOP_BAR_DEFAULT_HEIGHT = 120;
 
 export default TopBar;

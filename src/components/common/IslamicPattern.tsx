@@ -20,7 +20,7 @@ const IslamicPattern: React.FC<IslamicPatternProps> = ({
   return (
     <View style={[styles.container, { width, height }]}>
       <Image
-        source={require('../../../assets/images/mehraab.png')}
+        source={require('../../../assets/images/mehraab-1.png')}
         style={[styles.image, { width, height, opacity }]}
         resizeMode="stretch"
         accessibilityLabel="Decorative mihrab arch"

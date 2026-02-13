@@ -29,6 +29,8 @@ interface TodaySummaryViewProps {
   firstDua: Dua | undefined;
   completedCount: number;
   totalCount: number;
+  /** Height of the overlay TopBar; used as scroll content paddingTop so content scrolls behind it */
+  headerHeight?: number;
   cardSlideAnim: Animated.Value;
   quickAccessAnim: Animated.Value;
   onStartReading: () => void;
@@ -40,6 +42,7 @@ const TodaySummaryView: React.FC<TodaySummaryViewProps> = ({
   firstDua,
   completedCount,
   totalCount,
+  headerHeight = 0,
   cardSlideAnim,
   quickAccessAnim,
   onStartReading,
@@ -69,7 +72,10 @@ const TodaySummaryView: React.FC<TodaySummaryViewProps> = ({
     <View style={localStyles.wrapper}>
       <ScrollView
         style={{ flex: 1 }}
-        contentContainerStyle={localStyles.summaryScroll}
+        contentContainerStyle={[
+          localStyles.summaryScroll,
+          { paddingTop: headerHeight + (globalStyles.spacing.xs ?? 8) },
+        ]}
         showsVerticalScrollIndicator={false}
       >
       <Animated.View

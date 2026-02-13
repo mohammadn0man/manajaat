@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Image, StyleSheet, Animated, BackHandler } from 'react-native';
-import { useNavigation, NavigationProp, useFocusEffect } from '@react-navigation/native';
+import {
+  useNavigation,
+  NavigationProp,
+  useFocusEffect,
+} from '@react-navigation/native';
 import { useCallback } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { RootStackParamList } from '../navigation/types';
@@ -10,7 +14,10 @@ import {
   getDayDisplayName,
 } from '../services/duaService';
 import { storageService } from '../services/storageService';
-import TopBar from '../components/TopBar';
+import TopBar, {
+  TOP_BAR_HERO_HEIGHT,
+  TOP_BAR_DEFAULT_HEIGHT,
+} from '../components/TopBar';
 import DuaPager from '../components/DuaPager';
 import SessionCompleteModal from '../components/SessionCompleteModal';
 import CompletionState from '../components/CompletionState';
@@ -18,7 +25,6 @@ import EmptyState from '../components/common/EmptyState';
 import { TodaySummaryView } from './Home';
 import { useTheme } from '../contexts/ThemeProvider';
 import { useApp } from '../contexts/AppContext';
-
 
 const HomeScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -78,22 +84,6 @@ const HomeScreen: React.FC = () => {
     }, [showReadingMode, setTabBarHidden])
   );
 
-  // When in reading mode, hardware back button should return to summary instead of exiting the app
-  useFocusEffect(
-    useCallback(() => {
-      if (!showReadingMode) return;
-      const onHardwareBack = () => {
-        handleBackToSummary();
-        return true;
-      };
-      const subscription = BackHandler.addEventListener(
-        'hardwareBackPress',
-        onHardwareBack,
-      );
-      return () => subscription.remove();
-    }, [showReadingMode, handleBackToSummary])
-  );
-
   const handleSessionComplete = () => {
     setShowCompleteModal(true);
   };
@@ -132,31 +122,52 @@ const HomeScreen: React.FC = () => {
     setTodayProgress(progress);
   }, []);
 
+  // When in reading mode, hardware back button should return to summary instead of exiting the app
+  useFocusEffect(
+    useCallback(() => {
+      if (!showReadingMode) return;
+      const onHardwareBack = () => {
+        handleBackToSummary();
+        return true;
+      };
+      const subscription = BackHandler.addEventListener(
+        'hardwareBackPress',
+        onHardwareBack
+      );
+      return () => subscription.remove();
+    }, [showReadingMode, handleBackToSummary])
+  );
+
   const handleQuickAccessFavorites = () => {
     (navigation as any).navigate('Favorites');
   };
 
-  const showSummary =
-    !isCompleted && !showReadingMode && todayDuas.length > 0;
+  const showSummary = !isCompleted && !showReadingMode && todayDuas.length > 0;
   const completedCount = Math.min(todayProgress + 1, todayDuas.length);
   const firstDua = todayDuas[0];
+
+  const headerHeight = showSummary
+    ? TOP_BAR_HERO_HEIGHT
+    : TOP_BAR_DEFAULT_HEIGHT;
 
   return (
     <View style={styles.container}>
       {showSummary ? (
-        <TopBar
-          title="Today's Duas"
-          subtitle={todayDisplayName}
-          hero
-          showBackButton={false}
-          centerImage={
-            <Image
-              source={require('../../assets/images/munajaat-nomani.png')}
-              style={localStyles.appIcon}
-              resizeMode="contain"
-            />
-          }
-        />
+        <View style={localStyles.topBarAbsolute} pointerEvents="box-none">
+          <TopBar
+            title="Today's Duas"
+            subtitle={todayDisplayName}
+            hero
+            showBackButton={false}
+            centerImage={
+              <Image
+                source={require('../../assets/images/munajaat-nomani.png')}
+                style={localStyles.appIcon}
+                resizeMode="contain"
+              />
+            }
+          />
+        </View>
       ) : (
         <TopBar
           title="Read today's Duas"
@@ -173,23 +184,23 @@ const HomeScreen: React.FC = () => {
         />
       )}
 
-      <View style={styles.content}>
+      <View
+        style={[styles.content, showSummary && localStyles.contentUnderHeader]}
+      >
         {isCompleted ? (
           <CompletionState
             totalDuas={todayDuas.length}
             onStartAgain={handleStartAgain}
           />
         ) : showReadingMode && todayDuas.length > 0 ? (
-          <DuaPager
-            duas={todayDuas}
-            onComplete={handleSessionComplete}
-          />
+          <DuaPager duas={todayDuas} onComplete={handleSessionComplete} />
         ) : showSummary ? (
           <TodaySummaryView
             todayDisplayName={todayDisplayName}
             firstDua={firstDua}
             completedCount={completedCount}
             totalCount={todayDuas.length}
+            headerHeight={headerHeight}
             cardSlideAnim={cardSlideAnim}
             quickAccessAnim={quickAccessAnim}
             onStartReading={handleStartReading}
@@ -197,7 +208,13 @@ const HomeScreen: React.FC = () => {
           />
         ) : todayDuas.length === 0 ? (
           <EmptyState
-            icon={<Ionicons name="book-outline" size={64} color={colors.mutedForeground} />}
+            icon={
+              <Ionicons
+                name="book-outline"
+                size={64}
+                color={colors.mutedForeground}
+              />
+            }
             title="No duas for today"
             description="Check back tomorrow or browse other days from the calendar."
           />
@@ -220,6 +237,16 @@ const localStyles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
+  },
+  topBarAbsolute: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 10,
+  },
+  contentUnderHeader: {
+    paddingTop: 0,
   },
 });
 
