@@ -12,6 +12,8 @@ interface TopBarProps {
   showBackButton?: boolean;
   leftComponent?: React.ReactNode;
   rightComponent?: React.ReactNode;
+  /** Optional image/node rendered above title and subtitle, centered */
+  centerImage?: React.ReactNode;
   /** When true, use taller header (e.g. Home "Today's Duas") */
   hero?: boolean;
 }
@@ -23,6 +25,7 @@ const TopBar: React.FC<TopBarProps> = ({
   showBackButton = false,
   leftComponent,
   rightComponent,
+  centerImage,
   hero = false,
 }) => {
   const { colors, styles } = useTheme();
@@ -62,6 +65,9 @@ const TopBar: React.FC<TopBarProps> = ({
         </View>
 
         <View style={styles.columnCenter}>
+          {centerImage && (
+            <View style={localStyles.centerImageWrap}>{centerImage}</View>
+          )}
           <Text
             style={[
               hero ? styles.h1 : styles.h3,
@@ -113,6 +119,11 @@ const localStyles = StyleSheet.create({
   },
   contentContainer: {
     paddingHorizontal: 24,
+  },
+  centerImageWrap: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8,
   },
   iconButton: {
     padding: 4,

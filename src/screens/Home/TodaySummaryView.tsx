@@ -97,11 +97,11 @@ const TodaySummaryView: React.FC<TodaySummaryViewProps> = ({
                 color: colors.primary,
                 marginBottom: 4,
                 textAlign: 'center',
+                fontSize: Math.round(fontScale * 0.95),
+                lineHeight: Math.round(fontScale * 0.95 * 1.8),
                 ...(isUrdu && {
                   fontFamily: fontFamilies.urdu,
                   fontWeight: Platform.OS === 'android' ? '400' : undefined,
-                  fontSize: Math.round(fontScale * 0.95),
-                  lineHeight: Math.round(fontScale * 0.95 * 1.8),
                 }),
               },
             ]}
@@ -115,11 +115,11 @@ const TodaySummaryView: React.FC<TodaySummaryViewProps> = ({
                 color: colors.mutedForeground,
                 marginBottom: 16,
                 textAlign: isUrdu ? 'right' : 'left',
+                fontSize: Math.round(fontScale * 0.95),
+                lineHeight: Math.round(fontScale * 0.95 * 1.8),
                 ...(isUrdu && {
                   fontFamily: fontFamilies.urdu,
                   fontWeight: Platform.OS === 'android' ? '400' : undefined,
-                  fontSize: Math.round(fontScale * 0.95),
-                  lineHeight: Math.round(fontScale * 0.95 * 1.8),
                 }),
               },
             ]}
@@ -137,7 +137,8 @@ const TodaySummaryView: React.FC<TodaySummaryViewProps> = ({
                       textAlign: 'right',
                       fontFamily: arabicFont,
                       fontSize: fontScale,
-                      lineHeight: Math.round(fontScale * 1.6),
+                      lineHeight: Math.round(fontScale * 1.75),
+                      paddingVertical: Platform.OS === 'ios' ? 8 : 2,
                     },
                   ]}
                 >

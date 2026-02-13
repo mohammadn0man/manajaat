@@ -7,6 +7,7 @@ import {
   ScrollView,
   StyleSheet,
   Switch,
+  Linking,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
@@ -171,8 +172,7 @@ const SettingsScreen: React.FC = () => {
         style={styles.content}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[
-          styles.globalStyles.spacingUtils.py('lg'),
-          { paddingBottom: 110 },
+          styles.globalStyles.spacingUtils.pt('lg'),
         ]}
       >
         {/* Font Size - Segmented control */}
@@ -301,8 +301,8 @@ const SettingsScreen: React.FC = () => {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.section}>
-          <View style={[styles.row, styles.globalStyles.spacingUtils.mb('md')]}>
+        <View style={[styles.section, { marginBottom: 0 }]}>
+          <View style={[styles.row]}>
             <Ionicons name="information-circle" size={22} color={colors.primary} />
             <Text style={[styles.h4, styles.globalStyles.spacingUtils.ml('sm')]}>
               About
@@ -327,6 +327,31 @@ const SettingsScreen: React.FC = () => {
             </Text>
           </View>
         </View>
+
+        <View style={localStyles.contributeSection}>
+          <TouchableOpacity
+            style={localStyles.contributeButton}
+            onPress={() =>
+              Linking.openURL('https://github.com/mohammadn0man/manajaat')
+            }
+            activeOpacity={0.7}
+            accessibilityRole="link"
+            accessibilityLabel="Contribute on GitHub"
+          >
+            <Ionicons name="logo-github" size={28} color={colors.foreground} />
+            <Text
+              style={[
+                styles.caption,
+                {
+                  color: colors.mutedForeground,
+                  marginTop: 6,
+                },
+              ]}
+            >
+              Contribute on GitHub
+            </Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </View>
   );
@@ -345,6 +370,14 @@ const localStyles = StyleSheet.create({
     minWidth: 72,
     alignItems: 'center',
     margin: 4,
+  },
+  contributeSection: {
+    alignItems: 'center',
+    paddingBottom: 140,
+  },
+  contributeButton: {
+    alignItems: 'center',
+    padding: 12,
   },
 });
 

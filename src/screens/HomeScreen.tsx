@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Image, StyleSheet, Animated } from 'react-native';
+import { View, Image, StyleSheet, Animated, BackHandler } from 'react-native';
 import { useNavigation, NavigationProp, useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
 import { Ionicons } from '@expo/vector-icons';
@@ -78,6 +78,22 @@ const HomeScreen: React.FC = () => {
     }, [showReadingMode, setTabBarHidden])
   );
 
+  // When in reading mode, hardware back button should return to summary instead of exiting the app
+  useFocusEffect(
+    useCallback(() => {
+      if (!showReadingMode) return;
+      const onHardwareBack = () => {
+        handleBackToSummary();
+        return true;
+      };
+      const subscription = BackHandler.addEventListener(
+        'hardwareBackPress',
+        onHardwareBack,
+      );
+      return () => subscription.remove();
+    }, [showReadingMode, handleBackToSummary])
+  );
+
   const handleSessionComplete = () => {
     setShowCompleteModal(true);
   };
@@ -106,7 +122,7 @@ const HomeScreen: React.FC = () => {
     setShowReadingMode(true);
   };
 
-  const handleBackToSummary = async () => {
+  const handleBackToSummary = useCallback(async () => {
     setShowReadingMode(false);
     const [completed, progress] = await Promise.all([
       storageService.isTodayCompleted(),
@@ -114,7 +130,7 @@ const HomeScreen: React.FC = () => {
     ]);
     setIsCompleted(completed);
     setTodayProgress(progress);
-  };
+  }, []);
 
   const handleQuickAccessFavorites = () => {
     (navigation as any).navigate('Favorites');
@@ -133,7 +149,7 @@ const HomeScreen: React.FC = () => {
           subtitle={todayDisplayName}
           hero
           showBackButton={false}
-          rightComponent={
+          centerImage={
             <Image
               source={require('../../assets/images/munajaat-nomani.png')}
               style={localStyles.appIcon}
