@@ -26,6 +26,8 @@ import { TodaySummaryView } from './Home';
 import { useTheme } from '../contexts/ThemeProvider';
 import { useApp } from '../contexts/AppContext';
 
+const HEADER_TITLE_FADE_DISTANCE = 100;
+
 const HomeScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { styles, colors } = useTheme();
@@ -34,6 +36,7 @@ const HomeScreen: React.FC = () => {
   const [isCompleted, setIsCompleted] = useState(false);
   const [showReadingMode, setShowReadingMode] = useState(false);
   const [todayProgress, setTodayProgress] = useState(0);
+  const [headerTitleOpacity, setHeaderTitleOpacity] = useState(1);
   const cardSlideAnim = useRef(new Animated.Value(0)).current;
   const quickAccessAnim = useRef(new Animated.Value(0)).current;
 
@@ -50,6 +53,12 @@ const HomeScreen: React.FC = () => {
     };
     check();
   }, []);
+
+  useEffect(() => {
+    if (!isCompleted && !showReadingMode && todayDuas.length > 0) {
+      setHeaderTitleOpacity(1);
+    }
+  }, [isCompleted, showReadingMode, todayDuas.length]);
 
   useEffect(() => {
     if (!showReadingMode && todayDuas.length > 0) {
@@ -159,6 +168,7 @@ const HomeScreen: React.FC = () => {
             subtitle={todayDisplayName}
             hero
             showBackButton={false}
+            titleOpacity={headerTitleOpacity}
             centerImage={
               <Image
                 source={require('../../assets/images/munajaat-nomani.png')}
@@ -201,6 +211,13 @@ const HomeScreen: React.FC = () => {
             completedCount={completedCount}
             totalCount={todayDuas.length}
             headerHeight={headerHeight}
+            onScroll={(scrollY) => {
+              const opacity = Math.max(
+                0,
+                1 - scrollY / HEADER_TITLE_FADE_DISTANCE
+              );
+              setHeaderTitleOpacity(opacity);
+            }}
             cardSlideAnim={cardSlideAnim}
             quickAccessAnim={quickAccessAnim}
             onStartReading={handleStartReading}

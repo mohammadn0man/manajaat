@@ -7,6 +7,8 @@ import {
   Animated,
   StyleSheet,
   Platform,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -31,6 +33,8 @@ interface TodaySummaryViewProps {
   totalCount: number;
   /** Height of the overlay TopBar; used as scroll content paddingTop so content scrolls behind it */
   headerHeight?: number;
+  /** Called when user scrolls; scrollY can be used to drive header title/subtitle fade */
+  onScroll?: (scrollY: number) => void;
   cardSlideAnim: Animated.Value;
   quickAccessAnim: Animated.Value;
   onStartReading: () => void;
@@ -43,11 +47,15 @@ const TodaySummaryView: React.FC<TodaySummaryViewProps> = ({
   completedCount,
   totalCount,
   headerHeight = 0,
+  onScroll: onScrollProp,
   cardSlideAnim,
   quickAccessAnim,
   onStartReading,
   onQuickAccessFavorites,
 }) => {
+  const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    onScrollProp?.(e.nativeEvent.contentOffset.y);
+  };
   const { styles, colors } = useTheme();
   const { language, getArabicFontFamily, getFontSizeValue } = useApp();
   const startContent = useMemo(() => {
@@ -77,6 +85,8 @@ const TodaySummaryView: React.FC<TodaySummaryViewProps> = ({
           { paddingTop: headerHeight + (globalStyles.spacing.xs ?? 8) },
         ]}
         showsVerticalScrollIndicator={false}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
       >
       <Animated.View
         style={[

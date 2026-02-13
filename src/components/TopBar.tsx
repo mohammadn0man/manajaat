@@ -24,6 +24,8 @@ interface TopBarProps {
   centerImage?: React.ReactNode;
   /** When true, use taller header (e.g. Home "Today's Duas") */
   hero?: boolean;
+  /** Optional 0–1 opacity for title and subtitle (e.g. scroll-driven fade) */
+  titleOpacity?: number;
 }
 
 const TopBar: React.FC<TopBarProps> = ({
@@ -35,6 +37,7 @@ const TopBar: React.FC<TopBarProps> = ({
   rightComponent,
   centerImage,
   hero = false,
+  titleOpacity = 1,
 }) => {
   const { colors, styles } = useTheme();
   const { colorScheme } = useApp();
@@ -42,6 +45,7 @@ const TopBar: React.FC<TopBarProps> = ({
   const headerHeight = hero ? 200 : 120;
   const textColor =
     colorScheme === 'light' ? colors.foreground : colors.primaryForeground;
+  const titleOpacityStyle = { opacity: titleOpacity };
 
   return (
     <View
@@ -94,6 +98,7 @@ const TopBar: React.FC<TopBarProps> = ({
                 textAlign: 'center',
                 fontWeight: '600',
               },
+              titleOpacityStyle,
             ]}
           >
             {title}
@@ -108,6 +113,7 @@ const TopBar: React.FC<TopBarProps> = ({
                   marginTop: 4,
                   opacity: 0.9,
                 },
+                titleOpacityStyle,
               ]}
             >
               {subtitle}
