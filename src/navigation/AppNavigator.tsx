@@ -24,12 +24,33 @@ const Tab = createBottomTabNavigator<MainTabParamList>();
 const MainTabs: React.FC = () => {
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
-  const { colorScheme } = useApp();
+  const { colorScheme, tabBarHidden } = useApp();
   const tabBarBg = colorScheme === 'dark' ? '#1E293B' : colors.background;
+
+  const baseTabBarStyle = {
+    position: 'absolute' as const,
+    backgroundColor: Platform.OS === 'android' ? tabBarBg : 'transparent',
+    borderTopWidth: 0,
+    elevation: Platform.OS === 'android' ? 8 : 0,
+    height: 72,
+    paddingBottom: 8,
+    paddingTop: 8,
+    borderRadius: 30,
+    marginHorizontal: 20,
+    marginBottom: Math.max(insets.bottom, 20),
+    shadowColor: '#2C3E50',
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+  };
 
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
+      screenOptions={({ route, navigation }) => {
+        const state = navigation.getState();
+        const currentRouteName = state?.routes?.[state.index]?.name;
+        const shouldHideTabBar = currentRouteName === 'Home' && tabBarHidden;
+        return {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName: keyof typeof Ionicons.glyphMap;
 
@@ -58,22 +79,9 @@ const MainTabs: React.FC = () => {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.mutedForeground,
         headerShown: false,
-        tabBarStyle: {
-          position: 'absolute',
-          backgroundColor: Platform.OS === 'android' ? tabBarBg : 'transparent',
-          borderTopWidth: 0,
-          elevation: Platform.OS === 'android' ? 8 : 0,
-          height: 72,
-          paddingBottom: 8,
-          paddingTop: 8,
-          borderRadius: 30,
-          marginHorizontal: 20,
-          marginBottom: Math.max(insets.bottom, 20),
-          shadowColor: '#2C3E50',
-          shadowOffset: { width: 0, height: -4 },
-          shadowOpacity: 0.08,
-          shadowRadius: 12,
-        },
+        tabBarStyle: shouldHideTabBar
+          ? { ...baseTabBarStyle, display: 'none' as const }
+          : baseTabBarStyle,
         tabBarBackground: () => (
           <BlurView
             intensity={Platform.OS === 'ios' ? 80 : 0}
@@ -106,7 +114,8 @@ const MainTabs: React.FC = () => {
             />
           );
         },
-      })}
+      };
+      }}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Days" component={DaysListScreen} />

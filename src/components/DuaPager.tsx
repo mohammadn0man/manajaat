@@ -510,23 +510,32 @@ const DuaPager: React.FC<DuaPagerProps> = ({
       {!isOnlyOne && (
         <View
           style={{
-            flexDirection: isRTL ? 'row-reverse' : 'row',
-            justifyContent: 'space-between',
+            flexDirection: 'row',
+            justifyContent: 'center',
             alignItems: 'center',
             paddingHorizontal: 24,
             paddingTop: 20,
-            paddingBottom: 70 + Math.max(insets.bottom, 20) + 10,
+            paddingBottom: Math.max(insets.bottom, 20),
             position: 'absolute',
             bottom: 0,
             left: 0,
             right: 0,
           }}
         >
+          <View
+            style={{
+              flexDirection: isRTL ? 'row-reverse' : 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 12,
+              maxWidth: 400,
+            }}
+          >
           {/* Previous Button - Outlined when active */}
           <TouchableOpacity
             style={{
               flex: 1,
-              minWidth: 140,
+              minWidth: 120,
               borderRadius: 999,
               borderWidth: 2,
               borderColor: isFirst ? colors.border : colors.primary,
@@ -535,9 +544,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
               alignItems: 'center',
               justifyContent: 'center',
               paddingVertical: 14,
-              paddingHorizontal: 32,
-              marginRight: isRTL ? 0 : 12,
-              marginLeft: isRTL ? 12 : 0,
+              paddingHorizontal: 24,
               opacity: isFirst ? 0.6 : 1,
             }}
             onPress={goToPrevious}
@@ -570,14 +577,14 @@ const DuaPager: React.FC<DuaPagerProps> = ({
           <TouchableOpacity
             style={{
               flex: 1,
-              minWidth: 140,
+              minWidth: 120,
               borderRadius: 999,
               backgroundColor: isLast ? '#10B981' : colors.primary,
               flexDirection: isRTL ? 'row-reverse' : 'row',
               alignItems: 'center',
               justifyContent: 'center',
               paddingVertical: 14,
-              paddingHorizontal: 32,
+              paddingHorizontal: 24,
             }}
             onPress={isLast ? handleComplete : goToNext}
             disabled={isAnimating}
@@ -608,6 +615,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
               />
             )}
           </TouchableOpacity>
+          </View>
         </View>
       )}
 
@@ -617,7 +625,7 @@ const DuaPager: React.FC<DuaPagerProps> = ({
           style={{
             paddingHorizontal: 24,
             paddingTop: 20,
-            paddingBottom: 70 + Math.max(insets.bottom, 20) + 10,
+            paddingBottom: Math.max(insets.bottom, 20),
             position: 'absolute',
             bottom: 0,
             left: 0,

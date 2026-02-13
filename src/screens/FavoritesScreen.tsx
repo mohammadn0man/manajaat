@@ -15,18 +15,27 @@ import * as Haptics from 'expo-haptics';
 
 import { useApp } from '../contexts/AppContext';
 import { getDuasData } from '../services/dataLoader';
+import {
+  getDayDisplayName,
+  getDayDisplayNameUrdu,
+  getDuasByDay,
+} from '../services/duaService';
+import { fontFamilies } from '../config/fonts';
 import { Dua } from '../types/dua';
 import { RootStackParamList } from '../navigation/types';
 import TopBar from '../components/TopBar';
 import EmptyState from '../components/common/EmptyState';
 import { useTheme } from '../contexts/ThemeProvider';
-import { useApp as useAppContext } from '../contexts/AppContext';
 import { globalStyles } from '../styles/globalStyles';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
-const CARD_GAP = 12;
 const NUM_COLUMNS = 2;
-const CARD_WIDTH = (SCREEN_WIDTH - 32 - CARD_GAP * (NUM_COLUMNS - 1)) / NUM_COLUMNS;
+// Content area has padding (e.g. 24*2 from theme) + list padding 16*2 = 80 total horizontal
+const HORIZONTAL_PADDING = 80;
+const CARD_GAP = 16;
+const CARD_WIDTH =
+  (SCREEN_WIDTH - HORIZONTAL_PADDING - CARD_GAP * (NUM_COLUMNS - 1)) /
+  NUM_COLUMNS;
 
 interface FavoriteCardProps {
   item: Dua;
@@ -42,8 +51,16 @@ const FavoriteCard: React.FC<FavoriteCardProps> = ({
   onRemove,
 }) => {
   const { colors } = useTheme();
-  const { getFontSizeValue, getArabicFontFamily } = useAppContext();
+  const { getFontSizeValue, getArabicFontFamily, language } = useApp();
   const animValue = useRef(new Animated.Value(0)).current;
+
+  const dayDisplayName =
+    language === 'ur'
+      ? getDayDisplayNameUrdu(item.day)
+      : getDayDisplayName(item.day);
+  const duasOfDay = getDuasByDay(item.day);
+  const duaIndexInDay =
+    duasOfDay.findIndex((d) => d.id === item.id) + 1 || 1;
 
   useEffect(() => {
     Animated.timing(animValue, {
@@ -81,7 +98,7 @@ const FavoriteCard: React.FC<FavoriteCardProps> = ({
       }}
     >
       <TouchableOpacity
-        style={localStyles.gridCard}
+        style={[localStyles.gridCard, { backgroundColor: colors.card }]}
         onPress={handlePress}
         activeOpacity={0.85}
         accessibilityRole="button"
@@ -96,17 +113,38 @@ const FavoriteCard: React.FC<FavoriteCardProps> = ({
         </TouchableOpacity>
         <Text
           numberOfLines={3}
-            style={[
-              localStyles.arabicPreview,
-              {
-                fontFamily: getArabicFontFamily(),
-                fontSize: Math.min(16, getFontSizeValue() * 0.8),
-                lineHeight: Math.min(28, getFontSizeValue() * 1.4),
-              },
-            ]}
+          style={[
+            localStyles.arabicPreview,
+            {
+              color: colors.foreground,
+              fontFamily: getArabicFontFamily(),
+              fontWeight: 'normal' as const,
+              fontSize: Math.min(16, getFontSizeValue() * 0.8),
+              lineHeight: Math.min(28, getFontSizeValue() * 1.4),
+            },
+          ]}
         >
           {item.arabic}
         </Text>
+        <View
+          style={[
+            localStyles.cardFooter,
+            { borderTopColor: colors.border },
+          ]}
+        >
+          <Text
+            style={[
+              localStyles.cardFooterText,
+              {
+                color: colors.mutedForeground,
+                fontFamily: language === 'ur' ? fontFamilies.urdu : undefined,
+              },
+            ]}
+            numberOfLines={1}
+          >
+            {dayDisplayName} : {duaIndexInDay}
+          </Text>
+        </View>
       </TouchableOpacity>
     </Animated.View>
   );
@@ -114,29 +152,38 @@ const FavoriteCard: React.FC<FavoriteCardProps> = ({
 
 const localStyles = StyleSheet.create({
   gridCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    padding: 12,
+    borderRadius: 14,
+    padding: 14,
     minHeight: 120,
     ...globalStyles.shadows.sm,
   },
   heartBadge: {
     position: 'absolute',
-    top: 8,
-    right: 8,
+    top: 10,
+    right: 10,
     zIndex: 1,
-    padding: 4,
+    padding: 6,
   },
   arabicPreview: {
-    color: '#2C3E50',
     textAlign: 'right',
+    marginTop: 20,
+    paddingBottom: 0,
+    paddingRight: 4,
+  },
+  cardFooter: {
     marginTop: 8,
-    paddingBottom: 8,
+    paddingTop: 8,
+    borderTopWidth: 1,
+  },
+  cardFooterText: {
+    fontSize: 11,
+    fontWeight: '600',
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: CARD_GAP,
+    marginBottom: 16,
+    paddingHorizontal: 0,
   },
   clearButton: {
     paddingVertical: 8,

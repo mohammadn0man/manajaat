@@ -22,8 +22,11 @@ export interface AppContextType {
   fontSize: FontSize;
   arabicFont: ArabicFont;
   favorites: string[];
+  /** When true, hide the bottom tab bar (e.g. when Home is in reading mode). */
+  tabBarHidden: boolean;
 
   // Actions
+  setTabBarHidden: (hidden: boolean) => void;
   setLanguage: (language: Language) => Promise<void>;
   setTheme: (theme: Theme) => Promise<void>;
   setFontSize: (fontSize: FontSize) => Promise<void>;
@@ -54,6 +57,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [arabicFont, setArabicFontState] = useState<ArabicFont>('indopak');
   const [favorites, setFavorites] = useState<string[]>([]);
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
+  const [tabBarHidden, setTabBarHidden] = useState<boolean>(false);
 
   // Load initial state from storage
   useEffect(() => {
@@ -150,6 +154,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     fontSize,
     arabicFont,
     favorites,
+    tabBarHidden,
+    setTabBarHidden,
     setLanguage,
     setTheme,
     setFontSize,
