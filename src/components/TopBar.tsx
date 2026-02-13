@@ -42,7 +42,7 @@ const TopBar: React.FC<TopBarProps> = ({
         width={width}
         height={headerHeight}
         color="#C9A961"
-        opacity={0.3}
+        opacity={0.6}
       />
       <View style={[styles.rowBetween, localStyles.contentContainer]}>
         <View style={{ width: 40, alignItems: 'flex-start' }}>
@@ -112,10 +112,6 @@ const localStyles = StyleSheet.create({
     paddingTop: Platform.OS === 'ios' ? 48 : 40,
     paddingBottom: 24,
     justifyContent: 'flex-end',
-  },
-  gradient: {
-    borderBottomLeftRadius: 28,
-    borderBottomRightRadius: 28,
   },
   contentContainer: {
     paddingHorizontal: 24,
