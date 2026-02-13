@@ -2,7 +2,7 @@
   "expo": {
     "name": "Munajaat Nomani",
     "slug": "manajaat",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/munajaat-nomani.png",
     "userInterfaceStyle": "light",
