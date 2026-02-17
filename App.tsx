@@ -8,6 +8,9 @@ import {
   Lato_400Regular,
   Lato_700Bold,
 } from '@expo-google-fonts/lato';
+import React, { useState, useEffect } from 'react';
+import { checkForceUpdate } from './src/services/versionCheck';
+import ForceUpdateScreen from './src/screens/ForceUpdateScreen';
 
 // Disable device font scaling globally - app will use static font sizes
 // controlled only by the app's font size settings
@@ -19,6 +22,26 @@ import {
 
 function AppContent() {
   const { colorScheme } = useApp();
+  const [forceUpdate, setForceUpdate] = useState<{ required: boolean; message?: string } | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    checkForceUpdate().then((result) => {
+      if (!cancelled && result.updateRequired) {
+        setForceUpdate({ required: true, message: result.message });
+      }
+    });
+    return () => { cancelled = true; };
+  }, []);
+
+  if (forceUpdate?.required) {
+    return (
+      <View style={styles.container}>
+        <ForceUpdateScreen message={forceUpdate.message} />
+        <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
