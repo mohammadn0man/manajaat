@@ -20,6 +20,8 @@ interface DuaCardProps {
 }
 
 const ACTION_BUTTON_SIZE = 40;
+/** Set to true to show the audio/speaker button (temporarily hidden). */
+const SHOW_AUDIO_BUTTON = false;
 
 const DuaCard: React.FC<DuaCardProps> = ({
   dua,
@@ -60,25 +62,27 @@ const DuaCard: React.FC<DuaCardProps> = ({
     >
       {showActions && (
         <>
-          <View
-            style={[
-              localStyles.actionCircle,
-              { left: 16, top: 16, borderColor: colors.accent },
-            ]}
-          >
-            <TouchableOpacity
-              onPress={onSpeakerPress}
-              style={localStyles.actionTouch}
-              accessibilityRole="button"
-              accessibilityLabel="Play audio recitation"
+          {SHOW_AUDIO_BUTTON && (
+            <View
+              style={[
+                localStyles.actionCircle,
+                { left: 16, top: 16, borderColor: colors.accent },
+              ]}
             >
-              <Ionicons
-                name="volume-high-outline"
-                size={20}
-                color={colors.primary}
-              />
-            </TouchableOpacity>
-          </View>
+              <TouchableOpacity
+                onPress={onSpeakerPress}
+                style={localStyles.actionTouch}
+                accessibilityRole="button"
+                accessibilityLabel="Play audio recitation"
+              >
+                <Ionicons
+                  name="volume-high-outline"
+                  size={20}
+                  color={colors.primary}
+                />
+              </TouchableOpacity>
+            </View>
+          )}
           <View
             style={[
               localStyles.actionCircle,
