@@ -315,7 +315,7 @@ const SettingsScreen: React.FC = () => {
             ]}
           >
             <Text style={[styles.h4, { fontWeight: '600' }]}>
-              Munajaat Nomani v1.1.0
+              Munajaat Nomani v1.1.1
             </Text>
             <Text
               style={[
