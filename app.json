@@ -14,12 +14,14 @@
     },
     "ios": {
       "supportsTablet": true,
+      "buildNumber": "2",
       "bundleIdentifier": "com.nomani.munajaat",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
+      "versionCode": 2,
       "icon": "./assets/images/munajaat-nomani.png",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/munajaat-nomani.png",
