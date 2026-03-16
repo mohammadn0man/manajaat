@@ -29,10 +29,10 @@
   },
   "submit": {
     "production": {
-      "android": {
-        "serviceAccountKeyPath": "./fastlane/google-service-account.json"
-      },
-      "ios": {}
+      "android": {},
+      "ios": {
+        "ascAppId": "6759190231"
+      }
     }
   }
 }
