@@ -7,12 +7,14 @@ const STORAGE_KEYS = {
   THEME: 'theme',
   FONT_SIZE: 'fontSize',
   ARABIC_FONT: 'arabicFont',
+  READING_MODE: 'readingMode',
 } as const;
 
 export type Language = 'en' | 'ur' | 'ar' | 'rom-ur';
 export type Theme = 'system' | 'light' | 'dark';
 export type FontSize = 'small' | 'normal' | 'large' | 'extra-large';
 export type ArabicFont = 'amiri' | 'jameel' | 'almajeed' | 'indopak';
+export type ReadingMode = 'scroll' | 'pager';
 
 export interface AppSettings {
   language: Language;
@@ -121,6 +123,24 @@ class StorageService {
   async setArabicFont(arabicFont: ArabicFont): Promise<void> {
     try {
       await AsyncStorage.setItem(STORAGE_KEYS.ARABIC_FONT, arabicFont);
+    } catch {
+      // Ignore errors
+    }
+  }
+
+  // Reading mode preference
+  async getReadingMode(): Promise<ReadingMode> {
+    try {
+      const mode = await AsyncStorage.getItem(STORAGE_KEYS.READING_MODE);
+      return (mode as ReadingMode) || 'scroll';
+    } catch {
+      return 'scroll';
+    }
+  }
+
+  async setReadingMode(mode: ReadingMode): Promise<void> {
+    try {
+      await AsyncStorage.setItem(STORAGE_KEYS.READING_MODE, mode);
     } catch {
       // Ignore errors
     }
