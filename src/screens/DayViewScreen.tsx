@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, FlatList } from 'react-native';
+import { View } from 'react-native';
 import {
   RouteProp,
   useNavigation,
@@ -9,7 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Dua } from '../types/dua';
 import { getDuasByDay, getDayDisplayName } from '../services/duaService';
 import TopBar from '../components/TopBar';
-import DuaCard from '../components/DuaCard';
+import DuaScrollView from '../components/DuaScrollView';
 import EmptyState from '../components/common/EmptyState';
 import { RootStackParamList } from '../navigation/types';
 import { useTheme } from '../contexts/ThemeProvider';
@@ -42,22 +42,10 @@ const DayViewScreen: React.FC<DayViewScreenProps> = ({ route }) => {
 
       <View style={styles.content}>
         {dayDuas.length > 0 ? (
-          <FlatList
-            data={dayDuas}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item, index }) => (
-              <DuaCard
-                dua={item}
-                onPress={handleDuaPress}
-                showReference
-                index={index}
-              />
-            )}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={[
-              styles.globalStyles.spacingUtils.py('lg'),
-              { paddingBottom: 110 },
-            ]}
+          <DuaScrollView
+            variant="browse"
+            duas={dayDuas}
+            onDuaPress={handleDuaPress}
           />
         ) : (
           <EmptyState

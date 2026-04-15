@@ -22,19 +22,28 @@ import { getTranslation, isLanguageRTL } from '../utils/translationUtils';
 
 interface DuaScrollViewProps {
   duas: Dua[];
-  onComplete: () => void;
-  onProgressChange: (index: number, total: number) => void;
+  /**
+   * `session` — home “today’s read” flow: restore scroll position, progress callbacks, I’m done.
+   * `browse` — calendar day list: same stacked layout, no progress or completion UI.
+   */
+  variant?: 'session' | 'browse';
+  onComplete?: () => void;
+  onProgressChange?: (index: number, total: number) => void;
+  onDuaPress?: (dua: Dua) => void;
 }
 
 const DuaScrollView: React.FC<DuaScrollViewProps> = ({
   duas,
+  variant = 'session',
   onComplete,
   onProgressChange,
+  onDuaPress,
 }) => {
   const { styles, colors } = useTheme();
   const { isRTL, isFavorite, toggleFavorite, language, getFontSizeValue } =
     useApp();
   const insets = useSafeAreaInsets();
+  const isSession = variant === 'session';
 
   const scrollViewRef = useRef<ScrollView>(null);
   const cardLayouts = useRef<number[]>([]);
@@ -45,13 +54,15 @@ const DuaScrollView: React.FC<DuaScrollViewProps> = ({
   const hasScrolledToSaved = useRef(false);
 
   useEffect(() => {
+    if (!isSession) return;
+
     const loadProgress = async () => {
       const savedProgress = await storageService.getTodayProgress();
       const index = Math.min(savedProgress, duas.length - 1);
       savedTargetIndex.current = index;
       currentVisibleIndexRef.current = index;
       setCurrentVisibleIndex(index);
-      onProgressChange(index, duas.length);
+      onProgressChange?.(index, duas.length);
 
       if (duas.length > 0) {
         analyticsService.logDuaView(duas[index].id, index, duas.length);
@@ -60,9 +71,10 @@ const DuaScrollView: React.FC<DuaScrollViewProps> = ({
       tryScrollToSaved();
     };
     loadProgress();
-  }, [duas]);
+  }, [duas, isSession, onProgressChange]);
 
   const tryScrollToSaved = useCallback(() => {
+    if (!isSession) return;
     if (hasScrolledToSaved.current) return;
     const target = savedTargetIndex.current;
     if (target <= 0) return;
@@ -81,20 +93,22 @@ const DuaScrollView: React.FC<DuaScrollViewProps> = ({
         scrollViewRef.current?.scrollTo({ y: targetY, animated: false });
       }, 50);
     }
-  }, [duas.length]);
+  }, [duas.length, isSession]);
 
   const handleCardLayout = useCallback(
     (index: number, event: LayoutChangeEvent) => {
+      if (!isSession) return;
       cardLayouts.current[index] = event.nativeEvent.layout.height;
       if (cardLayouts.current.filter((h) => h > 0).length >= duas.length) {
         tryScrollToSaved();
       }
     },
-    [duas.length, tryScrollToSaved]
+    [duas.length, isSession, tryScrollToSaved]
   );
 
   const handleScroll = useCallback(
     (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+      if (!isSession || !onProgressChange) return;
       const scrollY = event.nativeEvent.contentOffset.y;
       let accumulated = 0;
       let visibleIndex = 0;
@@ -116,10 +130,11 @@ const DuaScrollView: React.FC<DuaScrollViewProps> = ({
         storageService.setTodayProgress(visibleIndex);
       }
     },
-    [duas.length, onProgressChange]
+    [duas.length, isSession, onProgressChange]
   );
 
   const handleComplete = async () => {
+    if (!onComplete) return;
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 
     const totalDuration = (Date.now() - sessionStartTime) / 1000;
@@ -142,7 +157,7 @@ const DuaScrollView: React.FC<DuaScrollViewProps> = ({
     return (
       <View
         key={dua.id}
-        onLayout={(e) => handleCardLayout(index, e)}
+        onLayout={isSession ? (e) => handleCardLayout(index, e) : undefined}
         style={{
           paddingHorizontal: 16,
           paddingTop: index === 0 ? 20 : 0,
@@ -185,6 +200,7 @@ const DuaScrollView: React.FC<DuaScrollViewProps> = ({
 
         <DuaCard
           dua={dua}
+          onPress={onDuaPress}
           compact={false}
           showActions={true}
           onFavoritePress={() => toggleFavorite(dua.id)}
@@ -242,6 +258,10 @@ const DuaScrollView: React.FC<DuaScrollViewProps> = ({
     );
   };
 
+  const bottomPadding = isSession
+    ? 120 + Math.max(insets.bottom, 20)
+    : 32 + Math.max(insets.bottom, 20);
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -249,52 +269,54 @@ const DuaScrollView: React.FC<DuaScrollViewProps> = ({
         style={{ flex: 1 }}
         contentContainerStyle={{
           flexGrow: 1,
-          paddingBottom: 120 + Math.max(insets.bottom, 20),
+          paddingBottom: bottomPadding,
         }}
         showsVerticalScrollIndicator={false}
         bounces={true}
-        scrollEventThrottle={100}
-        onScroll={handleScroll}
+        scrollEventThrottle={isSession ? 100 : undefined}
+        onScroll={isSession ? handleScroll : undefined}
       >
         {duas.map((dua, index) => renderDuaItem(dua, index))}
 
-        <View
-          style={{
-            paddingHorizontal: 24,
-            paddingTop: 32,
-            paddingBottom: 16,
-            alignItems: 'center',
-          }}
-        >
-          <TouchableOpacity
+        {isSession && (
+          <View
             style={{
-              borderRadius: 999,
-              backgroundColor: '#10B981',
+              paddingHorizontal: 24,
+              paddingTop: 32,
+              paddingBottom: 16,
               alignItems: 'center',
-              justifyContent: 'center',
-              paddingVertical: 16,
-              paddingHorizontal: 48,
-              width: '100%',
-              maxWidth: 400,
             }}
-            onPress={handleComplete}
-            accessibilityRole="button"
-            accessibilityLabel="I am done"
-            accessibilityHint="Complete today's session"
           >
-            <Text
-              style={[
-                styles.body,
-                {
-                  color: '#FFFFFF',
-                  fontWeight: '600',
-                },
-              ]}
+            <TouchableOpacity
+              style={{
+                borderRadius: 999,
+                backgroundColor: '#10B981',
+                alignItems: 'center',
+                justifyContent: 'center',
+                paddingVertical: 16,
+                paddingHorizontal: 48,
+                width: '100%',
+                maxWidth: 400,
+              }}
+              onPress={handleComplete}
+              accessibilityRole="button"
+              accessibilityLabel="I am done"
+              accessibilityHint="Complete today's session"
             >
-              I'm done
-            </Text>
-          </TouchableOpacity>
-        </View>
+              <Text
+                style={[
+                  styles.body,
+                  {
+                    color: '#FFFFFF',
+                    fontWeight: '600',
+                  },
+                ]}
+              >
+                I'm done
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </ScrollView>
     </View>
   );
