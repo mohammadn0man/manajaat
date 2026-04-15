@@ -229,7 +229,7 @@ const TodaySummaryView: React.FC<TodaySummaryViewProps> = ({
                   cx={PROGRESS_RING_SIZE / 2}
                   cy={PROGRESS_RING_SIZE / 2}
                   r={PROGRESS_RING_RADIUS}
-                  stroke={colors.secondary}
+                  stroke={colors.progressTrack}
                   strokeWidth={PROGRESS_RING_STROKE}
                   fill="transparent"
                 />

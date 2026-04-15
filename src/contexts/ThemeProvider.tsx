@@ -23,6 +23,7 @@ export interface ThemeColors {
   border: string;
   input: string;
   ring: string;
+  progressTrack: string;
 }
 
 export interface ThemeStyles {
@@ -110,6 +111,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       border: '#E0DDD8',
       input: '#E0DDD8',
       ring: '#1A5F5F',
+      progressTrack: '#6A8767',
     },
     dark: {
       background: '#0F4545',
@@ -131,6 +133,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       border: '#1E293B',
       input: '#1E293B',
       ring: '#2C7A7A',
+      progressTrack: '#6A8767',
     },
   }[colorScheme];
 
