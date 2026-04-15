@@ -272,7 +272,9 @@ Stack Navigator
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **GNU General Public License v3.0 or later** (GPL-3.0-or-later). You may use, study, share, and change the app for any purpose. If you distribute it or a modified version (including as part of another product), you must keep it **open source** under the same license and make the **corresponding source code** available to recipients. See the [LICENSE](LICENSE) file for the full legal text.
+
+“Free” here means [freedom to run, study, share, and improve the software](https://www.gnu.org/philosophy/free-sw.html), not necessarily that every copy is given away at zero price; the GPL still requires that downstream users receive those freedoms and the source.
 
 ## 🙏 Acknowledgments
 
