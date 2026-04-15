@@ -19,6 +19,7 @@ import { useApp } from '../../contexts/AppContext';
 import { globalStyles } from '../../styles/globalStyles';
 import { getStartData, getStartLangKey } from '../../services/dataLoader';
 import { fontFamilies } from '../../config/fonts';
+import BodyTextWithSalamGlyph from '../../components/common/BodyTextWithSalamGlyph';
 import Svg, { Circle } from 'react-native-svg';
 
 const PROGRESS_RING_SIZE = 96;
@@ -71,6 +72,9 @@ const TodaySummaryView: React.FC<TodaySummaryViewProps> = ({
   const isUrdu = language === 'ur';
   const arabicFont = getArabicFontFamily();
   const fontScale = getFontSizeValue();
+  const introBodyFontSize = Math.round(fontScale * 0.95);
+  /** Slightly taller than 1.8 so mixed-script lines (e.g. Latin + U+FDFA) do not collide. */
+  const introBodyLineHeight = Math.round(introBodyFontSize * 2);
   const insets = useSafeAreaInsets();
   const tabBarHeight = 72;
   const tabBarMarginBottom = Math.max(insets.bottom, 20);
@@ -124,15 +128,16 @@ const TodaySummaryView: React.FC<TodaySummaryViewProps> = ({
           >
             {startContent.title}
           </Text>
-          <Text
+          <BodyTextWithSalamGlyph
+            salamFontFamily={isUrdu ? fontFamilies.urdu : fontFamilies.arabic}
             style={[
               styles.caption,
               {
                 color: colors.mutedForeground,
                 marginBottom: 16,
                 textAlign: isUrdu ? 'right' : 'left',
-                fontSize: Math.round(fontScale * 0.95),
-                lineHeight: Math.round(fontScale * 0.95 * 1.8),
+                fontSize: introBodyFontSize,
+                lineHeight: introBodyLineHeight,
                 ...(isUrdu && {
                   fontFamily: fontFamilies.urdu,
                   fontWeight: Platform.OS === 'android' ? '400' : undefined,
@@ -141,7 +146,7 @@ const TodaySummaryView: React.FC<TodaySummaryViewProps> = ({
             ]}
           >
             {startContent.body}
-          </Text>
+          </BodyTextWithSalamGlyph>
           <View style={localStyles.startDuasList}>
             {startContent.duas.map((dua) => (
               <View key={dua.id} style={localStyles.startDuaItem}>
