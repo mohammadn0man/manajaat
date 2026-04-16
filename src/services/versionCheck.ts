@@ -46,7 +46,20 @@ export async function fetchVersionConfig(): Promise<VersionConfig | null> {
   if (!url) return null;
 
   try {
-    const res = await fetch(url, { method: 'GET', cache: 'no-store' });
+    // Append a timestamp query param to bust caches — Android's OkHttp
+    // ignores the Fetch API `cache` option, so without this the OS-level
+    // HTTP cache may return a stale version.json indefinitely.
+    const separator = url.includes('?') ? '&' : '?';
+    const cacheBustUrl = `${url}${separator}_t=${Date.now()}`;
+
+    const res = await fetch(cacheBustUrl, {
+      method: 'GET',
+      cache: 'no-store',
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        Pragma: 'no-cache',
+      },
+    });
     if (!res.ok) return null;
     const data = (await res.json()) as VersionConfig;
     if (typeof data?.minVersion !== 'string') return null;
