@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   View,
   Text,
@@ -18,8 +18,9 @@ import { Dua } from '../types/dua';
 import { useTheme } from '../contexts/ThemeProvider';
 import { useApp } from '../contexts/AppContext';
 import DuaCard from './DuaCard';
+import DuaScrollView from './DuaScrollView';
 import EmptyState from './common/EmptyState';
-import { storageService } from '../services/storageService';
+import { storageService, ReadingMode } from '../services/storageService';
 import { analyticsService } from '../services/analyticsService';
 import { dateKeyForToday } from '../utils/dateUtils';
 import { fontFamilies } from '../config/fonts';
@@ -43,6 +44,9 @@ const DuaPager: React.FC<DuaPagerProps> = ({
   const { isRTL, isFavorite, toggleFavorite, language, getFontSizeValue } = useApp();
   const insets = useSafeAreaInsets();
 
+  const [readingMode, setReadingMode] = useState<ReadingMode>('scroll');
+  const [scrollDisplayIndex, setScrollDisplayIndex] = useState(0);
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [sessionStartTime] = useState<number>(Date.now());
@@ -64,6 +68,32 @@ const DuaPager: React.FC<DuaPagerProps> = ({
   useEffect(() => {
     isRTLRef.current = isRTL;
   }, [isRTL]);
+
+  useEffect(() => {
+    storageService.getReadingMode().then((mode) => {
+      setReadingMode(mode);
+    });
+  }, []);
+
+  const toggleReadingMode = useCallback(() => {
+    const next: ReadingMode = readingMode === 'scroll' ? 'pager' : 'scroll';
+    setReadingMode(next);
+    storageService.setReadingMode(next);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+  }, [readingMode]);
+
+  const handleScrollProgress = useCallback(
+    (index: number, total: number) => {
+      setScrollDisplayIndex(index);
+      const progress = total > 0 ? (index + 1) / total : 0;
+      Animated.timing(progressAnim, {
+        toValue: progress,
+        duration: 250,
+        useNativeDriver: false,
+      }).start();
+    },
+    [progressAnim]
+  );
 
   // Load initial progress
   useEffect(() => {
@@ -331,6 +361,9 @@ const DuaPager: React.FC<DuaPagerProps> = ({
   const isLast = currentIndex === duas.length - 1;
   const isOnlyOne = duas.length === 1;
 
+  const displayIndex =
+    readingMode === 'scroll' ? scrollDisplayIndex : currentIndex;
+
   return (
     <View style={styles.container}>
       {/* Progress Bar */}
@@ -343,11 +376,29 @@ const DuaPager: React.FC<DuaPagerProps> = ({
       >
         <View style={styles.rowBetween}>
           <Text style={[styles.caption, { color: colors.mutedForeground }]}>
-            {currentIndex + 1} of {duas.length}
+            {displayIndex + 1} of {duas.length}
           </Text>
-          <Text style={[styles.caption, { color: colors.mutedForeground }]}>
-            {Math.round(((currentIndex + 1) / duas.length) * 100)}%
-          </Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+            <Text style={[styles.caption, { color: colors.mutedForeground }]}>
+              {Math.round(((displayIndex + 1) / duas.length) * 100)}%
+            </Text>
+            <TouchableOpacity
+              onPress={toggleReadingMode}
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+              accessibilityRole="button"
+              accessibilityLabel={
+                readingMode === 'scroll'
+                  ? 'Switch to card view'
+                  : 'Switch to scroll view'
+              }
+            >
+              <Ionicons
+                name={readingMode === 'scroll' ? 'albums-outline' : 'list-outline'}
+                size={20}
+                color={colors.mutedForeground}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
 
         {/* Progress Bar */}
@@ -375,12 +426,20 @@ const DuaPager: React.FC<DuaPagerProps> = ({
             accessibilityValue={{
               min: 0,
               max: duas.length,
-              now: currentIndex + 1,
+              now: displayIndex + 1,
             }}
           />
         </View>
       </View>
 
+      {readingMode === 'scroll' ? (
+        <DuaScrollView
+          duas={duas}
+          onComplete={onComplete}
+          onProgressChange={handleScrollProgress}
+        />
+      ) : (
+      <>
       {/* Dua Card */}
       <View style={{ flex: 1 }} {...panResponder.panHandlers}>
         <Animated.View
@@ -687,6 +746,8 @@ const DuaPager: React.FC<DuaPagerProps> = ({
             Coming Soon: Audio recitation
           </Text>
         </Animated.View>
+      )}
+      </>
       )}
     </View>
   );

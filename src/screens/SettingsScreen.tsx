@@ -10,6 +10,7 @@ import {
   Linking,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import Constants from 'expo-constants';
 import * as Haptics from 'expo-haptics';
 
 import { useApp } from '../contexts/AppContext';
@@ -315,7 +316,7 @@ const SettingsScreen: React.FC = () => {
             ]}
           >
             <Text style={[styles.h4, { fontWeight: '600' }]}>
-              Munajaat Nomani v1.1.1
+              {`Munajaat Nomani v${Constants.expoConfig?.version ?? ''}`}
             </Text>
             <Text
               style={[
