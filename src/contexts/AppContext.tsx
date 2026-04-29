@@ -45,6 +45,10 @@ export interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
+/** When false, font size is fixed to {@link LOCKED_FONT_SIZE} and users cannot change it in Settings. */
+const FONT_SIZE_USER_CONTROL_ENABLED = false;
+const LOCKED_FONT_SIZE: FontSize = 'extra-large';
+
 interface AppProviderProps {
   children: ReactNode;
 }
@@ -104,6 +108,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   };
 
   const setFontSize = async (newFontSize: FontSize) => {
+    if (!FONT_SIZE_USER_CONTROL_ENABLED) return;
     setFontSizeState(newFontSize);
     await storageService.setFontSize(newFontSize);
   };
@@ -129,8 +134,12 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     return favorites.includes(duaId);
   };
 
+  const effectiveFontSize = FONT_SIZE_USER_CONTROL_ENABLED
+    ? fontSize
+    : LOCKED_FONT_SIZE;
+
   const getFontSizeValue = (): number => {
-    switch (fontSize) {
+    switch (effectiveFontSize) {
       case 'small':
         return 16;
       case 'normal':
@@ -151,7 +160,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const value: AppContextType = {
     language,
     theme,
-    fontSize,
+    fontSize: effectiveFontSize,
     arabicFont,
     favorites,
     tabBarHidden,
