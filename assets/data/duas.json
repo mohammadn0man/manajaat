@@ -14,7 +14,7 @@
       },
       {
         "index": 2,
-        "arabic": "اللَّهُمَّ أَنْتَ رَبِّي لاَ إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ لَكَ بِذَنْبِي فَاغْفِرْ لِي، فَإِنَّهُ لاَ يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ",
+        "arabic": "اللَّهُمَّ أَنْتَ رَبِّي لاَ إِلٰهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ لَكَ بِذَنْبِي فَاغْفِرْ لِي، فَإِنَّهُ لاَ يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ",
         "translations": {
           "en": "O Allah, You are my Lord. There is no deity worthy of worship except You. You created me and I am Your servant. I will abide by my covenant and promise to You as much as I can. I seek refuge in You from the evil of what I have done. I acknowledge Your favors upon me and I acknowledge my sins. So forgive me, for none can forgive sins except You.",
           "ur": "اے اللہ تو ہی میرا رب ہے۔ تیرے سوا کوئی عبادت کے لائق نہیں، تو ہی میرا خالق اور میں تیرا ہی بندہ ، عہد کرتا ہوں کہ جتنا ہوسکے گا تجھ سے کیے گئے (بندگی وفرماں برداری کے)وعدے پر قائم رہوں گا۔ میں اپنے برے اعمال کے شر سے تیری پناہ چاہتا ہوں۔ اپنے اوپرتیرے احسانات کا اعتراف کرتا ہوں اور اپنے گناہوں کااقرار کرتا ہوں۔ پس تو میری مغفرت فرمادے، یقینا تیرے علاوہ کوئی اور مغفرت فرمانے والا نہیں۔",
@@ -34,11 +34,11 @@
       },
       {
         "index": 4,
-        "arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنَ الْخَيْرِ كُلِّهِ عَاجِلِهِ وَآجِلِهِ مَا عَلِمْتَ مِنْهُ وَمَا لَمْ أَعْلَمْ، وَأَعُوذُ بِكَ مِنَ الشَّرِّ كُلِّهِ عَاجِلِهِ وَآجِلِهِ مَا عَلِمْتُ مِنْهُ وَمَا لَمْ أَعْلَمْ، اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ خَيْرِ مَا سَأَلَكَ عَبْدُكَ وَنَبِيُّكَ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا اسْتَعَاذَ مِنْهُ عَبْدُكَ وَنَبِيُّكَ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْجَنَّةَ وَمَا قَرَّبَ إِلَيْهَا مِنْ قَوْلٍ أَوْ عَمَلٍ، وَأَعُوذُ بِكَ مِنَ النَّارِ وَمَا قَرَّبَ إِلَيْهَا مِنْ قَوْلٍ أَوْ عَمَلٍ، وَأَسْأَلُكَ أَنْ تَجْعَلَ كُلَّ قَضَاءٍ تَقْضِيهِ لِي خَيْرًا ",
+        "arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنَ الْخَيْرِ كُلِّهِ عَاجِلِهِ وَآجِلِهِ مَا عَلِمْتُ مِنْهُ وَمَا لَمْ أَعْلَمْ، وَأَعُوذُ بِكَ مِنَ الشَّرِّ كُلِّهِ عَاجِلِهِ وَآجِلِهِ مَا عَلِمْتُ مِنْهُ وَمَا لَمْ أَعْلَمْ، اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ خَيْرِ مَا سَأَلَكَ عَبْدُكَ وَنَبِيُّكَ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا اسْتَعَاذَ مِنْهُ عَبْدُكَ وَنَبِيُّكَ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْجَنَّةَ وَمَا قَرَّبَ إِلَيْهَا مِنْ قَوْلٍ أَوْ عَمَلٍ، وَأَعُوذُ بِكَ مِنَ النَّارِ وَمَا قَرَّبَ إِلَيْهَا مِنْ قَوْلٍ أَوْ عَمَلٍ، وَأَسْأَلُكَ أَنْ تَجْعَلَ كُلَّ قَضَاءٍ تَقْضِيهِ لِي خَيْرًا ",
         "translations": {
           "en": "O Allah, I ask You for all good, whether immediate or delayed, that which I know and that which I do not know. And I seek refuge in You from all evil, that which I know and that which I do not know. O Allah, I ask You for all the good that Your servant and Your Prophet (Muhammad, peace be upon him) asked You for. And I seek refuge in You from all the evil from which Your servant and Your Prophet sought refuge. O Allah, I ask You for Paradise and for that which brings one closer to it, in word and deed. And I seek refuge in You from Hell and from that which brings one closer to it, in word and deed. And I ask You to make every decree You make for me good.",
-          "ur": "اے اللہ میں تجھ سے سوال کرتا ہوں ہرخیر کا، خواہ وہ فوری طور پر ملنے والا ہو یا بعد میں، خواہ وہ میرے علم میں ہو یا نہ ہو، اور ان تمام برائیوں سے تیری پناہ چاہتا ہوں جو میرے علم میں ہیں اور جو نہیں ہیں، اے اللہ میں تجھ سے ہر اس خیر کا سوال کرتا ہوں، جو تجھ سے تیرے برگزیدہ بندے اور تیرے نبی(محمدؐ) نے مانگا ہے۔ اور ہر اس برائی سے تیری پناہ چاہتا ہوں جس سے تیرے برگزیدہ بندے اور تیرے بنی نے پناہ مانگی ہے۔ اے اللہ میں تجھ سے جنت اور اس سے قریب کردینے والے اعمال مانگتا ہوں خواہ وہ عمل قولی ہو یا فعلی۔ اور جہنم اور جہنم سے قریب کردینے والے اعمال سے تیری پناہ مانگتا ہوں خواہ و ہ قولی ہو یا فعلی۔ اور میں تجھ سے سوال کرتا ہوں کہ اپنی تقدیر کے ہر فیصلہ کو میرے حق میں بہتر بنادے۔ ",
-          "rom-ur": "Ae Allah main tujh se sawal karta hun har khair ka, khwah wo fori tor par milne wala ho ya baad mein, khwah wo mere ilm mein ho ya nah ho, aur un tamam buraiyon se teri panah chahta hun jo mere ilm mein hain aur jo nahi hain, ae Allah main tujh se har us khair ka sawal karta hun, jo tujh se tere bargzida bande aur tere nabi (Muhammad Sallallahu Alaihi Wasallam) ne manga hai. Aur har us burai se teri panah chahta hun jis se tere bargzida bande aur tere nabi ne panah mangi hai. Ae Allah main tujh se jannat aur us se qareeb kar dene wale aamal mangta hun khwah wo amal qoli ho ya faili. Aur jahannam aur jahannam se qareeb kar dene wale aamal se teri panah mangta hun khwah wo qoli ho ya faili. Aur main tujh se sawal karta hun ke apni taqdeer ke har faisle ko mere haq mein behtar banade."
+          "ur": "اے اللہ میں تجھ سے سوال کرتا ہوں ہرخیر کا، خواہ وہ فوری طور پر ملنے والا ہو یا بعد میں، خواہ وہ میرے علم میں ہو یا نہ ہو، اور حال و مستقبل کی ان تمام برائیوں سے تیری پناہ چاہتا ہوں جو میرے علم میں ہیں اور جو نہیں ہیں، اے اللہ میں تجھ سے ہر اس خیر کا سوال کرتا ہوں، جو تجھ سے تیرے برگزیدہ بندے اور تیرے نبی(محمدؐ) نے مانگا ہے۔ اور ہر اس برائی سے تیری پناہ چاہتا ہوں جس سے تیرے برگزیدہ بندے اور تیرے بنی نے پناہ مانگی ہے۔ اے اللہ میں تجھ سے جنت اور اس سے قریب کردینے والے اعمال مانگتا ہوں خواہ وہ عمل قولی ہو یا فعلی۔ اور جہنم اور جہنم سے قریب کردینے والے اعمال سے تیری پناہ مانگتا ہوں خواہ و ہ قولی ہو یا فعلی۔ اور میں تجھ سے سوال کرتا ہوں کہ اپنی تقدیر کے ہر فیصلہ کو میرے حق میں بہتر بنادے۔ ",
+          "rom-ur": "Ae Allah main tujh se sawal karta hun har khair ka, khwah wo fori tor par milne wala ho ya baad mein, khwah wo mere ilm mein ho ya nah ho, aur haal wa mustaqbil ki un tamam buraiyon se teri panah chahta hun jo mere ilm mein hain aur jo nahi hain, ae Allah main tujh se har us khair ka sawal karta hun, jo tujh se tere bargzida bande aur tere nabi (Muhammad Sallallahu Alaihi Wasallam) ne manga hai. Aur har us burai se teri panah chahta hun jis se tere bargzida bande aur tere nabi ne panah mangi hai. Ae Allah main tujh se jannat aur us se qareeb kar dene wale aamal mangta hun khwah wo amal qoli ho ya faili. Aur jahannam aur jahannam se qareeb kar dene wale aamal se teri panah mangta hun khwah wo qoli ho ya faili. Aur main tujh se sawal karta hun ke apni taqdeer ke har faisle ko mere haq mein behtar banade."
         },
         "reference": "Musnad Ahmad"
       },
@@ -84,7 +84,7 @@
       },
       {
         "index": 9,
-        "arabic": "اللَّهُمَّ اجْعَلْنَا هَادِينَ مَهْدِيِّينَ غَيْرَ ضَالِّينَ وَلَا مُضِلِّينَ، حَرْبًا لِأَعْدَائِكَ وَسِلْمًا لِأَوْلِيَائِكَ، نُحِبُّ بِحُبِّكَ النَّاسَ، وَنُعَادِي بِعَدَاوَتِكَ مَنْ خَالَفَكَ مِنْ خَلْقِكَ. اللَّهُمَّ هَذَا الدُّعَاءُ وَعَلَيْكَ الْإِجَابَةُ، اللَّهُمَّ وَهَذَا الْجَهْدُ وَعَلَيْكَ التُّكْلَانُ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ.",
+        "arabic": "اللَّهُمَّ اجْعَلْنَا هَادِينَ مَهْدِيِّينَ غَيْرَ ضَالِّينَ وَلَا مُضِلِّينَ، حَرْبًا لِأَعْدَائِكَ وَسِلْمًا لِأَوْلِيَائِكَ، نُحِبُّ بِحُبِّكَ النَّاسَ، وَنُعَادِي بِعَدَاوَتِكَ مَنْ خَالَفَكَ مِنْ خَلْقِكَ. اللَّهُمَّ هَذَا الدُّعَاءُ وَعَلَيْكَ الْإِجَابَةُ، اللَّهُمَّ وَهَذَا الْجَهْدُ وَعَلَيْكَ التُّكْلَانُ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللّٰہ",
         "translations": {
           "en": "O Allah, make us guides and rightly guided, not astray or leading others astray. Make us enemies to Your enemies and friends to Your friends. Let us love people for Your love, and let us be enemies to whoever opposes You from Your creation. O Allah, this is our supplication and in You lies all hope of response. This is our effort, but trust and reliance is only upon You. There is no power or strength except with Allah.",
           "ur": "اے اللہ تو ہمیں ہادی ومہدی بنادے، گمراہ ہونے اور کرنے والا نہ بنا،ہمیں خدا کے دشمنوں کادشمن اوراُس کے دوستوں کادوست بنا، ہم لوگوں سے تیری محبت ورضا کی خاطر ہی محبت کریں اورتیری مخلوق میں سے جس نے تیری مخالفت کی ہم اُس سے تیری خاطر بیر رکھیں۔ اے اللہ! یہ ہماری دعا ہے اور قبول کرنا تیرا کام۔ یہ ہماری محنت و کوشش ہے ، مگر بھروسہ و توکل تو تیرے ہی اوپر ہے۔ کوئی طاقت وقوت والا نہیں سوائے اللہ کے۔",
@@ -157,7 +157,7 @@
         "arabic": "اللَّهُمَّ أَقْبِلْ بِقَلْبِي عَلَى دِينِكَ، وَاحْفَظْ مَنْ وَرَائَنَا بِرَحْمَتِكَ.",
         "translations": {
           "en": "O Allah, turn my heart towards Your religion, and protect those behind us through Your special mercy.",
-          "ur": "اے اللہ میرے دل کو اپنے دین کی طرف متوجہ کردے، اور اپنی خاص رحمت کے ذریعہ ہمارے پچھلے لوگوںکی حفاظت فرما۔",
+          "ur": "اے اللہ میرے دل کو اپنے دین کی طرف متوجہ کردے، اور اپنی خاص رحمت کے ذریعہ ہمارے پچھلے لوگوں کی حفاظت فرما۔",
           "rom-ur": "Ae Allah mere dil ko apne deen ki taraf mutawajjih karde, aur apni khas rehmat ke zariye hamare pichhle logon ki hifazat farma."
         },
         "reference": "Musnad Abū Yaʿlā"
@@ -174,11 +174,11 @@
       },
       {
         "index": 18,
-        "arabic": "اللَّهُمَّ إِنِّي ضَعِيفٌ فَقَوِّ فِي رِضَاكَ ضَعْفِي، وَخُذْ إلى الْخَيْرِ بِنَاصِيَتِي، وَاجْعَلِ الْإِسْلَامَ مُنْتَهَى رِضَايَ، وَإِنِّي ذَلِيلٌ فَأَعِزَّنِي، وَإِنِّي فَقِيرٌ فَارْزُقْنِي.", 
+        "arabic": "اللَّهُمَّ إِنِّي ضَعِيفٌ فَقَوِّ فِي رِضَاكَ ضَعْفِي، وَخُذْ إلى الْخَيْرِ بِنَاصِيَتِي، وَاجْعَلِ الْإِسْلَامَ مُنْتَهَى رِضَايَ، اَللّٰھمَّ إنِّی ضَعِیْفٔ فَقَوِّنِيْ، وَإِنِّي ذَلِيلٌ فَأَعِزَّنِي، وَإِنِّي فَقِيرٌ فَأَغْنِنِيْ بِرَحْمَتِکَ یَا اَرْحَمَ الرَّاحِمِیْنَ.", 
         "translations": {
-          "en": "O Allah, I am weak and powerless, so transform my weakness into strength in the works that please You, and draw me towards good, and make Islam the utmost of my desires. O Allah, I am weak and feeble, so grant me strength. I am weak, so grant me power. I am poor, so make me self-sufficient. By Your mercy, O Most Merciful of the merciful.",
-          "ur": "اے اللہ میں کمزور وناتواں ہوں لہٰذا اپنی رضا کے کاموں میں میری کمزوری کو قوت سے بدل دے، اور مجھے خیر کی طرف کھینچ لا، اور اسلام کو میری انتہائی پسند بنادے۔اے اللہ میں کمزور وضعیف ہوں تو مجھ کو قوت عطا فرما، میں کمزور ہوں تو مجھے طاقت عطا فرما، میں فقیر ہوں، مجھے بے نیاز بنا۔ تیری رحمت کا واسطہ ہے، اے ارحم الراحمین۔",
-          "rom-ur": "Ae Allah main kamzor wa natawan hun lehaza apni riza ke kaamon mein meri kamzori ko quwwat se badal de, aur mujhe khair ki taraf kheench la, aur Islam ko meri intehai pasand banade. Ae Allah main kamzor wa zaeef hun to mujh ko quwwat ata farma, main kamzor hun to mujhe taqat ata farma, main faqir hun, mujhe be niaz bana. Teri rehmat ka wasta hai, ae arham ar-rahimeen."
+          "en": "O Allah, I am weak and powerless, so transform my weakness into strength in the works that please You, and draw me towards good, and make Islam the utmost of my desires. O Allah, I am weak and feeble, so grant me strength.I am humiliated and disgraced, grant me honor. I am poor, so make me self-sufficient. By Your mercy, O Most Merciful of the merciful.",
+          "ur": "اے اللہ میں کمزور وناتواں ہوں لہٰذا اپنی رضا کے کاموں میں میری کمزوری کو قوت سے بدل دے، اور مجھے خیر کی طرف کھینچ لا، اور اسلام کو میری انتہائی پسند بنادے۔اے اللہ میں کمزور وضعیف ہوں تو مجھ کو قوت عطا فرما، میں ذلیل ہوں تو مجھے عزت عطا فرما، میں فقیر ہوں، مجھے بے نیاز بنا۔ تیری رحمت کا واسطہ ہے، اے ارحم الراحمین۔",
+          "rom-ur": "Ae Allah main kamzor wa natawan hun lehaza apni riza ke kaamon mein meri kamzori ko quwwat se badal de, aur mujhe khair ki taraf kheench la, aur Islam ko meri intehai pasand banade. Ae Allah main kamzor wa zaeef hun to mujh ko quwwat ata farma, main zaleel hun to mujhe izzat ata farma, main faqir hun, mujhe be niaz bana. Teri rehmat ka wasta hai, ae arham ar-rahimeen."
         },
         "reference": "Rawāhu al-Ḥākim"
       },
@@ -286,7 +286,7 @@
       },
       {
         "index": 6,
-        "arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ إِيمَانًا لَا يَرْتَدُّ، وَنَعِيمًا لَا يَنْفَدُ، وَمُرَافَقَةَ مُحَمَّدٍ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ فِي أَعْلَى جُنَّةِ الْخُلْدِ.",
+        "arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ إِيمَانًا لَا يَرْتَدُّ، وَنَعِيمًا لَا يَنْفَدُ، وَمُرَافَقَةَ نَبِیِّنَا مُحَمَّدٍ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ فِي أَعْلَى جُنَّةِ الْخُلْدِ.",
         "translations": {
           "en": "O Allah, I ask You for faith that does not turn back, blessings that do not end, and the companionship of Muhammad (peace be upon him) in the highest gardens of eternity.",
           "ur": "اے اللہ! میں آپ سے نہ پھرنے والا ایمان، ہمیشہ کی نعمتیں اور جنت کے اعلیٰ مقام میں اپنے نبی جناب محمد صلی اللہ علیہ وسلم کا ساتھ طلب کرتا ہوں۔",
@@ -339,7 +339,7 @@
         "arabic": "اللّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْعَجْزِ، وَالْكَسَلِ، وَالْجُبْنِ، وَالْبُخْلِ، وَالْهَرَمِ، وَعَذَابِ الْقَبْرِ. اللهُمَّ آتِ نَفْسِي تَقْوَاهَا، وَزَكِّهَا أَنْتَ خَيْرُ مَنْ زَكَّاهَا، أَنْتَ وَلِيُّهَا وَمَوْلَاهَا، اللهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ عِلْمٍ لَا يَنْفَعُ، وَمِنْ قَلْبٍ لَا يَخْشَعُ، وَمِنْ نَفْسٍ لَا تَشْبَعُ، وَمِنْ دَعْوَةٍ لَا يُسْتَجَابُ لَهَا.",
         "translations": {
           "en": "O Allah, I seek refuge in You from helplessness, laziness, cowardice, miserliness, old age, and the punishment of the grave. O Allah, grant my soul its piety and purify it, for You are the best to purify it. You are its Guardian and Master. O Allah, I seek refuge in You from knowledge that does not benefit, from a heart that does not fear, from a soul that is not satisfied, and from a supplication that is not answered.",
-          "ur": "اے اللہ میں آپ کی پناہ مانگتا ہوں لاچارگی، سستی، بزدلی، بخل، برے بڑھاپے اور عذاب قبر سے۔ اے اللہ میرے نفس کو تقویٰ کی دولت نصیب فرمائیے اور اس کا تزکیہ فرما دیجیے (پاک صاف کردیجیے)۔ آپ نفوس کا بہترین تزکیہ کرنے والے ہیں۔آپ ہی میرے نفس کے مالک و آقا ہیں۔ اے اللہ! آپ کی پناہ ایسے علم سے جو نفع نہ دے اور ایسے دل سے جس میں آپ کا ڈر نہ ہو، اور ایسے پیٹ سے جو نہ بھرے، اور ایسی دعا سے جو قبول نہ ہو۔",
+          "ur": "اے اللہ میں آپ کی پناہ مانگتا ہوں لاچاری، سستی، بزدلی، بخل، برے بڑھاپے اور عذاب قبر سے۔ اے اللہ میرے نفس کو تقویٰ کی دولت نصیب فرمائیے اور اس کا تزکیہ فرما دیجیے (پاک صاف کردیجیے)۔ آپ نفوس کا بہترین تزکیہ کرنے والے ہیں۔آپ ہی میرے نفس کے مالک و آقا ہیں۔ اے اللہ! آپ کی پناہ ایسے علم سے جو نفع نہ دے اور ایسے دل سے جس میں آپ کا ڈر نہ ہو، اور ایسے پیٹ سے جو نہ بھرے، اور ایسی دعا سے جو قبول نہ ہو۔",
           "rom-ur": "Ae Allah main aap ki panah mangta hun la chargi, susti, buzdili, bukhl, bure burhape aur azab qabar se. Ae Allah mere nafs ko taqwa ki daulat naseeb farmaiye aur us ka tazkiya farma dijie (pak saaf kar dijie). Aap nufuoos ka behtareen tazkiya karne wale hain. Aap hi mere nafs ke malik wa aaqa hain. Ae Allah! Aap ki panah aise ilm se jo nafa nah de aur aise dil se jis mein aap ka dar nah ho, aur aise pait se jo nah bhare, aur aisi dua se jo qabool nah ho."
         },
         "reference": "Sahih Muslim"
@@ -369,8 +369,8 @@
         "arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ فِعْلَ الْخَيْرَاتِ، وَتَرْكَ الْمُنْكَرَاتِ، وَحُبَّ الْمَسَاكِينِ، وَأَنْ تَغْفِرَ لِي وَتَرْحَمَنِي، وَإِذَا أَرَدْتَ بِقَوْمٍ فِتْنَةً فَتَوَفَّنِي إِلَيْكَ، وَأَنَا غَيْرُ مَفْتُونٍ، اللَّهُمَّ إِنِّي أَسْأَلُكَ حُبَّكَ، وَحُبَّ مَنْ يُحِبُّكَ، وَحُبًّا يُبَلِّغُنِي حُبَّكَ.",
         "translations": {
           "en": "O Allah, grant me success in doing good deeds, abandoning evil deeds, and loving the poor. And I ask You to forgive me and have mercy on me. And when You decide to put a people to trial, then take me to You without being put to trial. O Allah, I ask You for Your love, and the love of those who love You, and for love that will bring me to Your love.",
-          "ur": "اے اللہ! مجھے توفیق عنایت فرما نیکیوں کی، برائیاں چھوڑنے کی، اور غریبوں سے محبت کی۔اور میں اس کا بھی سوالی ہوں کہ تو میری مغفرت فرما اورمجھ پر رحم فرما۔ اور جب تو کسی قوم کو فتنے اور آزمائش میں ڈالنے کا فیصلہ فرمائے تو مجھے اس فتنے سے بچا کر اپنے پاس بلا لینا۔ اے اللہ میں مانگتا ہوں تجھ سے ان بندوں کی محبت جو تجھ سے محبت رکھتے ہیں اور ایسی محبت کا جو مجھے تیرا محبوب بنا دے۔",
-          "rom-ur": "Ae Allah! Mujhe taufeeq inayat farma nekiyon ki, buraiyan chhorne ki, aur ghareebon se mohabbat ki. Aur main us ka bhi sawali hun ke tu meri maghfirat farma aur mujh par rahm farma. Aur jab tu kisi qaum ko fitne aur azmaish mein dalne ka faisla farmaye to mujhe us fitne se bacha kar apne paas bula lena. Ae Allah main mangta hun tujh se un bandon ki mohabbat jo tujh se mohabbat rakhte hain aur aisi mohabbat ka jo mujhe tera mahboob bana de."
+          "ur": "اے اللہ! مجھے توفیق عنایت فرما نیکیوں کی، برائیاں چھوڑنے کی، اور غریبوں سے محبت کی۔اور میں اس کا بھی سوالی ہوں کہ تو میری مغفرت فرما اورمجھ پر رحم فرما۔ اور جب تو کسی قوم کو فتنے اور آزمائش میں ڈالنے کا فیصلہ فرمائے تو مجھے اس فتنے سے بچا کر اپنے پاس بلا لینا۔ اے اللہ میں مانگتا ہوں تجھ سے تیری محبت اور ان بندوں کی محبت جو تجھ سے محبت رکھتے ہیں اور ایسی محبت کا جو مجھے تیرا محبوب بنا دے۔",
+          "rom-ur": "Ae Allah! Mujhe taufeeq inayat farma nekiyon ki, buraiyan chhorne ki, aur ghareebon se mohabbat ki. Aur main us ka bhi sawali hun ke tu meri maghfirat farma aur mujh par rahm farma. Aur jab tu kisi qaum ko fitne aur azmaish mein dalne ka faisla farmaye to mujhe us fitne se bacha kar apne paas bula lena. Ae Allah main mangta hun tujh se teri muhabbat aur un bandon ki mohabbat jo tujh se mohabbat rakhte hain aur aisi mohabbat ka jo mujhe tera mahboob bana de."
         },
         "reference": "Al-Mustadrak"
       }
@@ -398,7 +398,7 @@
       },
       {
         "index": 3,
-        "arabic": "اللَّهُمَّ إِنِّي ضَعِيفٌ فَقَوِّ فِي رِضَاكَ ضَعْفِي، وَخُذْ لِيَ الْخَيْرَ بِنَاصِيَتِي، وَاجْعَلِ الْإِسْلَامَ مُنْتَهَى رِضَايَ، اللَّهُمَّ إِنِّي ضَعِيفٌ فَقَوِّنِي، وَإِنِّي ذَلِيلٌ فَأَعِزَّنِي، وَإِنِّي فَقِيرٌ فَارْزُقْنِي.",
+        "arabic": "اللَّهُمَّ إِنِّي ضَعِيفٌ فَقَوِّ فِي رِضَاكَ ضَعْفِي، وَخُذْ إليٰ الْخَيْرِ بِنَاصِيَتِي، وَاجْعَلِ الْإِسْلَامَ مُنْتَهَى رِضَائِي، اللَّهُمَّ إِنِّي ضَعِيفٌ فَقَوِّنِي، وَإِنِّي ذَلِيلٌ فَأَعِزَّنِي، وَإِنِّي فَقِيرٌ فَارْزُقْنِي.",
         "translations": {
           "en": "O Allah, I am weak, so strengthen me in what pleases You, take me by the forelock to good, and make Islam the utmost of my desires. O Allah, I am weak, so strengthen me. I am lowly, so honor me. I am poor, so provide for me.",
           "ur": "یا اللہ! میں کمزور ہوں،آپ اپنی رضا کے راستے میں مجھے طاقت بخش دیجیے، میری پیشانی پکڑ کر مجھے خیر میں لگادیجیے اور اسلام کو میری پوری خوشی ومسرت کا سامان بنادیجیے۔ خدایا! میں کمزور ہوں، مجھے قوت دیجیے۔ میں ذلیل ہوں، مجھے عزت عطا فرمائیے اور میں فقیر ومحتاج ہوں، مجھے اپنا رزق عطا فرمائیے۔",
@@ -438,7 +438,7 @@
       },
       {
         "index": 7,
-        "arabic": "اللَّهُمَّ اغْفِرْ لِي خَطَايَايَ وَذُنُوبِي كُلَّهَا، اللَّهُمَّ أَنْعِشْنِي وَاجْبُرْنِي وَاهْدِنِي لِصَالِحِ الْأَعْمَالِ وَالْأَخْلَاقِ، إِنَّهُ لَا يَهْدِي لِصَالِحِهَا وَلَا يَصْرِفُ عَنِّي سَيِّئَهَا إِلَّا أَنْتَ.",
+        "arabic": "اللَّهُمَّ اغْفِرْ لِي خَطَايَايَ وَذُنُوبِي كُلَّهَا، اللَّهُمَّ أَنْعِشْنِي وَاجْبُرْنِي وَاهْدِنِي لِصَالِحِ الْأَعْمَالِ وَالْأَخْلَاقِ، لَا يَهْدِي لِصَالِحِهَا وَلَا يَصْرِفُ عَنِّي سَيِّئَهَا إِلَّا أَنْتَ.",
         "translations": {
           "en": "O Allah, forgive all my errors and sins. O Allah, revive me, mend me, and guide me to righteous deeds and good character. None guides to what is good of them and averts what is evil of them except You.",
           "ur": "یا اللہ! میری تمام خطاؤں اور گناہوں کو معاف کردے۔ یا اللہ! مجھے ہمت ونشاط عطا کر، میرے حال کو درست کردے اور مجھے اچھے اعمال کرنے کی اور اچھے اخلاق اپنانے کی توفیق دے۔ تو ہی اچھے اعمال کی توفیق دیتا ہے اور برے اعمال سے تو ہی بچاتا ہے۔",
@@ -461,8 +461,8 @@
         "arabic": "اللَّهُمَّ افْتَحْ مَسَامِعَ قَلْبِي لِذِكْرِكَ، وَارْزُقْنِي طَاعَتَكَ، وَطَاعَةَ رَسُولِكَ -صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ- وَعَمَلًا بِكِتَابِكَ.",
         "translations": {
           "en": "O Allah, open the ears of my heart for Your remembrance, and grant me success in obeying You and Your Messenger (peace be upon him), and in acting upon Your Book.",
-          "ur": "خدایا! میرے دل کے کانوں کو اپنے ذکر کے لیے کھول دیجیے، اورمجھے توفیق دیجیے اپنی اطاعت کی اور محمد صلی اللہ علیہ وسلم کی اطاعت کی اور اپنی کتاب پر عمل کی ۔",
-          "rom-ur": "Khudaya! Mere dil ke kano ko apne zikr ke liye khol dijie, aur mujhe taufeeq dijie apni taa'at ki aur Muhammad (Sallallahu Alaihi Wasallam) ki taa'at ki aur apni kitab par amal ki."
+          "ur": "خدایا! میرے دل کے دریچوں کو اپنے ذکر کے لیے کھول دیجیے، اورمجھے توفیق دیجیے اپنی اطاعت کی اور محمد صلی اللہ علیہ وسلم کی اطاعت کی اور اپنی کتاب پر عمل کی ۔",
+          "rom-ur": "Khudaya! Mere dil ke dareechon ko apne zikr ke liye khol dijie, aur mujhe taufeeq dijie apni taa'at ki aur Muhammad (Sallallahu Alaihi Wasallam) ki taa'at ki aur apni kitab par amal ki."
         },
         "reference": "Al-Mu'jam Al-Awsat"
       },
@@ -543,7 +543,7 @@
         "arabic": "اللَّهُمَّ اجْعَلْنَا مِنْ عِبَادِكَ الْمُنْتَخَبِينَ، الْغُرِّ الْمُحَجَّلِينَ، الْوَفْدِ الْمُتَقَبَّلِينَ.",
         "translations": {
           "en": "O Allah, make us among Your chosen servants, the radiant, the marked, the accepted delegation.",
-          "ur": "اے اللہ! مجھ کو اپنے ا ُن منتخب بندوں اور اس مقبول جماعت میں شامل فرما (قیامت کے دن)جن کی پیشانی اور ہاتھ پاؤں چمک رہے ہوں گے۔",
+          "ur": "اے اللہ! مجھ کو اپنے اُن منتخب بندوں اور اس مقبول جماعت میں شامل فرما (قیامت کے دن)جن کی پیشانی اور ہاتھ پاؤں چمک رہے ہوں گے۔",
           "rom-ur": "Ae Allah! Mujh ko apne un muntakhab bandon aur us maqbool jamat mein shamil farma (qayamat ke din) jin ki peshani aur haath paon chamak rahe hon ge."
         },
         "reference": "Musnad Ahmad"
@@ -630,7 +630,7 @@
       },
       {
         "index": 11,
-        "arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ غِنَائِي وَغِنَى مَوْلَايَ.",
+        "arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ غِنَايَ وَغِنَى مَوْلَايَ.",
         "translations": {
           "en": "O Allah, I ask You for my sufficiency and the sufficiency of my dependents.",
           "ur": "اے اللہ! میں تجھ سے اپنے لیے اور اپنے اہل وعیال کے لیے مالی آسودگی کا سوال کرتا ہوں۔",
@@ -640,10 +640,10 @@
       },
       {
         "index": 12,
-        "arabic": "يَا نُورَ السَّمَاوَاتِ وَالْأَرْضِ، يَا زَيْنَ السَّمَاوَاتِ وَالْأَرْضِ، يَا جَبَّارَ السَّمَاوَاتِ وَالْأَرْضِ، يَا عِمَادَ السَّمَاوَاتِ وَالْأَرْضِ، يَا بَدِيعَ السَّمَاوَاتِ وَالْأَرْضِ، يَا قَيُّومَ السَّمَاوَاتِ وَالْأَرْضِ، يَا ذَا الْجَلَالِ وَالْإِكْرَامِ، يَا صَرِيخَ الْمُسْتَصْرِخِينَ، وَيَا غِيَاثَ الْمُسْتَغِيثِينَ، ومُنْتَهَى الْعَابِدِينَ، الْمُفَرِّجَ عَنِ الْمَكْرُوبِينَ، الْمُرَوِّحَ عَنِ الْمَغْمُومِينَ، ومُجِيبَ دُعَاءِ الْمُضْطَرِّينَ، وكاشِفَ الْكَرْبِ، وَيَا إِلَهَ الْعَالَمِينَ، وَيَا أَرْحَمَ الرَّاحِمِينَ. منَزُول ٌ بِكَ كُلُّ حَاجَةٍ.",
+        "arabic": "يَا نُورَ السَّمَاوَاتِ وَالْأَرْضِ، يَا زَيْنَ السَّمَاوَاتِ وَالْأَرْضِ، يَا جَبَّارَ السَّمَاوَاتِ وَالْأَرْضِ، يَا عِمَادَ السَّمَاوَاتِ وَالْأَرْضِ، يَا بَدِيعَ السَّمَاوَاتِ وَالْأَرْضِ، يَا قَيُّومَ السَّمَاوَاتِ وَالْأَرْضِ، يَا ذَا الْجَلَالِ وَالْإِكْرَامِ، يَا صَرِيخَ الْمُسْتَصْرِخِينَ، وَيَا غِيَاثَ الْمُسْتَغِيثِينَ، ومُنْتَهَى الْعَابِدِينَ، الْمُفَرِّجَ عَنِ الْمَكْرُوبِينَ، الْمُرَوِّحَ عَنِ الْمَغْمُومِينَ، ومُجِيبَ دُعَاءِ الْمُضْطَرِّينَ، وكاشِفَ الْكَرْبِ، وَيَا إِلٰهَ الْعَالَمِينَ، وَيَا أَرْحَمَ الرَّاحِمِينَ. منَزُول ٌ بِكَ كُلُّ حَاجَةٍ.",
         "translations": {
           "en": "O Light of the heavens and the earth! O Adornment of the heavens and the earth! O Compeller of the heavens and the earth! O Pillar of the heavens and the earth! O Creator of the heavens and the earth! O Sustainer of the heavens and the earth! O Possessor of Majesty and Honor! O Responder to those who call for help! O Helper of those who seek help! O Goal of the worshippers! O Reliever of the distressed! O Comforter of the grieved! O Answerer of the supplications of the desperate! O Remover of distress! O God of all the worlds! O Most Merciful of the merciful! Every need is brought to You.",
-          "ur": "اے خدا،آسمانوں اور زمین کے نور! اے آسمانوں اور زمین کو سجانے والے! اے آسمانوں اور زمین کے جبار مالک! اے آسمانوں اور زمین کوتھامنے والے! اے آسمانوں اور زمین کو پیدا کرنے والے! اے آسمانوں اور زمین کو کوقائم رکھنے والے! اے جاہ و جلال کے مالک! اے مدد چاہنے والوں کی مدد کرنے والے! اے فریادیوں کی فریاد پوری کرنے والے! اے عبادت گذاروں کے منتہی! اے پریشان حال لوگوں کی پریشانی کو دور کرنے والے! اے غمزدہ لوگوں کو خوش کرنے والے! اے بیکسوں کی دعا قبول کرنے والے! اور اے مصیبت کو دور کرنے والے! اے الٰہ العالمین! اے سب سے زیادہ رحم کرنے والے میں اپنی تمام حاجتیں لے کر تیرے در پہ حاضر ہوں۔",
+          "ur": "اے خدا،آسمانوں اور زمین کے نور! اے آسمانوں اور زمین کو سجانے والے! اے آسمانوں اور زمین کے جبار مالک! اے آسمانوں اور زمین کوتھامنے والے! اے آسمانوں اور زمین کو پیدا کرنے والے! اے آسمانوں اور زمین کو قائم رکھنے والے! اے جاہ و جلال کے مالک! اے مدد چاہنے والوں کی مدد کرنے والے! اے فریادیوں کی فریاد پوری کرنے والے! اے عبادت گذاروں کے منتہی! اے پریشان حال لوگوں کی پریشانی کو دور کرنے والے! اے غمزدہ لوگوں کو خوش کرنے والے! اے بیکسوں کی دعا قبول کرنے والے! اور اے مصیبت کو دور کرنے والے! اے الٰہ العالمین! اے سب سے زیادہ رحم کرنے والے میں اپنی تمام حاجتیں لے کر تیرے در پہ حاضر ہوں۔",
           "rom-ur": "Ae Khuda, asmanon aur zameen ke noor! Ae asmanon aur zameen ko sajane wale! Ae asmanon aur zameen ke jabbar malik! Ae asmanon aur zameen ko thamne wale! Ae asmanon aur zameen ko paida karne wale! Ae asmanon aur zameen ko qaim rakhne wale! Ae jah wa jalal ke malik! Ae madad chahne walon ki madad karne wale! Ae faryadiyon ki faryad pori karne wale! Ae ibadat guzaron ke muntahi! Ae pareshan hal logon ki pareshani ko door karne wale! Ae ghamzada logon ko khush karne wale! Ae bekson ki dua qabool karne wale! Aur ae musibat ko door karne wale! Ae Ilah al-alameen! Ae sab se zyada rahm karne wale main apni tamam hajaten le kar tere dar pah hazir hun."
         },
         "reference": "Al-Mu'jam Al-Awsat"
@@ -695,7 +695,7 @@
         "arabic": "اللهُمَّ أَصْلِحْ ذَاتَ بَيْنِنَا، وَأَلِّفْ بَيْنَ قُلُوبِنَا، وَاهْدِنَا سُبُلَ السَّلَامِ، وَنَجِّنَا مِنَ الظُّلُمَاتِ إِلَى النُّورِ، وَجَنِّبْنَا الْفَوَاحِشَ مَا ظَهَرَ لَنَا وَمَا بَطَنَ، اللهُمَّ بَارِكْ لَنَا فِي أَسْمَاعِنَا وَأَبْصَارِنَا وَقُلُوبِنَا وَأَزْوَاجِنَا وَذُرِّيَّاتِنَا، وَتُبْ عَلَيْنَا؛ إِنَّكَ أَنْتَ التَّوَّابُ الرَّحِيمُ، وَاجْعَلْنَا شَاكِرِينَ لِنِعْمَتِكَ، مُثْنِينَ بِهَا قَابِلِيهَا، وَأَتِمَّهَا عَلَيْنَا.",
         "translations": {
           "en": "O Allah, reconcile between us, unite our hearts, guide us to the paths of peace, and save us from darkness to light. Keep us away from indecencies, both apparent and hidden. O Allah, bless us in our hearing, our sight, our hearts, our spouses, and our children. Accept our repentance. You are the Accepter of Repentance, the Most Merciful. Make us grateful for Your blessings, praising You for them, accepting them, and complete them for us.",
-          "ur": "اے اللہ! ہمارے آپسی تعلقات بہتر فرمادیجیے، اور ہمارے دلوں میں الفت و محبت قائم فرمادیجیے، سلامتی کی راہوں کی طرف ہماری رہنمائی فرمائیے، اور ہمیں (گناہوں کی) تاریکیوں سے (ہدایت واستقامت کے) نور کی طرف لے چلیے، اور ظاہری وباطنی گندگیوں سے ہماری حفاظت فرمائیے۔ اے اللہ! ہمارے کانوں، آنکھوں، ہمارے دلوں، ہماری بیویوں اور ہماری اولاد میں برکت دے دیجیے، (ہمارے مالک وآقا!) ہماری توبہ قبول فرمائیے۔ یقینا آپ بہت ہی مہربان اور رحیم ہیں۔ اے اللہ! ہمیں اپنی نعمتوں پر شکرگذار، ان پر اپنا ثنا خواں اور قدر کے ساتھ قبول کرنے والا بنا دیجیے۔ پھرہم پر مزیدخوب نعمتیں عطا فرمائیے۔",
+          "ur": "اے اللہ! ہمارے آپسی تعلقات بہتر فرمادیجیے، اور ہمارے دلوں میں الفت و محبت قائم فرمادیجیے، سلامتی کی راہوں کی طرف ہماری رہنمائی فرمائیے، اور ہمیں (گناہوں کی) تاریکیوں سے (ہدایت واستقامت کے) نور کی طرف لے چلیے، اور ظاہری وباطنی گندگیوں سے ہماری حفاظت فرمائیے۔ اے اللہ! ہمارے کانوں، آنکھوں، ہمارے دلوں، ہماری بیویوں اور ہماری اولاد میں برکت دے دیجیے، (ہمارے مالک وآقا!) ہماری توبہ قبول فرمائیے۔ یقینا آپ بہت ہی مہربان اور رحیم ہیں۔ اے اللہ! ہمیں اپنی نعمتوں پر شکرگذار، ان پر اپنا ثنا خواں اور قدر کے ساتھ قبول کرنے والا بنا دیجیے۔ پھرہم کو مزیدخوب نعمتیں عطا فرمائیے۔",
           "rom-ur": "Ae Allah! Hamare aapas ke taalluqat behtar farmadijie, aur hamare dilon mein ulfat wa mohabbat qaim farmadijie, salamati ki rahon ki taraf hamari rahnumai farmaiye, aur hamein (gunahon ki) tareekiyon se (hidayat wa istiqamat ke) noor ki taraf le chaliye, aur zahiri wa batini gandagiyon se hamari hifazat farmaiye. Ae Allah! Hamare kano, aankhon, hamare dilon, hamari biwiyon aur hamari aulad mein barkat de dijie, (hamare malik wa aaqa!) Hamari tauba qabool farmaiye. Yaqeenan aap bohat hi meharban aur rahim hain. Ae Allah! Hamein apni nematon par shukarguzar, un par apna sana khwan aur qadar ke sath qabool karne wala bana dijie. Phir hum par mazeed khoob nematen ata farmaiye."
         },
         "reference": "Al-Mu'jam Al-Kabir"
@@ -712,11 +712,11 @@
       },
       {
         "index": 4,
-        "arabic": "اللَّهُمَّ وَفِّقْنِي لِمَا تُحِبُّ وَتَرْضَى مِنَ الْقَوْلِ وَالْعَمَلِ، وَالنِّيَّةِ وَالْهَدْيِ، إِنَّكَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ.",
+        "arabic": "اللَّهُمَّ وَفِّقْنِي لِمَا تُحِبُّ وَتَرْضَى مِنَ الْقَوْلِ وَالْعَمَلِ وَالفِعْلِ وَالنِّيَّةِ وَالْهَدْيِ، إِنَّكَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ.",
         "translations": {
           "en": "O Allah, grant me success in what You love and are pleased with, in word and deed, in intention and guidance. Indeed, You have power over all things.",
           "ur": "اے اللہ! مجھے اپنے محبوب وپسندیدہ اقوال، اعمال، افعال، نیت واحوال اور طرزِ عمل کی توفیق عطا فرما۔ یقینا تو ہر چیز پر قادر ہے۔",
-          "rom-ur": "Ae Allah! Mujhe apne mahboob wa pasandida aqwal, aamal, af'al, niyat wa ahwal aur tarz-e-amal ki taufeeq ata farma. Yaqeenan tu har cheez par qadir hai."
+          "rom-ur": "Ae Allah! Mujhe apne mahboob wa pasandida aqwal، aamal, afaal,niyat wa ahwal aur tarz-e-amal ki taufeeq ata farma. Yaqeenan tu har cheez par qadir hai."
         },
         "reference": "Al-Du'a li'l-Tabarani"
       },
@@ -752,7 +752,7 @@
       },
       {
         "index": 8,
-        "arabic": "اللهم إِنَّكَ سَأَلْتَنَا مِنْ أَنْفُسِنَا مَا لَا نَمْلِكُهُ إِلَّا بِكَ، اللهم فَأَعْطِنَا مِنْهَا مَا يُرْضِيكَ عَنَّا.",
+        "arabic": "اللَّهُمَّ إِنَّكَ سَأَلْتَنَا مِنْ أَنْفُسِنَا مَا لَا نَمْلِكُهُ إِلَّا بِكَ، اللَّهُمَّ فَأَعْطِنَا مِنْهَا مَا يُرْضِيكَ عَنَّا.",
         "translations": {
           "en": "O Allah, You have asked us from ourselves what we do not possess except through You. O Allah, so give us from it what will please You about us.",
           "ur": "اے اللہ! آپ نے ہم سے ایسی چیز کا مطالبہ فرمایاہے، جس پر، ہم آپ کی اعانت وتوفیق کے بغیر، قدرت نہیں رکھتے۔پس اب آپ ہی ہمیں اپنی پسندیدہ باتوں کی توفیق عنایت فرما دیجیے۔",
@@ -762,7 +762,7 @@
       },
       {
         "index": 9,
-        "arabic": "اللَّهُمَّ إِنَّ قُلُوبَنَا وَجَوَارَحَنَا بِيَدِكِ، لَمْ تُمَلِّكْنَا مِنْهَا شَيْئًا، فَإِذَا فَعَلْتَ ذَلِكَ بِهِمَا فَكُنْ أَنْتَ وَلِيَّهُمَا.",
+        "arabic": "اللَّهُمَّ إِنَّ قُلُوبَنَا وَجَوَارِحَنَا بِيَدِكِ، لَمْ تُمَلِّكْنَا مِنْهَا شَيْئًا، فَإِذَا فَعَلْتَ ذَلِكَ بِهِمَا فَكُنْ أَنْتَ وَلِيَّهُمَا.",
         "translations": {
           "en": "O Allah, indeed our hearts and our limbs are in Your hand. You have not given us control over them. So if You do that with them, then be their Guardian.",
           "ur": "اے اللہ! یقینا ہمارے دل اور تمام اعضاء تیرے قبضۂ قدرت میں ہیں، ہم ان میں ذرا بھی اختیار نہیں رکھتے۔ پس جب ایسا ہے تو پھر آپ ہی ہمارے دلوں اور اعضاء کی حفاظت فرمائیے۔",
@@ -857,14 +857,14 @@
         "arabic": "اللّهُمَّ إنِّي أَعُوذُ بِكَ مِنْ مَوْتِ الْفُجَاءَةِ وَمِنْ لَدْغِ الْحَيَّةِ، وَمِنَ السَّبُعِ، وَمِنَ الْحَرَقِ، وَمِنَ الْغَرَقِ، وَمِنْ أَنْ أَخِرَّ عَلَى شَيْءٍ، أَوْ يَخِرَّ عَلَيَّ شَيْءٌ، وَمِنَ الْقَتْلِ عِنْدَ فِرَارِ الزَّحْفِ.",
         "translations": {
           "en": "O Allah, I seek refuge in You from sudden death, from the bite of a snake, from wild beasts, from burning, from drowning, from falling on something, or from something falling on me, and from being killed while fleeing from battle.",
-          "ur": "اے پروردگار! میں آپ کی پناہ چاہتا ہوں اچانک کی موت سے، سانپ کے ڈسنے سے، تمام درندوں سے، آگ سے جلنے، پانی میں ڈوبنے،اس سے کہ میں گر کر چوٹ کھاؤں یا کوئی بھاری چیز مجھ پر گر پڑے۔ اور اس سے بھی پناہ مانگتا ہوں کہ میں جنگ سےبھاگتا ہوا مارا جاؤں۔",
-          "rom-ur": "Ae parwardigar! Main aap ki panah chahta hun achanak ki maut se, saanp ke dasne se, tamam darindon se, aag se jalne, pani mein doobne, us se ke main gir kar chot khaun ya koi bhari cheez mujh par gir pade. Aur us se bhi panah mangta hun ke main jung se bhagta hua mara jaun."
+          "ur": "اے پروردگار! میں آپ کی پناہ چاہتا ہوں اچانک کی موت سے، سانپ کے ڈسنے سے، تمام درندوں سے، آگ سے جلنے، پانی میں ڈوبنے سے اور اس سے کہ میں گر کر چوٹ کھاؤں یا کوئی بھاری چیز مجھ پر گر پڑے۔ اور اس سے بھی پناہ مانگتا ہوں کہ میں جنگ سےبھاگتا ہوا مارا جاؤں۔",
+          "rom-ur": "Ae parwardigar! Main aap ki panah chahta hun achanak ki maut se, saanp ke dasne se, tamam darindon se, aag se jalne, pani mein doobne se Aur is se ke main gir kar chot khaun ya koi bhari cheez mujh par gir pade. Aur us se bhi panah mangta hun ke main jung se bhagta hua mara jaun."
         },
         "reference": "Musnad Ahmad"
       },
       {
         "index": 3,
-        "arabic": "اللّهُمَّ رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ.",
+        "arabic": "اللّٰھمَّ رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ.",
         "translations": {
           "en": "O Allah, our Lord, grant us good in this world and good in the Hereafter, and save us from the punishment of the Fire.",
           "ur": "اے اللہ ہمارے مالک اور رب! ہمیں دنیا میں خیر اور نعمتیں عطا فرمائیے، اور آخرت میں بھی خیر اور انعام عطا فرمائیے، اور ہمیں دوزخ کے عذاب سے بچالیجئے۔",
@@ -887,7 +887,7 @@
         "arabic": "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الكَسَلِ وَالهَرَمِ، وَالمَغْرَمِ وَالمَأْثَمِ، اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ عَذَابِ النَّارِ وَفِتْنَةِ النَّارِ، وَفِتْنَةِ القَبْرِ وَعَذَابِ القَبْرِ، وَشَرِّ فِتْنَةِ الغِنَى، وَشَرِّ فِتْنَةِ الفَقْرِ، وَمِنْ شَرِّ فِتْنَةِ المَسِيحِ الدَّجَّالِ، اللَّهُمَّ اغْسِلْ خَطَايَايَ بِمَاءِ الثَّلْجِ وَالبَرَدِ، وَنَقِّ قَلْبِي مِنَ الخَطَايَا كَمَا يُنَقَّى الثَّوْبُ الأَبْيَضُ مِنَ الدَّنَسِ، وَبَاعِدْ بَيْنِي وَبَيْنَ خَطَايَايَ كَمَا بَاعَدْتَ بَيْنَ المَشْرِقِ وَالمَغْرِبِ.",
         "translations": {
           "en": "O Allah, I seek refuge in You from laziness and old age, from debt and sin. O Allah, I seek refuge in You from the punishment of Hell and the trial of Hell, from the trial of the grave and the punishment of the grave, from the evil of the trial of wealth, from the evil of the trial of poverty, and from the evil of the trial of the False Messiah. O Allah, wash my sins with water from snow and hail, and purify my heart from sins as a white garment is purified from filth, and distance me from my sins as You have distanced the East from the West.",
-          "ur": "اے اللہ! میں آپ کی پناہ مانگتا ہوں سستی و کاہلی سے، برے بڑھاپے سے،قرض کے بوجھ سے اور گناہوں سے۔ اے میرے اللہ! آپ کی پناہ جہنم کے عذاب اور اس میں جلائے جانے سے، اور قبر کے شدید امتحان اور عذاب سے۔ اے اللہ مجھے بچائیے مالداری کے فتنوںسے بھی اور فقر و محتاجی کی آزمائش سے بھی۔ میں آپ کی پناہ مانگتا ہوں مسیح دجال کے فتنہ کے شر سے۔اے اللہ میرے گناہوں کو دھوڈالیے اُولے اور برف کے صاف شفاف پانی سے ۔ اور میرے دل کوایسے صاف کر دیجیے گناہوں کی گندگی سے جیسے سفید کپڑے کو میل کچیل سے صاف کیا جاتا ہے۔ میرے مالک مجھ سے میرے گناہوں کو اتنا دور کر دیجیے جتنا آپ نے مشرق کو مغرب سے دور کردیا ہے۔",
+          "ur": "اے اللہ! میں آپ کی پناہ مانگتا ہوں سستی و کاہلی سے، برے بڑھاپے سے،قرض کے بوجھ سے اور گناہوں سے۔ اے میرے اللہ! آپ کی پناہ جہنم کے عذاب اور اس میں جلائے جانے سے، اور قبر کے شدید امتحان اور عذاب سے۔ اے اللہ مجھے بچائیے مالداری کے فتنوں سے بھی اور فقر و محتاجی کی آزمائش سے بھی۔ میں آپ کی پناہ مانگتا ہوں مسیح دجال کے فتنہ کے شر سے۔اے اللہ میرے گناہوں کو دھوڈالیے اُولے اور برف کے صاف شفاف پانی سے ۔ اور میرے دل کوایسے صاف کر دیجیے گناہوں کی گندگی سے جیسے سفید کپڑے کو میل کچیل سے صاف کیا جاتا ہے۔ میرے مالک مجھ سے میرے گناہوں کو اتنا دور کر دیجیے جتنا آپ نے مشرق کو مغرب سے دور کردیا ہے۔",
           "rom-ur": "Ae Allah! Main aap ki panah mangta hun susti wa kahili se, bure barhape se, qarz ke bojh se aur gunahon se. Ae mere Allah! Aap ki panah jahannam ke azab aur us mein jalaye jane se, aur qabar ke shadeed imtihan aur azab se. Ae Allah mujhe bachaiye maldari ke fitnon se bhi aur faqr wa muhtaji ki azmaish se bhi. Main aap ki panah mangta hun masih dajjal ke fitne ke shar se. Ae Allah mere gunahon ko dho daliye oole aur barf ke saaf shafaf pani se. Aur mere dil ko aise saaf kar dijie gunahon ki gandagi se jaisay safed kapre ko mail kachil se saaf kiya jata hai. Mere malik mujh se mere gunahon ko itna door kar dijie jitna aap ne mashriq ko maghrib se door kardia hai."
         },
         "reference": "Sahih Al-Bukhari"
@@ -907,8 +907,8 @@
         "arabic": "اللهُمَّ إِنِّي أَسْأَلُكَ بِنِعْمَتِكَ السَّابِغَةِ الَّتِي أَنْعَمْتَ عَلَيَّ، وَبَلائِكَ الَّذِي أَبْلَيْتَنِي، وَفَضْلِكَ الْعَظِيمِ الَّذِي أَفْضَلْتَ عَلَيَّ أَنْ تُدْخِلَنِي الْجَنَّةَ. اللهُمَّ أَدْخِلْنِي الْجَنَّةَ بِمَنِّكَ وَفَضْلِكَ وَرَحْمَتِكَ.",
         "translations": {
           "en": "O Allah, I ask You by Your abundant blessings that You have bestowed upon me, and by Your trial that You have tested me with, and by Your great favor that You have favored me with, that You admit me to Paradise. O Allah, admit me to Paradise by Your grace, Your favor, and Your mercy.",
-          "ur": "اے اللہ! میں آپ سے سوالی ہوں، آپ کی نچھاور کی ہوئی نعمتوں کا واسطہ دیتا ہوں اور آپ کے اس فضل وانعام کا واسطہ دیتا ہوں جو آپ مجھ پر فرماتے رہے ہیں، خداوندا: اپنے خاص فضل وکرم اور اپنی رحمت سے مجھے جنت میں داخل فرما دیجیے۔",
-          "rom-ur": "Ae Allah! Main aap se sawali hun, aap ki nichhawar ki hui nematon ka wasta deta hun aur aap ke us fazl wa in'am ka wasta deta hun jo aap mujh par farmate rahe hain, khudawanda: apne khas fazl wa karam aur apni rehmat se mujhe jannat mein daakhil farma dijie."
+          "ur": "اے اللہ! میں آپ سے سوالی ہوں، آپ کی نچھاور کی ہوئی نعمتوں کا واسطہ دیتا ہوں اور آپ کے کریمانہ معاملہ کا اور اس فضل وانعام کا واسطہ دیتا ہوں جو آپ مجھ پر فرماتے رہے ہیں، خداوندا: اپنے خاص فضل وکرم اور اپنی رحمت سے مجھے جنت میں داخل فرما دیجیے۔",
+          "rom-ur": "Ae Allah! Main aap se sawali hun, aap ki nichhawar ki hui nematon ka wasta deta hun aur aap ke kareemana muaamle ka aur us fazl wa in'am ka wasta deta hun jo aap mujh par farmate rahe hain, khudawanda: apne khas fazl wa karam aur apni rehmat se mujhe jannat mein daakhil farma dijie."
         },
         "reference": "Al-Mu'jam Al-Kabir"
       },
@@ -987,8 +987,8 @@
         "arabic": "اللهُمَّ إِنِّي أَسْأَلُكَ نَفْسًا بِكَ مُطْمَئِنَّةً، تُؤْمِنُ بِلِقَائِكَ، وَتَرْضَى بِقَضَائِكَ، وَتَقْنَعُ بِعَطَائِكَ.",
         "translations": {
           "en": "O Allah, I ask You for a soul that is content with You, that believes in meeting You, that is pleased with Your decree, and that is satisfied with Your provision.",
-          "ur": "اے اللہ! میں آپ سے سوالی ہوں ایسے دل کا جس کے لیے آپ کی ذات اطمینان وسکینت کا ذریعہ ہو۔ اور جو آپ کی ملاقات پر ایمان رکھتا ہو، اور آپ کے فیصلوں پر راضی ہو۔ اور آپ کی عطا پر قناعت کرنے اور مطمئن وخوش رہتا ہو۔",
-          "rom-ur": "Ae Allah! Main aap se sawali hun aise dil ka jis ke liye aap ki zat itminan wa sakoonat ka zariya ho. Aur jo aap ki mulaqat par iman rakhta ho, aur aap ke faislon par razi ho. Aur aap ki ata par qana'at karne aur mutmain wa khush rahta ho."
+          "ur": "اے اللہ! میں آپ سے سوالی ہوں ایسے دل کا جس کے لیے آپ کی ذات اطمینان وسکینت کا ذریعہ ہو۔ اور جو آپ کی ملاقات پر ایمان رکھتا ہو، اور آپ کے فیصلوں پر راضی ہو۔ اور آپ کی عطا پر قناعت کرکے مطمئن وخوش رہتا ہو۔",
+          "rom-ur": "Ae Allah! Main aap se sawali hun aise dil ka jis ke liye aap ki zat itminan wa sakoonat ka zariya ho. Aur jo aap ki mulaqat par iman rakhta ho, aur aap ke faislon par razi ho. Aur aap ki ata par qana'at karke mutmain wa khush rahta ho."
         },
         "reference": "Al-Mu'jam Al-Kabir"
       }
@@ -1068,9 +1068,9 @@
         "index": 8,
         "arabic": "اللَّهُمَّ اجْعَلْنِي أَخْشَاكَ كَأَنِّي أَرَاكَ أَبَدًا حَتَّى أَلْقَاكَ، وَأَسْعِدْنِي بِتَقْوَاكَ، وَلَا تُشْقِنِي بِمَعْصِيَتِكَ، وَخِرْ لِي فِي قَضَائِكَ، وَبَارِكْ لِي فِي قَدَرِكَ حَتَّى لَا أُحِبُّ تَعْجِيلَ مَا أَخَّرْتَ، وَلَا تَأْخِيرَ مَا عَجَّلْتَ، وَاجْعَلْ غِنَايَ فِي نَفْسِي، وَأَمْتِعْنِي بِسَمْعِي وَبَصَرِي، وَاجْعَلْهُمَا الْوَارِثَ مِنِّي، وَانْصُرْنِي عَلَى مَنْ ظَلَمَنِي",
         "translations": {
-          "en": "O Allah, make me fear You as if I see You, and make me happy with Your piety, and do not make me miserable with Your disobedience. Choose for me in Your decree, and bless me in Your decree, until I do not love to hasten what You have delayed, nor delay what You have hastened. Make my sufficiency in my soul, and let me enjoy my hearing and my sight, and make them my inheritance, and help me against whoever wrongs me.",
-          "ur": "اے اللہ! مجھے اپنا ایسا خوف عطا فرما جیسے میں تجھ کو دیکھ رہا ہوں، اور تقویٰ کی سعادت وخوش نصیبی بخش اور گناہوں کی بد بختی سے میری حفاظت فرما۔ اور میری تقدیر بہتر وبا برکت بنا دے، پھر میرا یہ حال ہو جائے کہ جو چیز آپ نے مجھ سے دور وموخر کردی ہے میں اسے جلدی حاصل کرنانہ چاہوں، اورنہ کسی ایسے کام کو موخر کرنا چاہوں جو آپ نے جلد طے کر دیا ہے۔ اور اے میرے مالک میرے دل کو سب سے بے نیاز کردے۔",
-          "rom-ur": "Ae Allah! Mujhe apna aisa khauf ata farma jaisay main tujh ko dekh raha hun, aur taqwa ki sa'adat wa khush naseebi bakhsh aur gunahon ki bad bakhti se meri hifazat farma. Aur meri taqdeer behtar wa ba barkat bana de, phir mera yeh hal ho jaye ke jo cheez aap ne mujh se door wa mokhhar kardi hai main usay jaldi hasil karna nah chaahun, aur nah kisi aise kaam ko mokhhar karna chaahun jo aap ne jald tay kar diya hai. Aur ae mere malik mere dil ko sab se be niaz karde."
+          "en": "O Allah, make me fear You as if I see You, and make me happy with Your piety, and do not make me miserable with Your disobedience. Choose for me in Your decree, and bless me in Your decree, until I do not love to hasten what You have delayed, nor delay what You have hastened. Make my sufficiency in my soul, and let me enjoy my hearing and my sight, and make them my inheritance, and help me against whoever wrongs me.And grant me the full benefit of my hearing and my sight; make them endure within me until the end of my days; and grant me victory over those who have wronged me.",
+          "ur": "اے اللہ! مجھے اپنا ایسا خوف عطا فرما جیسے میں تجھ کو دیکھ رہا ہوں، اور تقویٰ کی سعادت وخوش نصیبی بخش اور گناہوں کی بد بختی سے میری حفاظت فرما۔ اور میری تقدیر بہتر وبا برکت بنا دے، پھر میرا یہ حال ہو جائے کہ جو چیز آپ نے مجھ سے دور وموخر کردی ہے میں اسے جلدی حاصل کرنانہ چاہوں، اورنہ کسی ایسے کام کو موخر کرنا چاہوں جو آپ نے جلد طے کر دیا ہے۔ اور اے میرے مالک میرے دل کو سب سے بے نیاز کردے۔ اور میری سماعت و بصارت کو میرے حق میں مفید بنادے اور موت تک انہیں سلامت رکھ۔ اور اے اللہ اس شخص کے خلاف میری مدد فرما، جو مجھ پر ظلم کرے۔  ",
+          "rom-ur": "Ae Allah! Mujhe apna aisa khauf ata farma jaisay main tujh ko dekh raha hun, aur taqwa ki sa'adat wa khush naseebi bakhsh aur gunahon ki bad bakhti se meri hifazat farma. Aur meri taqdeer behtar wa ba barkat bana de, phir mera yeh hal ho jaye ke jo cheez aap ne mujh se door wa mokhhar kardi hai main usay jaldi hasil karna nah chaahun, aur nah kisi aise kaam ko mokhhar karna chaahun jo aap ne jald tay kar diya hai. Aur ae mere malik mere dil ko sab se be niaz karde. aur meri sunne aur dekhne ki quwwat ko mere haq men mufeed bnade aur maut tak inko salaamat rakh. aur ae allah us shakhs ke khilaf meri madad farma, jo mujh par zulm kare"
         },
         "reference": "Al-Du'a li'l-Tabarani"
       },

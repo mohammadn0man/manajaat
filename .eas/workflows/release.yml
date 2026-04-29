@@ -1,9 +1,7 @@
 ﻿name: Release to production
 
 on:
-  push:
-    branches: ['main']
-    # branches: ['master']
+  workflow_dispatch: {}
 
 jobs:
   fingerprint:
