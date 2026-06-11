@@ -65,7 +65,14 @@ const DayItem: React.FC<DayItemProps> = ({ day, index }) => {
       }}
     >
       <TouchableOpacity
-        style={[localStyles.dayCard, { backgroundColor: colors.card }]}
+        style={[
+          localStyles.dayCard,
+          {
+            backgroundColor: colors.card,
+            borderColor: colors.border,
+            borderWidth: 1,
+          },
+        ]}
         onPress={handlePress}
         activeOpacity={0.8}
         accessibilityRole="button"

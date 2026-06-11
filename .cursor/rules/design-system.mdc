@@ -1,0 +1,48 @@
+---
+description: Bustan-e-Rahmat design system enforcement for web app
+globs: apps/web/**/*.{ts,tsx,css,html}
+alwaysApply: true
+---
+
+# Bustan-e-Rahmat Design System
+
+Full reference: `apps/web/DESIGN_SYSTEM.md`  
+Tokens: `apps/web/src/styles/tokens.css`
+
+## Colors & tokens
+
+- Never hardcode hex in components; use `var(--color-*)`, `var(--bg-*)`, `var(--text-*)`, `var(--brand-*)`.
+- Page background is `var(--bg-base)` (warm cream `#f6eddd`), not pure white.
+- Brand palette is **teal + gold only** — no purple, blue, or red accents.
+- Cards: `background: var(--bg-surface)`, `border: 1px solid var(--border-default)`, `border-radius: var(--radius-xl)`.
+
+## Typography
+
+- English headings: `var(--font-en-display)` (Cormorant Garamond).
+- English body: `var(--font-en-body)` (DM Sans).
+- Accent labels / badges: `var(--font-en-accent)` (Cinzel), uppercase, `letter-spacing: 0.08em`.
+- Urdu display: `var(--font-urdu-display)` (Noto Nastaliq Urdu).
+- Urdu body: `var(--font-urdu-body)` (Noto Naskh Arabic).
+- Quran ayat: `class="quran"`, `lang="ar"`, `var(--font-arabic)` (Indopak Nastaleeq, self-hosted).
+
+## Layout & components
+
+- Section vertical padding: `var(--space-section)` (5rem).
+- Container max width: `var(--container-max)` (1200px), centered.
+- Buttons: `border-radius: var(--radius-full)`, teal bg (`var(--brand-primary)`), cream text (`var(--text-inverse)`); hover adds `var(--shadow-gold)`.
+- Styling approach: **CSS Modules** per component — co-locate `Component.tsx` + `Component.module.css`.
+- Islamic decorative elements use teal or gold only.
+
+## Do not
+
+- Use Inter/Roboto/system fonts for headings.
+- Use English fonts on Urdu text.
+- Use pure white `#ffffff` as page background.
+- Add colors outside the teal/gold/cream/ink palette.
+
+## Content & data
+
+- All copy lives under `apps/web/src/content/` as typed bilingual `{ ur, en }` objects — never inline string literals in components.
+- Landing copy: `apps/web/src/content/site.ts`
+- Courses: `apps/web/src/content/courses/` using `Course`, `CourseVersion`, `Module`, `Lesson` from `index.ts`
+- Never hand-inline module/lesson lists in page components

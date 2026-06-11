@@ -2,6 +2,7 @@ import React, { createContext, useContext, ReactNode } from 'react';
 import { StyleSheet } from 'react-native';
 import { useApp } from './AppContext';
 import { globalStyles } from '../styles/globalStyles';
+import { getArabicTextStyle } from '../utils/arabicTextStyles';
 
 export interface ThemeColors {
   background: string;
@@ -288,15 +289,17 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     arabic: {
       ...globalStyles.typography.arabic,
       fontFamily: getArabicFontFamily(),
-      fontSize: getFontSizeValue(), // 20px for normal
-      lineHeight: Math.round(getFontSizeValue() * 2.2), // Increased line height for better Arabic spacing
+      fontSize: getFontSizeValue(),
+      ...getArabicTextStyle(getFontSizeValue(), { lineHeightMultiplier: 2.2 }),
       color: colors.foreground,
     },
     arabicLarge: {
       ...globalStyles.typography.arabicLarge,
       fontFamily: getArabicFontFamily(),
-      fontSize: Math.round(getFontSizeValue() * 1.2), // 24px for normal
-      lineHeight: Math.round(getFontSizeValue() * 2.5), // Increased line height for better Arabic spacing
+      fontSize: Math.round(getFontSizeValue() * 1.2),
+      ...getArabicTextStyle(Math.round(getFontSizeValue() * 1.2), {
+        lineHeightMultiplier: 2.5,
+      }),
       color: colors.foreground,
     },
 

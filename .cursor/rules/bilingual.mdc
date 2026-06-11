@@ -1,0 +1,43 @@
+---
+description: Bustan-e-Rahmat bilingual (Urdu/English) content rules
+globs: apps/web/**/*.{ts,tsx,css,html}
+alwaysApply: true
+---
+
+# Bilingual Content Rules
+
+## Pattern
+
+- **One language at a time** via header toggle (not stacked, not side-by-side).
+- Default language: **Urdu** (`ur`).
+- Persistence: `localStorage['ber-lang']`.
+- Use `useLanguage()` from `apps/web/src/i18n/useLanguage.ts`.
+
+## Content shape
+
+```ts
+const copy = {
+  title: { ur: 'بستانِ رحمت', en: 'Bustan-e-Rahmat' },
+} as const;
+const { lang, t } = useLanguage();
+t(copy.title); // returns string for active lang
+```
+
+## Direction & fonts
+
+- When `lang === 'ur'`: `dir="rtl"`, Urdu font families, `line-height: var(--leading-urdu)`.
+- When `lang === 'en'`: `dir="ltr"`, English font families.
+- `LanguageProvider` sets `document.documentElement.lang` and `.dir` — do not fight it.
+- Never mix fonts across languages on the same element.
+
+## Quran / Arabic
+
+```tsx
+<span lang="ar" className="quran">...</span>
+```
+
+- Centered, Indopak Nastaleeq font (`var(--font-arabic)`), `var(--color-teal-700)`.
+
+## Toggle UI
+
+- Reuse `LanguageToggle` from `apps/web/src/i18n/LanguageToggle.tsx` in header/nav.

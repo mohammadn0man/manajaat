@@ -38,7 +38,7 @@ After that, any user still on an older version will see the update screen and mu
   If your default branch is `main`, change `master` to `main` in the URL.
 
 - **`app.json` → `extra.iosAppStoreId`**  
-  Your app’s numeric App Store ID (from App Store Connect). Once set, the “Open App Store” button will open your app’s page directly. Until then, it opens a search for “Munajaat Nomani”.
+  Your app’s numeric App Store ID (from App Store Connect). Once set, the “Open App Store” button will open your app’s page directly. Until then, it opens a search for “Munajat-e-Nomani”.
 
 - **`version.json`** (at repo root)  
   Must be committed and available at `versionCheckUrl`. Example:
@@ -46,7 +46,7 @@ After that, any user still on an older version will see the update screen and mu
 ```json
 {
   "minVersion": "1.2.0",
-  "message": "A new version of Munajaat Nomani is available. Please update to continue."
+  "message": "A new version of Munajat-e-Nomani is available. Please update to continue."
 }
 ```
 

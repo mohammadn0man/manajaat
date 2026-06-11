@@ -11,6 +11,7 @@ import {
 import React, { useState, useEffect } from 'react';
 import { checkForceUpdate } from './src/services/versionCheck';
 import ForceUpdateScreen from './src/screens/ForceUpdateScreen';
+import SplashScreen from './src/screens/SplashScreen';
 
 // Disable device font scaling globally - app will use static font sizes
 // controlled only by the app's font size settings
@@ -22,6 +23,7 @@ import ForceUpdateScreen from './src/screens/ForceUpdateScreen';
 
 function AppContent() {
   const { colorScheme } = useApp();
+  const [showSplash, setShowSplash] = useState(true);
   const [forceUpdate, setForceUpdate] = useState<{ required: boolean; message?: string } | null>(null);
 
   useEffect(() => {
@@ -38,7 +40,8 @@ function AppContent() {
     return (
       <View style={styles.container}>
         <ForceUpdateScreen message={forceUpdate.message} />
-        <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+        {showSplash && <SplashScreen onFinish={() => setShowSplash(false)} />}
+        <StatusBar style={!showSplash && colorScheme === 'dark' ? 'light' : 'dark'} />
       </View>
     );
   }
@@ -46,7 +49,8 @@ function AppContent() {
   return (
     <View style={styles.container}>
       <AppNavigator />
-      <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+      {showSplash && <SplashScreen onFinish={() => setShowSplash(false)} />}
+      <StatusBar style={!showSplash && colorScheme === 'dark' ? 'light' : 'dark'} />
     </View>
   );
 }

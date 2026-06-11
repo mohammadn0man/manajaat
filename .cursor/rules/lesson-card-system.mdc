@@ -1,0 +1,17 @@
+---
+description: Lesson card system and reusable component dictionary for course lesson creation
+alwaysApply: true
+---
+
+# Lesson Card System
+
+Source of truth: `docs/courses/lesson-card-component-dictionary.json`
+
+- When working on course lessons, lesson-page UI, lesson prompts, or lesson content mapping, consult the dictionary first.
+- Treat the approved visual direction as: warm cream page, white cards, teal authority, gold accents, and illustration/infographic-led teaching.
+- Default lesson structure is **4-6 cards per lesson**, with **1 audio clip per card** and **1 core idea per card**.
+- Reuse the existing `componentCatalog` and `cardRecipes` ids before inventing new layout patterns.
+- Default to **one language at a time**. Urdu is the default experience and must stay RTL; English stays LTR.
+- Keep lesson cards visually scannable: concept grids, quote blocks, stat strips, timelines, role splits, activity packs, and takeaway lists are preferred over long text walls.
+- For implementation, continue following the existing design-system, bilingual, and routing rules.
+- If a genuinely new lesson pattern will repeat across lessons, update the dictionary so future lesson work stays consistent.

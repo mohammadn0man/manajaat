@@ -1,4 +1,4 @@
-# Munajaat Nomani 🤲
+# Munajat-e-Nomani 🤲
 
 A beautiful React Native mobile application for daily Islamic supplications (duas) organized by days of the week. Built with Expo and TypeScript, featuring a clean and intuitive interface for spiritual reflection and prayer.
 

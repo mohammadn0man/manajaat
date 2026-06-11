@@ -1,4 +1,4 @@
-# Code Quality Analysis - Munajaat React Native App
+# Code Quality Analysis - Munajat-e-Nomani React Native App
 
 ## Executive Summary
 **Overall Code Quality Rating: 7.5/10**

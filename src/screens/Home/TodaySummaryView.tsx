@@ -20,6 +20,7 @@ import { globalStyles } from '../../styles/globalStyles';
 import { getStartData, getStartLangKey } from '../../services/dataLoader';
 import { fontFamilies } from '../../config/fonts';
 import BodyTextWithSalamGlyph from '../../components/common/BodyTextWithSalamGlyph';
+import { getArabicTextStyle } from '../../utils/arabicTextStyles';
 import Svg, { Circle } from 'react-native-svg';
 
 const PROGRESS_RING_SIZE = 96;
@@ -95,7 +96,11 @@ const TodaySummaryView: React.FC<TodaySummaryViewProps> = ({
       <Animated.View
         style={[
           localStyles.featuredCard,
-          { backgroundColor: colors.card },
+          {
+            backgroundColor: colors.card,
+            borderColor: colors.border,
+            borderWidth: 1,
+          },
           {
             opacity: cardSlideAnim,
             transform: [
@@ -153,12 +158,11 @@ const TodaySummaryView: React.FC<TodaySummaryViewProps> = ({
                 <Text
                   style={[
                     styles.caption,
+                    getArabicTextStyle(fontScale, { lineHeightMultiplier: 2.0 }),
                     {
                       color: colors.foreground,
-                      textAlign: 'right',
                       fontFamily: arabicFont,
                       fontSize: fontScale,
-                      lineHeight: Math.round(fontScale * 1.75),
                       paddingVertical: Platform.OS === 'ios' ? 8 : 2,
                     },
                   ]}
@@ -174,7 +178,11 @@ const TodaySummaryView: React.FC<TodaySummaryViewProps> = ({
       <Animated.View
         style={[
           localStyles.quickAccessCard,
-          { backgroundColor: colors.card },
+          {
+            backgroundColor: colors.card,
+            borderColor: colors.border,
+            borderWidth: 1,
+          },
           {
             opacity: quickAccessAnim,
             transform: [

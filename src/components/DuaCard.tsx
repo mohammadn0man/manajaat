@@ -35,9 +35,7 @@ const DuaCard: React.FC<DuaCardProps> = ({
   index,
 }) => {
   const { styles, colors } = useTheme();
-  const { getFontSizeValue, getArabicFontFamily } = useApp();
-
-  const arabicFontSize = getFontSizeValue();
+  const { getArabicFontFamily } = useApp();
 
   const cardStyle = compact
     ? [styles.cardCompact, { padding: globalStyles.spacing.lg }]
@@ -105,7 +103,6 @@ const DuaCard: React.FC<DuaCardProps> = ({
             fontFamily: getArabicFontFamily(),
             fontWeight: 'normal',
             paddingTop: showActions ? 30 : 0,
-            lineHeight: compact ? undefined : Math.round(arabicFontSize * 1.2 * 2),
           },
         ]}
       >

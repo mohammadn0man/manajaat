@@ -14,7 +14,7 @@ import Constants from 'expo-constants';
 import * as Haptics from 'expo-haptics';
 
 import { useApp } from '../contexts/AppContext';
-import { Language, ArabicFont } from '../services/storageService';
+import { Language, FontSize, ArabicFont } from '../services/storageService';
 import TopBar from '../components/TopBar';
 import { useTheme } from '../contexts/ThemeProvider';
 import { globalStyles } from '../styles/globalStyles';
@@ -24,10 +24,12 @@ const SettingsScreen: React.FC = () => {
   const {
     language,
     theme,
+    fontSize,
     arabicFont,
     favorites,
     setLanguage,
     setTheme,
+    setFontSize,
     setArabicFont,
     clearFavorites,
   } = useApp();
@@ -37,6 +39,13 @@ const SettingsScreen: React.FC = () => {
     { value: 'en', label: 'English' },
     { value: 'ur', label: 'اردو (Urdu)' },
     { value: 'rom-ur', label: 'Roman Urdu' },
+  ];
+
+  const fontSizeOptions: { value: FontSize; label: string }[] = [
+    { value: 'small', label: 'Small' },
+    { value: 'normal', label: 'Normal' },
+    { value: 'large', label: 'Large' },
+    { value: 'extra-large', label: 'Extra Large' },
   ];
 
   const arabicFontOptions: { value: ArabicFont; label: string }[] = [
@@ -167,6 +176,53 @@ const SettingsScreen: React.FC = () => {
           styles.globalStyles.spacingUtils.pt('lg'),
         ]}
       >
+        {/* Font Size - Segmented control */}
+        <View style={styles.section}>
+          <View style={[styles.row, styles.globalStyles.spacingUtils.mb('md')]}>
+            <Ionicons name="text" size={22} color={colors.primary} />
+            <Text style={[styles.h4, styles.globalStyles.spacingUtils.ml('sm')]}>
+              Font Size
+            </Text>
+          </View>
+          <View style={localStyles.segmentedRow}>
+            {fontSizeOptions.map((opt) => {
+              const isSelected = fontSize === opt.value;
+              return (
+                <TouchableOpacity
+                  key={opt.value}
+                  style={[
+                    localStyles.segmentButton,
+                    {
+                      backgroundColor: isSelected ? colors.primary : colors.card,
+                      borderWidth: isSelected ? 0 : 1,
+                      borderColor: colors.border,
+                    },
+                  ]}
+                  onPress={async () => {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                    await setFontSize(opt.value);
+                  }}
+                  accessibilityRole="radio"
+                  accessibilityState={{ checked: isSelected }}
+                  accessibilityLabel={opt.label}
+                >
+                  <Text
+                    style={[
+                      styles.caption,
+                      {
+                        fontWeight: '600',
+                        color: isSelected ? '#FFFFFF' : colors.foreground,
+                      },
+                    ]}
+                  >
+                    {opt.label}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </View>
+
         {renderDropdownSelector(
           'arabicFont',
           'Arabic Font',
@@ -260,7 +316,7 @@ const SettingsScreen: React.FC = () => {
             ]}
           >
             <Text style={[styles.h4, { fontWeight: '600' }]}>
-              {`Munajaat Nomani v${Constants.expoConfig?.version ?? ''}`}
+              {`Munajat-e-Nomani v${Constants.expoConfig?.version ?? ''}`}
             </Text>
             <Text
               style={[
@@ -303,6 +359,19 @@ const SettingsScreen: React.FC = () => {
 };
 
 const localStyles = StyleSheet.create({
+  segmentedRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginHorizontal: -4,
+  },
+  segmentButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    minWidth: 72,
+    alignItems: 'center',
+    margin: 4,
+  },
   contributeSection: {
     alignItems: 'center',
     paddingBottom: 140,

@@ -1,15 +1,15 @@
 # Privacy Policy
 
-**Munajaat Nomani**
+**Munajat-e-Nomani**
 Last updated: February 17, 2026
 
 ## Introduction
 
-Assuffa Academy ("we", "us", or "our") built Munajaat Nomani (package name `com.nomani.munajaat`) as a free mobile application for Android and iOS. This Privacy Policy explains how we handle information when you use our app. By using Munajaat Nomani you agree to the practices described in this policy.
+Assuffa Academy ("we", "us", or "our") built Munajat-e-Nomani (package name `com.nomani.munajaat`) as a free mobile application for Android and iOS. This Privacy Policy explains how we handle information when you use our app. By using Munajat-e-Nomani you agree to the practices described in this policy.
 
 ## Information We Collect
 
-**We do not collect, store, or process any personal or personally identifiable information.** Munajaat Nomani does not require account creation, sign-in, or registration of any kind. We do not ask for or access your name, email address, phone number, location, device identifiers, or any other personal data.
+**We do not collect, store, or process any personal or personally identifiable information.** Munajat-e-Nomani does not require account creation, sign-in, or registration of any kind. We do not ask for or access your name, email address, phone number, location, device identifiers, or any other personal data.
 
 All supplication (dua/munajaat) content — including Arabic text, English translations, and Urdu translations — is bundled within the app or stored locally on your device. We do not access, collect, or transmit this content.
 
@@ -35,15 +35,15 @@ Because we do not collect or store any personal data on our servers, there is no
 
 ## Cookies and Tracking
 
-Munajaat Nomani is a native mobile application. We do not use cookies, web beacons, pixels, or any other tracking technologies.
+Munajat-e-Nomani is a native mobile application. We do not use cookies, web beacons, pixels, or any other tracking technologies.
 
 ## Children's Privacy
 
-Munajaat Nomani is not specifically directed at children under the age of 13. We do not knowingly collect personal information from children under 13. Since the app does not collect personal information from any user, no special measures are required. If we become aware that we have inadvertently collected personal data from a child under 13, we will take steps to delete it promptly. If we update the app to specifically target children, we will comply with applicable laws, including the Children's Online Privacy Protection Act (COPPA), and update this policy accordingly.
+Munajat-e-Nomani is not specifically directed at children under the age of 13. We do not knowingly collect personal information from children under 13. Since the app does not collect personal information from any user, no special measures are required. If we become aware that we have inadvertently collected personal data from a child under 13, we will take steps to delete it promptly. If we update the app to specifically target children, we will comply with applicable laws, including the Children's Online Privacy Protection Act (COPPA), and update this policy accordingly.
 
 ## International Users
 
-Munajaat Nomani is available to users worldwide. Since we do not collect personal data, regional data-protection regulations such as the European Union's General Data Protection Regulation (GDPR) or the California Consumer Privacy Act (CCPA) are limited in practical application to this app. If you are located in the European Economic Area or another jurisdiction that grants specific data-privacy rights, those rights are fully respected — and largely moot — because we hold no personal data about you.
+Munajat-e-Nomani is available to users worldwide. Since we do not collect personal data, regional data-protection regulations such as the European Union's General Data Protection Regulation (GDPR) or the California Consumer Privacy Act (CCPA) are limited in practical application to this app. If you are located in the European Economic Area or another jurisdiction that grants specific data-privacy rights, those rights are fully respected — and largely moot — because we hold no personal data about you.
 
 ## Changes to This Policy
 

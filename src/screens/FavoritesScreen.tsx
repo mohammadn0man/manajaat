@@ -27,6 +27,7 @@ import TopBar from '../components/TopBar';
 import EmptyState from '../components/common/EmptyState';
 import { useTheme } from '../contexts/ThemeProvider';
 import { globalStyles } from '../styles/globalStyles';
+import { getArabicTextStyle } from '../utils/arabicTextStyles';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const NUM_COLUMNS = 2;
@@ -81,6 +82,8 @@ const FavoriteCard: React.FC<FavoriteCardProps> = ({
     onRemove(item.id);
   };
 
+  const previewFontSize = Math.min(16, getFontSizeValue() * 0.8);
+
   return (
     <Animated.View
       style={{
@@ -98,7 +101,14 @@ const FavoriteCard: React.FC<FavoriteCardProps> = ({
       }}
     >
       <TouchableOpacity
-        style={[localStyles.gridCard, { backgroundColor: colors.card }]}
+        style={[
+          localStyles.gridCard,
+          {
+            backgroundColor: colors.card,
+            borderColor: colors.border,
+            borderWidth: 1,
+          },
+        ]}
         onPress={handlePress}
         activeOpacity={0.85}
         accessibilityRole="button"
@@ -115,12 +125,12 @@ const FavoriteCard: React.FC<FavoriteCardProps> = ({
           numberOfLines={3}
           style={[
             localStyles.arabicPreview,
+            getArabicTextStyle(previewFontSize, { lineHeightMultiplier: 1.8 }),
             {
               color: colors.foreground,
               fontFamily: getArabicFontFamily(),
               fontWeight: 'normal' as const,
-              fontSize: Math.min(16, getFontSizeValue() * 0.8),
-              lineHeight: Math.min(28, getFontSizeValue() * 1.4),
+              fontSize: previewFontSize,
             },
           ]}
         >

@@ -19,7 +19,7 @@ function getAppStoreUrl(): string {
   const extra = Constants.expoConfig?.extra as Record<string, string> | undefined;
   const id = extra?.iosAppStoreId;
   if (id) return `https://apps.apple.com/app/id${id}`;
-  return 'https://apps.apple.com/search?term=Munajaat+Nomani'; // fallback until iosAppStoreId is set in app.json
+  return 'https://apps.apple.com/search?term=Munajat-e-Nomani'; // fallback until iosAppStoreId is set in app.json
 }
 
 interface ForceUpdateScreenProps {
@@ -27,7 +27,7 @@ interface ForceUpdateScreenProps {
 }
 
 const ForceUpdateScreen: React.FC<ForceUpdateScreenProps> = ({
-  message = 'A new version of Munajaat Nomani is available. Please update to continue using the app.',
+  message = 'A new version of Munajat-e-Nomani is available. Please update to continue using the app.',
 }) => {
   const { colors } = useTheme();
 

@@ -1,0 +1,46 @@
+---
+description: Bustan-e-Rahmat React Router and course URL conventions
+globs: apps/web/**/*.{ts,tsx}
+alwaysApply: true
+---
+
+# Routing
+
+Routes are declared in `apps/web/src/router.tsx` via `createBrowserRouter`.
+
+## Public routes
+
+- `/` — Landing page
+- `/courses` — Course index
+- `/courses/:slug` — Course detail (uses `currentVersion` when version omitted)
+- `/courses/:slug/:version` — Course detail for a specific version (e.g. `v1`, `v2`)
+
+## Course slugs
+
+- `quran-tajweed`
+- `super-mom-parenting`
+
+## Lesson route
+
+```
+/courses/:slug/:version/modules/:moduleNumber/lessons/:lessonSlug
+```
+
+- `:lessonSlug` is `<lessonNumber>-<token>` (e.g. `1-a8f3k2q1`)
+- Each available lesson has a stable `token` in course content (`apps/web/src/content/courses/`)
+- The lesson page resolves only when module number, lesson number, and token all match
+- Numeric-only slugs (e.g. `/lessons/2`) return NotFound
+- The `:version` segment is **mandatory** so v1 students keep v1 URLs forever
+
+## Lesson access gating
+
+- Course-page lesson links open a password modal before navigation (`LessonGateModal`)
+- Password is read from `VITE_LESSON_GATE_PASSWORD` (see `apps/web/.env.example`)
+- Shared lesson URLs are public — anyone with the full token-bearing link can view without a password
+
+## Navigation rules
+
+- Use `<Link>` from `react-router-dom` for internal navigation — not raw `<a href>` for in-app routes
+- Lesson links from the course curriculum use a button + password gate, not a direct `<Link>`
+- Landing section anchors: `<Link to="/#about">` etc.; `LandingPage` scrolls to hash on mount
+- Register-interest form opens WhatsApp (`wa.me`) with pre-filled course details; number in `siteCopy.footer.whatsAppNumber`
